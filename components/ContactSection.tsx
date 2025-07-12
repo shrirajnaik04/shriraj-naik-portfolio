@@ -38,14 +38,14 @@ export default function ContactSection() {
     {
       icon: <Mail className="w-6 h-6 text-teal-400" />,
       label: "Email",
-      value: "shriraj.naik@example.com",
-      href: "mailto:shriraj.naik@example.com",
+      value: "nykshriraj4nov@gmail.com",
+      href: "mailto:nykshriraj4nov@gmail.com",
     },
     {
       icon: <Phone className="w-6 h-6 text-purple-400" />,
       label: "Phone",
-      value: "+91 98765 43210",
-      href: "tel:+919876543210",
+      value: "+91 9764904641",
+      href: "tel:+919764904641",
     },
     {
       icon: <MapPin className="w-6 h-6 text-teal-400" />,
@@ -59,19 +59,19 @@ export default function ContactSection() {
     {
       icon: <Linkedin className="w-6 h-6" />,
       label: "LinkedIn",
-      href: "https://linkedin.com/in/shriraj-naik",
+      href: "https://www.linkedin.com/in/shriraj-naik-494421154/",
       color: "hover:text-blue-400",
     },
     {
       icon: <Github className="w-6 h-6" />,
       label: "GitHub",
-      href: "https://github.com/shriraj-naik",
+      href: "https://github.com/shrirajnaik04",
       color: "hover:text-gray-400",
     },
     {
       icon: <Mail className="w-6 h-6" />,
       label: "Email",
-      href: "mailto:shriraj.naik@example.com",
+      href: "mailto:nykshriraj4nov@gmail.com",
       color: "hover:text-teal-400",
     },
   ]
