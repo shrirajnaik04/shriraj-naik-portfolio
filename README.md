@@ -43,5 +43,5 @@ It showcases my work in **QA Automation**, **Rapid AI Development**, **MCP Conte
 ```bash
 git clone https://github.com/yourusername/shriraj-naik-portfolio.git
 cd shriraj-naik-portfolio
-npm install
-npm run dev
+pnpm install
+pnpm run dev
