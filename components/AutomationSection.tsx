@@ -132,6 +132,10 @@ export default function AutomationSection() {
           className="text-center mt-16"
         >
           <motion.button
+            onClick={() => {
+              const contactForm = document.getElementById('contact-form')
+              contactForm?.scrollIntoView({ behavior: 'smooth' })
+            }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="bg-gradient-to-r from-teal-500 to-purple-600 px-8 py-4 rounded-lg font-semibold text-lg hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300 group"

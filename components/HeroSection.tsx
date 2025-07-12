@@ -121,6 +121,10 @@ export default function HeroSection() {
               className="flex flex-col sm:flex-row gap-4 order-1 lg:order-none"
             >
               <motion.button
+                onClick={() => {
+                  const projectsSection = document.getElementById('projects')
+                  projectsSection?.scrollIntoView({ behavior: 'smooth' })
+                }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="group relative overflow-hidden bg-gradient-to-r from-teal-500 to-purple-600 px-6 py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300"
@@ -135,6 +139,10 @@ export default function HeroSection() {
               </motion.button>
 
               <motion.button
+                onClick={() => {
+                  const contactSection = document.getElementById('contact')
+                  contactSection?.scrollIntoView({ behavior: 'smooth' })
+                }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="group relative overflow-hidden border-2 border-teal-500 text-teal-400 px-6 py-3 rounded-lg font-semibold hover:bg-teal-500 hover:text-white transition-all duration-300"
