@@ -28,7 +28,7 @@ export default function Home() {
       </main>
 
       <footer className="bg-slate-950 py-8 text-center text-slate-400">
-        <p>&copy; 2024 Shriraj Naik. All rights reserved.</p>
+        <p>&copy; 2025 Shriraj Naik. All rights reserved.</p>
       </footer>
     </div>
   )

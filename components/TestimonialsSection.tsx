@@ -17,27 +17,27 @@ export default function TestimonialsSection() {
 
   const testimonials: Testimonial[] = [
     {
-      name: "Rishabh Garg",
-      role: "CTO",
-      company: "FinTech Solutions Pvt Ltd",
+      name: "Hemant Naik",
+      role: "Senior Technical Program Manager",
+      company: "Amazon Web Services",
       content:
-        "Shriraj's QA automation frameworks transformed our testing processes. His expertise in MCP context engineering and AI-driven testing reduced our testing cycles by 60% while improving accuracy.",
+        "Shriraj's approach of AI in QA is both exciting and forward-thinking. His custom frameworks reflect a deep understanding of automation and innovation in testing. Truly impressive work—he’s clearly pushing boundaries in the QA space.",
       rating: 5,
     },
     {
-      name: "Vardha Naik",
-      role: "CMO",
-      company: "Majestic Escape India",
+      name: "Marcelino Fernandes",
+      role: "QA Automation Team Lead",
+      company: "FinTech Company",
       content:
-        "The SaaS AI chatbot developed by Shriraj exceeded our expectations. The rapid development approach and seamless integration with our existing systems was remarkable.",
+        "Shriraj has scripted 500+ test scripts across diverse projects, showcasing strong technical acumen and quick adaptability. He has integrated AI tools seamlessly into his workflow. He proactively upskills, stays updated with industry trends, and has explored MCPs, web development, and AI chatbots. Always eager to learn, he embraces challenges and feedback with a growth mindset.",
       rating: 5,
     },
     {
-      name: "Abhishek Gupta",
-      role: "Engineering Director - QA",
-      company: "Global Tech Solutions",
+      name: "Shashankh Naik",
+      role: "QA Automation Team Lead",
+      company: "FinTech Company",
       content:
-        "Working with Shriraj on API automation was a game-changer. His Docker-based testing pipelines and Postman integrations streamlined our entire development workflow.",
+        "Working with Shriraj Naik has been a privilege. As a QA, he delivers thorough, high-quality test cases and consistently uncovers critical bugs others might miss. Reliable and detail-oriented, he meets every deadline and takes full ownership. A natural leader, he confidently manages the QA team when needed. Beyond work, Shriraj is a supportive, trustworthy friend who brings both brilliance and warmth to the team—an invaluable asset to the workplace.",
       rating: 5,
     },
     {
@@ -69,7 +69,7 @@ export default function TestimonialsSection() {
         >
           <h2 className="text-4xl lg:text-5xl font-bold mb-4">
             <span className="bg-gradient-to-r from-teal-400 to-purple-500 bg-clip-text text-transparent">
-              Client Testimonials
+              Testimonials
             </span>
           </h2>
           <p className="text-xl text-slate-400 max-w-3xl mx-auto">What industry leaders say about working with me</p>

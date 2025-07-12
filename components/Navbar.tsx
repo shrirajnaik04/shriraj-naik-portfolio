@@ -11,6 +11,10 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
+      // Close mobile menu when scrolling
+      if (isOpen) {
+        setIsOpen(false)
+      }
     }
 
     // Add padding to body to prevent overlap - reduced for mobile
@@ -22,7 +26,7 @@ export default function Navbar() {
       window.removeEventListener("scroll", handleScroll)
       document.body.style.paddingTop = "0"
     }
-  }, [])
+  }, [isOpen])
 
   const navItems = [
     { name: "Home", href: "#home" },
