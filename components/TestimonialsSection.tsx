@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight, Star } from "lucide-react"
 
 interface Testimonial {
@@ -50,6 +50,15 @@ export default function TestimonialsSection() {
     },
   ]
 
+  // Auto-scroll functionality
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length)
+    }, 15000) // 15 seconds
+
+    return () => clearInterval(interval)
+  }, [testimonials.length])
+
   const nextTestimonial = () => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length)
   }
@@ -59,13 +68,13 @@ export default function TestimonialsSection() {
   }
 
   return (
-    <section className="py-20 bg-slate-900">
+    <section className="py-12 sm:py-16 lg:py-20 bg-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-12 lg:mb-16"
         >
           <h2 className="text-4xl lg:text-5xl font-bold mb-4">
             <span className="bg-gradient-to-r from-teal-400 to-purple-500 bg-clip-text text-transparent">
@@ -82,30 +91,32 @@ export default function TestimonialsSection() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.5 }}
-            className="bg-gradient-to-br from-slate-800 to-slate-900 p-6 lg:p-8 xl:p-12 rounded-2xl border border-slate-700 shadow-2xl"
+            className="bg-gradient-to-br from-slate-800 to-slate-900 p-6 lg:p-8 xl:p-12 rounded-2xl border border-slate-700 shadow-2xl h-[500px] sm:h-[450px] lg:h-[400px] xl:h-[450px] flex flex-col justify-between overflow-hidden"
           >
             {/* Stars */}
-            <div className="flex justify-center mb-4 lg:mb-6">
+            <div className="flex justify-center mb-4 lg:mb-6 flex-shrink-0">
               {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
                 <Star key={i} className="w-5 h-5 lg:w-6 lg:h-6 text-yellow-400 fill-current" />
               ))}
             </div>
 
-            {/* Quote */}
-            <blockquote className="text-lg lg:text-xl xl:text-2xl text-slate-300 text-center leading-relaxed mb-6 lg:mb-8">
-              "{testimonials[currentIndex].content}"
-            </blockquote>
+            {/* Quote - Scrollable content area */}
+            <div className="flex-1 flex items-center justify-center px-2">
+              <blockquote className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-300 text-center leading-relaxed overflow-y-auto max-h-full">
+                "{testimonials[currentIndex].content}"
+              </blockquote>
+            </div>
 
             {/* Author */}
-            <div className="text-center">
-              <div className="text-lg lg:text-xl font-semibold text-white mb-1">{testimonials[currentIndex].name}</div>
+            <div className="text-center flex-shrink-0 mt-4">
+              <div className="text-base sm:text-lg lg:text-xl font-semibold text-white mb-1">{testimonials[currentIndex].name}</div>
               <div className="text-teal-400 font-medium text-sm lg:text-base">{testimonials[currentIndex].role}</div>
-              <div className="text-slate-400 text-sm lg:text-base">{testimonials[currentIndex].company}</div>
+              <div className="text-slate-400 text-xs sm:text-sm lg:text-base">{testimonials[currentIndex].company}</div>
             </div>
           </motion.div>
 
           {/* Navigation */}
-          <div className="flex justify-center items-center mt-8 space-x-4">
+          <div className="flex justify-center items-center mt-4 sm:mt-6 lg:mt-8 space-x-4">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
