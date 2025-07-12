@@ -8,7 +8,7 @@ export default function HeroSection() {
   const [currentText, setCurrentText] = useState(0)
   const [displayText, setDisplayText] = useState("")
   const [isDeleting, setIsDeleting] = useState(false)
-  const texts = ["QA Automation Engineer", "AI Developer", "MCP Context Engineering Expert", "SaaS Chatbot Architect"]
+  const texts = ["QA Automation Engineer", "Rapid AI Developer", "MCP Context Engineering Expert", "RAG AI Chatbot System Architect"]
 
   useEffect(() => {
     const currentFullText = texts[currentText]
