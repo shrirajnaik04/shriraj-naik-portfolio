@@ -15,7 +15,7 @@ export default function TechStackSection() {
 
   const technologies: TechItem[] = [
     // Row 1
-    { name: "Selenium", category: "Testing", description: "Web automation testing framework", logo: "🔧" },
+    { name: "Selenium IDE", category: "Testing", description: "Web automation testing framework", logo: "🔧" },
     { name: "Playwright", category: "Testing", description: "Modern web testing framework", logo: "🎭" },
     { name: "JMeter", category: "Testing", description: "Performance testing tool", logo: "⚡" },
     { name: "Testsigma", category: "Testing", description: "Cloud-based test automation", logo: "☁️" },

@@ -17,7 +17,7 @@ export default function TestimonialsSection() {
 
   const testimonials: Testimonial[] = [
     {
-      name: "Rajesh Kumar",
+      name: "Rishabh Garg",
       role: "CTO",
       company: "FinTech Solutions Pvt Ltd",
       content:
@@ -25,23 +25,23 @@ export default function TestimonialsSection() {
       rating: 5,
     },
     {
-      name: "Priya Sharma",
-      role: "Product Manager",
-      company: "TechCorp India",
+      name: "Vardha Naik",
+      role: "CMO",
+      company: "Majestic Escape India",
       content:
         "The SaaS AI chatbot developed by Shriraj exceeded our expectations. The rapid development approach and seamless integration with our existing systems was remarkable.",
       rating: 5,
     },
     {
-      name: "Michael Chen",
-      role: "Engineering Director",
+      name: "Abhishek Gupta",
+      role: "Engineering Director - QA",
       company: "Global Tech Solutions",
       content:
         "Working with Shriraj on API automation was a game-changer. His Docker-based testing pipelines and Postman integrations streamlined our entire development workflow.",
       rating: 5,
     },
     {
-      name: "Anita Desai",
+      name: "Priya S.",
       role: "QA Lead",
       company: "Digital Innovations Ltd",
       content:
