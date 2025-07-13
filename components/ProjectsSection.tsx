@@ -36,9 +36,9 @@ export default function ProjectsSection() {
       image: "/placeholder.svg?height=300&width=400",
     },
     {
-      title: "Postman API Automation with Docker Pipelines",
+      title: "Rapid AI Automation Framework for Smart Testing",
       description:
-        "Automated API testing pipeline integrated with Docker containers for consistent and scalable testing environments.",
+        "Prototyping an AI-led framework that uses low-code scripting for fast, scalable test automation for beginner QA engineers.",
       tags: ["Postman", "Docker", "CI/CD", "API Testing", "Automation"],
       image: "/placeholder.svg?height=300&width=400",
     },
