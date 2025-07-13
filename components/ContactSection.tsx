@@ -14,23 +14,173 @@ export default function ContactSection() {
     message: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [errorMessage, setErrorMessage] = useState('')
+  const [validationErrors, setValidationErrors] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  })
+  const [touched, setTouched] = useState({
+    name: false,
+    email: false,
+    subject: false,
+    message: false
+  })
+  const [focused, setFocused] = useState({
+    name: false,
+    email: false,
+    subject: false,
+    message: false
+  })
+
+  // Validation functions
+  const validateName = (name: string): string => {
+    if (!name.trim()) return 'Full name is required.'
+    if (name.trim().length < 2) return 'Name must be at least 2 characters.'
+    if (name.trim().length > 50) return 'Name must be less than 50 characters.'
+    if (!/^[a-zA-Z\s.'-]+$/.test(name.trim())) return 'Name can only contain letters, spaces, dots, hyphens, and apostrophes.'
+    return ''
+  }
+
+  const validateEmail = (email: string): string => {
+    if (!email.trim()) return 'Email address is required.'
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    if (!emailRegex.test(email.trim())) return 'Please enter a valid email address.'
+    if (email.length > 100) return 'Email must be less than 100 characters.'
+    return ''
+  }
+
+  const validateSubject = (subject: string): string => {
+    if (!subject.trim()) return 'Subject is required.'
+    if (subject.trim().length < 5) return 'Subject must be at least 5 characters.'
+    if (subject.trim().length > 100) return 'Subject must be less than 100 characters.'
+    return ''
+  }
+
+  const validateMessage = (message: string): string => {
+    if (!message.trim()) return 'Message is required.'
+    if (message.trim().length < 10) return 'Message must be at least 10 characters.'
+    if (message.trim().length > 1000) return 'Message must be less than 1000 characters.'
+    return ''
+  }
+
+  const validateField = (name: string, value: string): string => {
+    switch (name) {
+      case 'name': return validateName(value)
+      case 'email': return validateEmail(value)
+      case 'subject': return validateSubject(value)
+      case 'message': return validateMessage(value)
+      default: return ''
+    }
+  }
+
+  const validateForm = (): boolean => {
+    const errors = {
+      name: validateName(formData.name),
+      email: validateEmail(formData.email),
+      subject: validateSubject(formData.subject),
+      message: validateMessage(formData.message)
+    }
+    
+    setValidationErrors(errors)
+    return !Object.values(errors).some(error => error !== '')
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Mark all fields as touched
+    setTouched({
+      name: true,
+      email: true,
+      subject: true,
+      message: true
+    })
+
+    // Validate the entire form
+    if (!validateForm()) {
+      return
+    }
+
     setIsSubmitting(true)
+    setSubmitStatus('idle')
+    setErrorMessage('')
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
 
-    setIsSubmitting(false)
-    setFormData({ name: "", email: "", subject: "", message: "" })
-    alert("Message sent successfully!")
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send message')
+      }
+
+      console.log('Email sent successfully:', data)
+      setSubmitStatus('success')
+      setFormData({ name: "", email: "", subject: "", message: "" })
+      setValidationErrors({ name: '', email: '', subject: '', message: '' })
+      setTouched({ name: false, email: false, subject: false, message: false })
+      setFocused({ name: false, email: false, subject: false, message: false })
+      
+    } catch (error) {
+      console.error('Failed to send email:', error)
+      setSubmitStatus('error')
+      setErrorMessage(error instanceof Error ? error.message : 'Failed to send message')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
+    }))
+
+    // Validate field on change if it's been touched
+    if (touched[name as keyof typeof touched]) {
+      setValidationErrors(prev => ({
+        ...prev,
+        [name]: validateField(name, value)
+      }))
+    }
+  }
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    
+    setTouched(prev => ({
+      ...prev,
+      [name]: true
+    }))
+
+    setFocused(prev => ({
+      ...prev,
+      [name]: false
+    }))
+
+    setValidationErrors(prev => ({
+      ...prev,
+      [name]: validateField(name, value)
+    }))
+  }
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name } = e.target
+    
+    setFocused(prev => ({
+      ...prev,
+      [name]: true
     }))
   }
 
@@ -170,13 +320,27 @@ export default function ContactSection() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    required
-                    className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-4 text-white focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20 transition-all duration-300 text-sm lg:text-base"
-                    placeholder="Enter your full name"
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    className={`w-full bg-slate-700/50 border rounded-lg px-4 py-4 text-white focus:outline-none focus:ring-2 transition-all duration-300 text-sm lg:text-base ${
+                      validationErrors.name && touched.name
+                        ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
+                        : 'border-slate-600 focus:border-teal-500 focus:ring-teal-500/20'
+                    }`}
+                    placeholder=""
                   />
-                  <label className="absolute -top-2 left-3 bg-slate-800 px-2 text-xs text-teal-400 font-medium">
-                    Full Name
+                  <label 
+                    className={`absolute left-3 px-2 font-medium transition-all duration-300 pointer-events-none ${
+                      formData.name || focused.name 
+                        ? '-top-2 text-xs text-teal-400 bg-slate-800' 
+                        : 'top-4 text-sm lg:text-base text-slate-400'
+                    }`}
+                  >
+                    Full Name <span className="text-red-400">*</span>
                   </label>
+                  {validationErrors.name && touched.name && (
+                    <p className="mt-1 text-xs text-red-400">{validationErrors.name}</p>
+                  )}
                 </div>
 
                 <div className="relative">
@@ -185,13 +349,27 @@ export default function ContactSection() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    required
-                    className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-4 text-white focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20 transition-all duration-300 text-sm lg:text-base"
-                    placeholder="your.email@example.com"
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    className={`w-full bg-slate-700/50 border rounded-lg px-4 py-4 text-white focus:outline-none focus:ring-2 transition-all duration-300 text-sm lg:text-base ${
+                      validationErrors.email && touched.email
+                        ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
+                        : 'border-slate-600 focus:border-teal-500 focus:ring-teal-500/20'
+                    }`}
+                    placeholder=""
                   />
-                  <label className="absolute -top-2 left-3 bg-slate-800 px-2 text-xs text-teal-400 font-medium">
-                    Email Address
+                  <label 
+                    className={`absolute left-3 px-2 font-medium transition-all duration-300 pointer-events-none ${
+                      formData.email || focused.email 
+                        ? '-top-2 text-xs text-teal-400 bg-slate-800' 
+                        : 'top-4 text-sm lg:text-base text-slate-400'
+                    }`}
+                  >
+                    Email Address <span className="text-red-400">*</span>
                   </label>
+                  {validationErrors.email && touched.email && (
+                    <p className="mt-1 text-xs text-red-400">{validationErrors.email}</p>
+                  )}
                 </div>
               </div>
 
@@ -201,13 +379,27 @@ export default function ContactSection() {
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
-                  required
-                  className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-4 text-white focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20 transition-all duration-300 text-sm lg:text-base"
-                  placeholder="What would you like to discuss?"
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  className={`w-full bg-slate-700/50 border rounded-lg px-4 py-4 text-white focus:outline-none focus:ring-2 transition-all duration-300 text-sm lg:text-base ${
+                    validationErrors.subject && touched.subject
+                      ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
+                      : 'border-slate-600 focus:border-teal-500 focus:ring-teal-500/20'
+                  }`}
+                  placeholder=""
                 />
-                <label className="absolute -top-2 left-3 bg-slate-800 px-2 text-xs text-teal-400 font-medium">
-                  Subject
+                <label 
+                  className={`absolute left-3 px-2 font-medium transition-all duration-300 pointer-events-none ${
+                    formData.subject || focused.subject 
+                      ? '-top-2 text-xs text-teal-400 bg-slate-800' 
+                      : 'top-4 text-sm lg:text-base text-slate-400'
+                  }`}
+                >
+                  Subject <span className="text-red-400">*</span>
                 </label>
+                {validationErrors.subject && touched.subject && (
+                  <p className="mt-1 text-xs text-red-400">{validationErrors.subject}</p>
+                )}
               </div>
 
               <div className="relative">
@@ -215,14 +407,38 @@ export default function ContactSection() {
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  required
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
                   rows={5}
-                  className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-4 text-white focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20 transition-all duration-300 resize-none text-sm lg:text-base"
-                  placeholder="Tell me about your project, requirements, or any questions you have..."
+                  className={`w-full bg-slate-700/50 border rounded-lg px-4 py-4 text-white focus:outline-none focus:ring-2 transition-all duration-300 resize-none text-sm lg:text-base ${
+                    validationErrors.message && touched.message
+                      ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
+                      : 'border-slate-600 focus:border-teal-500 focus:ring-teal-500/20'
+                  }`}
+                  placeholder=""
                 />
-                <label className="absolute -top-2 left-3 bg-slate-800 px-2 text-xs text-teal-400 font-medium">
-                  Message
+                <label 
+                  className={`absolute left-3 px-2 font-medium transition-all duration-300 pointer-events-none ${
+                    formData.message || focused.message 
+                      ? '-top-2 text-xs text-teal-400 bg-slate-800' 
+                      : 'top-4 text-sm lg:text-base text-slate-400'
+                  }`}
+                >
+                  Message <span className="text-red-400">*</span>
                 </label>
+                <div className="flex justify-between items-center mt-1">
+                  {validationErrors.message && touched.message ? (
+                    <p className="text-xs text-red-400">{validationErrors.message}</p>
+                  ) : (
+                    <div></div>
+                  )}
+                  <p className={`text-xs ${
+                    formData.message.length > 1000 ? 'text-red-400' : 
+                    formData.message.length > 800 ? 'text-yellow-400' : 'text-slate-500'
+                  }`}>
+                    {formData.message.length}/1000
+                  </p>
+                </div>
               </div>
 
               <motion.button
@@ -244,6 +460,27 @@ export default function ContactSection() {
                   </>
                 )}
               </motion.button>
+
+              {/* Status Messages */}
+              {submitStatus === 'success' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400 text-center text-sm lg:text-base"
+                >
+                  ✅ Message sent successfully! I'll get back to you soon.
+                </motion.div>
+              )}
+
+              {submitStatus === 'error' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400 text-center text-sm lg:text-base"
+                >
+                  ❌ {errorMessage || 'Failed to send message. Please try again or email me directly.'}
+                </motion.div>
+              )}
             </form>
           </motion.div>
         </div>

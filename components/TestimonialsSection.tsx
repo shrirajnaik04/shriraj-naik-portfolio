@@ -17,7 +17,7 @@ export default function TestimonialsSection() {
 
   const testimonials: Testimonial[] = [
     {
-      name: "Hemant Naik",
+      name: "Tanaji Hemant Naik",
       role: "Senior Technical Program Manager",
       company: "Amazon Web Services",
       content:
@@ -41,11 +41,11 @@ export default function TestimonialsSection() {
       rating: 5,
     },
     {
-      name: "Priya S.",
-      role: "QA Lead",
-      company: "Digital Innovations Ltd",
+      name: "Sankalp Kalangutkar",
+      role: "Software and AI Engineer",
+      company: "BIZ Nest, Goa",
       content:
-        "Shriraj's approach to combining traditional QA with AI technologies is innovative. His frameworks are not just efficient but also future-ready and scalable.",
+        "Shriraj is a highly skilled QA Automation Engineer with a sharp focus on AI-driven automation in the fintech space. His ability to blend quality assurance with development makes him a standout contributor. He’s proactive, detail-oriented, and consistently brings innovative solutions to the table. A true asset to any tech team.",
       rating: 5,
     },
   ]
