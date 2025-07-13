@@ -68,7 +68,7 @@ export default function TestimonialsSection() {
   }
 
   return (
-    <section className="py-12 sm:py-16 lg:py-20 bg-slate-900">
+    <section className="py-12 sm:py-16 lg:py-20 bg-slate-900" itemScope itemType="https://schema.org/Review">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -76,7 +76,7 @@ export default function TestimonialsSection() {
           viewport={{ once: true }}
           className="text-center mb-8 sm:mb-12 lg:mb-16"
         >
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="text-4xl lg:text-5xl font-bold mb-4" itemProp="headline">
             <span className="bg-gradient-to-r from-teal-400 to-purple-500 bg-clip-text text-transparent">
               Testimonials
             </span>

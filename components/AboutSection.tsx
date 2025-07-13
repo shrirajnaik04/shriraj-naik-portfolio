@@ -28,7 +28,7 @@ export default function AboutSection() {
   ]
 
   return (
-    <section id="about" className="py-20 bg-slate-900">
+    <section id="about" className="py-20 bg-slate-900" itemScope itemType="https://schema.org/AboutPage">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Content */}
@@ -44,7 +44,7 @@ export default function AboutSection() {
               </span>
             </h2>
 
-            <div className="space-y-4 lg:space-y-6 text-base lg:text-lg text-slate-300 leading-relaxed">
+            <article className="space-y-4 lg:space-y-6 text-base lg:text-lg text-slate-300 leading-relaxed" itemProp="description">
               <p>
                 I specialize in architecting{" "}
                 <strong className="text-teal-400">MCP Context Engineering Frameworks</strong> that enable{" "}
@@ -61,7 +61,7 @@ export default function AboutSection() {
                 My expertise lies in building scalable QA Automation Frameworks and production-grade SaaS AI Chatbots
                 that deliver speed, accuracy, and real-world impact.
               </p>
-            </div>
+            </article>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}

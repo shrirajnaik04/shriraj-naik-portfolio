@@ -48,7 +48,7 @@ export default function TechStackSection() {
   ]
 
   return (
-    <section id="tech" className="py-20 bg-slate-950">
+    <section id="tech" className="py-20 bg-slate-950" itemScope itemType="https://schema.org/TechArticle">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -56,12 +56,12 @@ export default function TechStackSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="text-4xl lg:text-5xl font-bold mb-4" itemProp="headline">
             <span className="bg-gradient-to-r from-teal-400 to-purple-500 bg-clip-text text-transparent">
               Technology Stack
             </span>
           </h2>
-          <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-400 max-w-3xl mx-auto" itemProp="description">
             Cutting-edge tools and technologies powering modern QA automation and AI development
           </p>
         </motion.div>

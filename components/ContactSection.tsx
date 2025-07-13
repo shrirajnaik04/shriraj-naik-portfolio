@@ -244,7 +244,7 @@ export default function ContactSection() {
   ]
 
   return (
-    <section id="contact" className="py-20 bg-slate-950 min-h-screen viewport-stable">
+    <section id="contact" className="py-20 bg-slate-950 min-h-screen viewport-stable" itemScope itemType="https://schema.org/ContactPage">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -252,12 +252,12 @@ export default function ContactSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="text-4xl lg:text-5xl font-bold mb-4" itemProp="headline">
             <span className="bg-gradient-to-r from-teal-400 to-purple-500 bg-clip-text text-transparent">
               Let's Work Together
             </span>
           </h2>
-          <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-400 max-w-3xl mx-auto" itemProp="description">
             Ready to transform your QA processes with cutting-edge automation and AI? Let's discuss your project.
           </p>
         </motion.div>

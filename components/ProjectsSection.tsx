@@ -59,7 +59,7 @@ export default function ProjectsSection() {
   ]
 
   return (
-    <section id="projects" className="py-20 bg-slate-900">
+    <section id="projects" className="py-20 bg-slate-900" itemScope itemType="https://schema.org/CreativeWork">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -67,19 +67,19 @@ export default function ProjectsSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="text-4xl lg:text-5xl font-bold mb-4" itemProp="headline">
             <span className="bg-gradient-to-r from-teal-400 to-purple-500 bg-clip-text text-transparent">
               Featured Projects
             </span>
           </h2>
-          <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-400 max-w-3xl mx-auto" itemProp="description">
             Showcasing innovative solutions in QA automation and AI development
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8" itemProp="workExample">
           {projects.map((project, index) => (
-            <motion.div
+            <motion.article
               key={index}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -87,6 +87,8 @@ export default function ProjectsSection() {
               transition={{ delay: index * 0.1 }}
               whileHover={{ y: -10 }}
               className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl overflow-hidden border border-slate-700 hover:border-teal-500/50 transition-all duration-300 group"
+              itemScope
+              itemType="https://schema.org/SoftwareApplication"
             >
               <div className="relative overflow-hidden">
                 <img
@@ -142,7 +144,7 @@ export default function ProjectsSection() {
                   )}
                 </div>
               </div>
-            </motion.div>
+            </motion.article>
           ))}
         </div>
       </div>

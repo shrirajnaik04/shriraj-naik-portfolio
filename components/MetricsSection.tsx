@@ -106,7 +106,7 @@ export default function MetricsSection() {
   ]
 
   return (
-    <section className="py-20 bg-slate-950">
+    <section className="py-20 bg-slate-950" itemScope itemType="https://schema.org/Person">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -114,7 +114,7 @@ export default function MetricsSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="text-4xl lg:text-5xl font-bold mb-4" itemProp="description">
             <span className="bg-gradient-to-r from-teal-400 to-purple-500 bg-clip-text text-transparent">
               My Journey in Numbers
             </span>

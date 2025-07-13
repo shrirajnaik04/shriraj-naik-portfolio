@@ -37,17 +37,18 @@ export default function HeroSection() {
   }, [displayText, isDeleting, currentText, texts])
 
   return (
-    <section id="home" className="min-h-screen flex items-center relative overflow-hidden">
-      {/* Decorative dotted background */}
-      <div
-        className="absolute inset-0 opacity-20"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fillRule='evenodd'%3E%3Cg fill='%23334155' fillOpacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
-        }}
-      />
+    <main>
+      <section id="home" className="min-h-screen flex items-center relative overflow-hidden">
+        {/* Decorative dotted background */}
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fillRule='evenodd'%3E%3Cg fill='%23334155' fillOpacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
+          }}
+        />
 
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -71,7 +72,7 @@ export default function HeroSection() {
               </span>
             </motion.div>
 
-            <div>
+            <header>
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -88,10 +89,11 @@ export default function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
                 className="text-lg sm:text-xl lg:text-2xl text-slate-400 mt-4"
+                role="banner"
               >
                 Building Scalable QA Frameworks and SaaS AI Chatbots for Rapid AI Development
               </motion.p>
-            </div>
+            </header>
 
             {/* Typing Animation */}
             <motion.div
@@ -179,9 +181,13 @@ export default function HeroSection() {
                 className="relative w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 border-slate-700 shadow-2xl"
               >
                 <img
-                  src="/profile-image.png?height=320&width=320"
-                  alt="Shriraj Naik"
+                  src="/profile-image.png"
+                  alt="Shriraj Naik - Professional QA Automation Engineer and AI Developer from Goa, India"
+                  width={320}
+                  height={320}
                   className="w-full h-full object-cover"
+                  loading="eager"
+                  decoding="async"
                 />
               </motion.div>
             </div>
@@ -221,6 +227,7 @@ export default function HeroSection() {
           </motion.div>
         </div>
       </div>
-    </section>
+      </section>
+    </main>
   )
 }

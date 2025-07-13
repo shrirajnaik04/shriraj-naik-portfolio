@@ -28,7 +28,7 @@ export default function AutomationSection() {
   ]
 
   return (
-    <section className="py-20 bg-slate-950 relative overflow-hidden">
+    <section className="py-20 bg-slate-950 relative overflow-hidden" itemScope itemType="https://schema.org/Service">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-purple-500/5"></div>
 
@@ -39,12 +39,12 @@ export default function AutomationSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="text-4xl lg:text-5xl font-bold mb-4" itemProp="name">
             <span className="bg-gradient-to-r from-teal-400 to-purple-500 bg-clip-text text-transparent">
               Automation That Drives Rapid AI Development
             </span>
           </h2>
-          <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-400 max-w-3xl mx-auto" itemProp="description">
             Leveraging cutting-edge automation technologies to accelerate AI development and testing processes
           </p>
         </motion.div>
