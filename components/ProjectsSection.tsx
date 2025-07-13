@@ -19,42 +19,42 @@ export default function ProjectsSection() {
       description:
         "Built a production-ready chatbot with retrieval-augmented generation capabilities for enhanced customer support and real-time query resolution.",
       tags: ["Python", "Flask", "Together AI", "RAG", "Redis"],
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/projects/saas-ai-chatbot.png",
     },
     {
       title: "MCP Context Engineering Framework for Rapid AI Testing",
       description:
         "Developed a comprehensive framework for context engineering that accelerates AI model testing and validation processes.",
       tags: ["Python", "MCP", "AI Testing", "Automation", "Context Engineering"],
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/projects/mcp-framework.png",
     },
     {
       title: "Fintech QA Automation Suite",
       description:
         "Comprehensive testing suite for financial applications using multiple testing frameworks for maximum coverage and reliability.",
       tags: ["Selenium", "Playwright", "JMeter", "Postman", "Python"],
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/projects/fintech-qa.png",
     },
     {
       title: "Rapid AI Automation Framework for Smart Testing",
       description:
         "Prototyping an AI-led framework that uses low-code scripting for fast, scalable test automation for beginner QA engineers.",
-      tags: ["Postman", "Docker", "CI/CD", "API Testing", "Automation"],
-      image: "/placeholder.svg?height=300&width=400",
+      tags: ["AI in QA", "Automation Frameworks", "Low-Code Scripting", "API Testing", "LLM Integration"],
+      image: "/projects/api-automation.png",
     },
     {
       title: "QA Monitoring System with Opensearch and Redis",
       description:
         "Real-time monitoring and analytics system for QA processes using Opensearch for logging and Redis for caching.",
       tags: ["Opensearch", "Redis", "Monitoring", "Analytics", "Python"],
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/projects/qa-monitoring.png",
     },
     {
       title: "Flask-Based SaaS AI Chatbot Deployment",
       description:
         "Scalable chatbot deployment solution using Flask and Together AI for enterprise-level AI applications.",
       tags: ["Flask", "Together AI", "SaaS", "Deployment", "Scalability"],
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/projects/flask-saas.png",
     },
   ]
 
@@ -90,24 +90,18 @@ export default function ProjectsSection() {
             >
               <div className="relative overflow-hidden">
                 <img
-                  src={project.image || "/placeholder.svg"}
+                  src={project.image}
                   alt={project.title}
                   className="w-full h-40 lg:h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = "/placeholder.svg";
+                  }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="bg-teal-500 text-white px-4 py-2 lg:px-6 lg:py-2 rounded-lg font-semibold flex items-center space-x-2 shadow-lg text-sm lg:text-base"
-                  >
-                    <span>View Details</span>
-                    <ExternalLink className="w-4 h-4" />
-                  </motion.button>
-                </div>
               </div>
 
               <div className="p-4 lg:p-6">
-                <h3 className="text-lg lg:text-xl font-bold text-white mb-3 group-hover:text-teal-400 transition-colors duration-300 leading-tight">
+                <h3 className="text-lg lg:text-xl font-bold text-white mb-3 transition-colors duration-300 leading-tight">
                   {project.title}
                 </h3>
 

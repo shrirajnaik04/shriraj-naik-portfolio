@@ -262,14 +262,14 @@ export default function ContactSection() {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16"
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 lg:items-start"
              style={{ minHeight: 'calc(100vh - 12rem)' }}>
           {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="space-y-6 lg:space-y-8"
+            className="space-y-6 lg:space-y-8 lg:sticky lg:top-24"
           >
             <div>
               <h3 className="text-xl lg:text-2xl font-bold text-white mb-4 lg:mb-6">Get In Touch</h3>
@@ -328,7 +328,7 @@ export default function ContactSection() {
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-slate-800 to-slate-900 p-6 lg:p-8 rounded-2xl border border-slate-700"
+            className="bg-gradient-to-br from-slate-800 to-slate-900 p-6 lg:p-8 rounded-2xl border border-slate-700 lg:mt-0"
             style={{ 
               position: 'relative',
               minHeight: 'fit-content',

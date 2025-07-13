@@ -42,7 +42,7 @@ export default function TestimonialsSection() {
     },
     {
       name: "Sankalp Kalangutkar",
-      role: "Software and AI Engineer",
+      role: "Software Engineer",
       company: "BIZ Nest, Goa",
       content:
         "Shriraj is a highly skilled QA Automation Engineer with a sharp focus on AI-driven automation in the fintech space. His ability to blend quality assurance with development makes him a standout contributor. He’s proactive, detail-oriented, and consistently brings innovative solutions to the table. A true asset to any tech team.",
