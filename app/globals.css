@@ -2,6 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile viewport fix for keyboard issues */
+@supports (-webkit-touch-callout: none) {
+  .mobile-vh-fix {
+    height: 100vh;
+    height: -webkit-fill-available;
+  }
+}
+
+/* Prevent form jumping on mobile */
+@media screen and (max-width: 768px) {
+  html {
+    height: -webkit-fill-available;
+  }
+  
+  body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  
+  /* Smooth viewport transitions */
+  .viewport-stable {
+    transition: none !important;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+  }
+  
+  /* Prevent bouncing when keyboard opens/closes */
+  #contact-form {
+    position: relative;
+    will-change: transform;
+    transform: translateZ(0);
+  }
+  
+  /* Keep inputs stable during keyboard transitions */
+  input, textarea {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

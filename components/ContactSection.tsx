@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { motion } from "framer-motion"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Mail, Phone, MapPin, Linkedin, Github, Send, Loader } from "lucide-react"
 
 export default function ContactSection() {
@@ -16,6 +16,7 @@ export default function ContactSection() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+  const [showMessage, setShowMessage] = useState(false)
   const [validationErrors, setValidationErrors] = useState({
     name: '',
     email: '',
@@ -34,6 +35,22 @@ export default function ContactSection() {
     subject: false,
     message: false
   })
+
+  // Auto-hide success/error messages after 5 seconds
+  useEffect(() => {
+    if (submitStatus === 'success' || submitStatus === 'error') {
+      setShowMessage(true)
+      const timer = setTimeout(() => {
+        setShowMessage(false)
+        setTimeout(() => {
+          setSubmitStatus('idle')
+          setErrorMessage('')
+        }, 500) // Wait for exit animation to complete
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [submitStatus])
 
   // Validation functions
   const validateName = (name: string): string => {
@@ -227,7 +244,7 @@ export default function ContactSection() {
   ]
 
   return (
-    <section id="contact" className="py-20 bg-slate-950">
+    <section id="contact" className="py-20 bg-slate-950 min-h-screen viewport-stable">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -245,7 +262,8 @@ export default function ContactSection() {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16"
+             style={{ minHeight: 'calc(100vh - 12rem)' }}>
           {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -311,8 +329,17 @@ export default function ContactSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="bg-gradient-to-br from-slate-800 to-slate-900 p-6 lg:p-8 rounded-2xl border border-slate-700"
+            style={{ 
+              position: 'relative',
+              minHeight: 'fit-content',
+              transform: 'translateZ(0)' // Force hardware acceleration
+            }}
           >
-            <form onSubmit={handleSubmit} className="space-y-4 lg:space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 lg:space-y-6"
+                  style={{ 
+                    position: 'relative',
+                    zIndex: 1
+                  }}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
                 <div className="relative">
                   <input
@@ -322,6 +349,13 @@ export default function ContactSection() {
                     onChange={handleChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
+                    style={{
+                      WebkitBoxShadow: '0 0 0px 1000px rgb(51 65 85 / var(--tw-bg-opacity, 0.5)) inset',
+                      WebkitTextFillColor: '#ffffff',
+                      backgroundColor: 'rgb(51 65 85 / 0.5)',
+                      transform: 'translateZ(0)',
+                      backfaceVisibility: 'hidden',
+                    }}
                     className={`w-full bg-slate-700/50 border rounded-lg px-4 py-4 text-white focus:outline-none focus:ring-2 transition-all duration-300 text-sm lg:text-base ${
                       validationErrors.name && touched.name
                         ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
@@ -351,6 +385,13 @@ export default function ContactSection() {
                     onChange={handleChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
+                    style={{
+                      WebkitBoxShadow: '0 0 0px 1000px rgb(51 65 85 / var(--tw-bg-opacity, 0.5)) inset',
+                      WebkitTextFillColor: '#ffffff',
+                      backgroundColor: 'rgb(51 65 85 / 0.5)',
+                      transform: 'translateZ(0)',
+                      backfaceVisibility: 'hidden',
+                    }}
                     className={`w-full bg-slate-700/50 border rounded-lg px-4 py-4 text-white focus:outline-none focus:ring-2 transition-all duration-300 text-sm lg:text-base ${
                       validationErrors.email && touched.email
                         ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
@@ -381,6 +422,13 @@ export default function ContactSection() {
                   onChange={handleChange}
                   onFocus={handleFocus}
                   onBlur={handleBlur}
+                  style={{
+                    WebkitBoxShadow: '0 0 0px 1000px rgb(51 65 85 / var(--tw-bg-opacity, 0.5)) inset',
+                    WebkitTextFillColor: '#ffffff',
+                    backgroundColor: 'rgb(51 65 85 / 0.5)',
+                    transform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden',
+                  }}
                   className={`w-full bg-slate-700/50 border rounded-lg px-4 py-4 text-white focus:outline-none focus:ring-2 transition-all duration-300 text-sm lg:text-base ${
                     validationErrors.subject && touched.subject
                       ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
@@ -409,6 +457,13 @@ export default function ContactSection() {
                   onChange={handleChange}
                   onFocus={handleFocus}
                   onBlur={handleBlur}
+                  style={{
+                    WebkitBoxShadow: '0 0 0px 1000px rgb(51 65 85 / var(--tw-bg-opacity, 0.5)) inset',
+                    WebkitTextFillColor: '#ffffff',
+                    backgroundColor: 'rgb(51 65 85 / 0.5)',
+                    transform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden',
+                  }}
                   rows={5}
                   className={`w-full bg-slate-700/50 border rounded-lg px-4 py-4 text-white focus:outline-none focus:ring-2 transition-all duration-300 resize-none text-sm lg:text-base ${
                     validationErrors.message && touched.message
@@ -462,23 +517,79 @@ export default function ContactSection() {
               </motion.button>
 
               {/* Status Messages */}
-              {submitStatus === 'success' && (
+              {(submitStatus === 'success' || submitStatus === 'error') && (
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400 text-center text-sm lg:text-base"
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  animate={{ 
+                    opacity: showMessage ? 1 : 0, 
+                    y: showMessage ? 0 : 20, 
+                    scale: showMessage ? 1 : 0.95 
+                  }}
+                  exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                  transition={{ 
+                    duration: 0.5, 
+                    ease: [0.4, 0, 0.2, 1],
+                    opacity: { duration: showMessage ? 0.3 : 0.5 }
+                  }}
+                  className={`relative overflow-hidden p-4 rounded-lg text-center text-sm lg:text-base ${
+                    submitStatus === 'success'
+                      ? 'bg-green-500/20 border border-green-500/50 text-green-400'
+                      : 'bg-red-500/20 border border-red-500/50 text-red-400'
+                  }`}
                 >
-                  ✅ Message sent successfully! I'll get back to you soon.
-                </motion.div>
-              )}
-
-              {submitStatus === 'error' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400 text-center text-sm lg:text-base"
-                >
-                  ❌ {errorMessage || 'Failed to send message. Please try again or email me directly.'}
+                  {/* Background shimmer effect */}
+                  <motion.div
+                    initial={{ x: '-100%' }}
+                    animate={{ x: '100%' }}
+                    transition={{ 
+                      duration: 2, 
+                      ease: 'easeInOut',
+                      repeat: Infinity,
+                      repeatDelay: 3 
+                    }}
+                    className={`absolute inset-0 ${
+                      submitStatus === 'success'
+                        ? 'bg-gradient-to-r from-transparent via-green-400/10 to-transparent'
+                        : 'bg-gradient-to-r from-transparent via-red-400/10 to-transparent'
+                    }`}
+                  />
+                  
+                  {/* Progress bar */}
+                  <motion.div
+                    initial={{ width: '100%' }}
+                    animate={{ width: showMessage ? '0%' : '100%' }}
+                    transition={{ duration: 5, ease: 'linear' }}
+                    className={`absolute bottom-0 left-0 h-1 ${
+                      submitStatus === 'success' ? 'bg-green-500' : 'bg-red-500'
+                    }`}
+                  />
+                  
+                  {/* Message content */}
+                  <motion.div
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.2, duration: 0.3 }}
+                    className="relative z-10 flex items-center justify-center space-x-2"
+                  >
+                    <motion.span
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.3, duration: 0.5, type: 'spring', bounce: 0.6 }}
+                      className="text-lg"
+                    >
+                      {submitStatus === 'success' ? '✅' : '❌'}
+                    </motion.span>
+                    <motion.span
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.4, duration: 0.3 }}
+                    >
+                      {submitStatus === 'success' 
+                        ? "Message sent successfully! I'll get back to you soon."
+                        : (errorMessage || 'Failed to send message. Please try again or email me directly.')
+                      }
+                    </motion.span>
+                  </motion.div>
                 </motion.div>
               )}
             </form>

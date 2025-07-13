@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     "Professional portfolio of Shriraj Naik - QA Automation Engineer, AI Developer, MCP Context Engineering Expert, and SaaS AI Chatbot Architect",
   keywords: "QA Automation, AI Developer, MCP Context Engineering, SaaS Chatbot, Playwright, Selenium, Python, Flask",
   authors: [{ name: "Shriraj Naik" }],
+  viewport: "width=device-width, initial-scale=1, viewport-fit=cover",
   openGraph: {
     title: "Shriraj Naik - QA Automation & AI Engineer",
     description: "Building Scalable QA Frameworks and SaaS AI Chatbots for Rapid AI Development",
