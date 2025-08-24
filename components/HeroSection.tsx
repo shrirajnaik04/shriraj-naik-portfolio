@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import Image from "next/image"
 import { useEffect, useState } from "react"
 import { ChevronRight, Award } from "lucide-react"
 
@@ -180,14 +181,13 @@ export default function HeroSection() {
                 whileHover={{ scale: 1.05 }}
                 className="relative w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 border-slate-700 shadow-2xl"
               >
-                <img
-                  src="/profile-image.png"
+                <Image
+                  src="https://res.cloudinary.com/dfvyqtli8/image/upload/f_auto,q_auto,w_640,h_640,c_fill,g_face/v1756014604/profile-image_kcrna3.png"
                   alt="Shriraj Naik - Professional QA Automation Engineer and AI Developer from Goa, India"
                   width={320}
                   height={320}
+                  priority
                   className="w-full h-full object-cover"
-                  loading="eager"
-                  decoding="async"
                 />
               </motion.div>
             </div>

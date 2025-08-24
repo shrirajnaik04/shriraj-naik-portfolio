@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { ExternalLink, Github } from "lucide-react"
+import Image from "next/image"
 
 interface Project {
   title: string
@@ -19,42 +20,42 @@ export default function ProjectsSection() {
       description:
         "Built a production-ready chatbot with retrieval-augmented generation capabilities for enhanced customer support and real-time query resolution.",
       tags: ["Python", "Flask", "Together AI", "RAG", "Redis"],
-      image: "/projects/saas-ai-chatbot.png",
+  image: "https://res.cloudinary.com/dfvyqtli8/image/upload/f_auto,q_auto/v1756026124/saas-ai-chatbot_zqj3wu.png",
     },
     {
       title: "MCP Context Engineering Framework for Rapid AI Testing",
       description:
         "Developed a comprehensive framework for context engineering that accelerates AI model testing and validation processes.",
       tags: ["Python", "MCP", "AI Testing", "Automation", "Context Engineering"],
-      image: "/projects/mcp-framework.png",
+  image: "https://res.cloudinary.com/dfvyqtli8/image/upload/f_auto,q_auto/v1756026124/mcp-framework_zdkrxv.png",
     },
     {
       title: "Fintech QA Automation Suite",
       description:
         "Comprehensive testing suite for financial applications using multiple testing frameworks for maximum coverage and reliability.",
       tags: ["Selenium", "Playwright", "JMeter", "Postman", "Python"],
-      image: "/projects/fintech-qa.png",
+  image: "https://res.cloudinary.com/dfvyqtli8/image/upload/f_auto,q_auto/v1756026123/fintech-qa_dtrs39.png",
     },
     {
       title: "Rapid AI Automation Framework for Smart Testing",
       description:
         "Prototyping an AI-led framework that uses low-code scripting for fast, scalable test automation for beginner QA engineers.",
       tags: ["AI in QA", "Automation Frameworks", "Low-Code Scripting", "API Testing", "LLM Integration"],
-      image: "/projects/api-automation.png",
+  image: "https://res.cloudinary.com/dfvyqtli8/image/upload/f_auto,q_auto/v1756026124/api-automation_rmlodn.png",
     },
     {
       title: "QA Monitoring System with Opensearch and Redis",
       description:
         "Real-time monitoring and analytics system for QA processes using Opensearch for logging and Redis for caching.",
       tags: ["Opensearch", "Redis", "Monitoring", "Analytics", "Python"],
-      image: "/projects/qa-monitoring.png",
+  image: "https://res.cloudinary.com/dfvyqtli8/image/upload/f_auto,q_auto/v1756026124/qa-monitoring_u0yoc9.png",
     },
     {
-      title: "Flask-Based SaaS AI Chatbot Deployment",
+      title: "Multi-Tenant SaaS Gym Management Application",
       description:
-        "Scalable chatbot deployment solution using Flask and Together AI for enterprise-level AI applications.",
-      tags: ["Flask", "Together AI", "SaaS", "Deployment", "Scalability"],
-      image: "/projects/flask-saas.png",
+        "A flexible SaaS Gym management application to manage memberships, staff, and payments across multiple gyms with modular customization.",
+      tags: ["Next.js", "TypeScript", "Supabase" , "Multi-Tenant", "SaaS"],
+  image: "https://res.cloudinary.com/dfvyqtli8/image/upload/f_auto,q_auto/v1756026124/flask-saas_dkt9fj.png",
     },
   ]
 
@@ -91,13 +92,18 @@ export default function ProjectsSection() {
               itemType="https://schema.org/SoftwareApplication"
             >
               <div className="relative overflow-hidden">
-                <img
+                <Image
                   src={project.image}
                   alt={project.title}
+                  width={640}
+                  height={360}
                   className="w-full h-40 lg:h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  loading="lazy"
+                  placeholder="empty"
                   onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "/placeholder.svg";
+                    const target = e.target as HTMLImageElement
+                    target.src = "/placeholder.svg"
                   }}
                 />
               </div>

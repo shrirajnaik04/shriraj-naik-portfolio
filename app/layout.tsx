@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from "next"
 import { DM_Sans } from "next/font/google"
 import "./globals.css"
 
-const dmSans = DM_Sans({ subsets: ["latin"] })
+const dmSans = DM_Sans({ subsets: ["latin"], display: 'swap' })
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -199,6 +199,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

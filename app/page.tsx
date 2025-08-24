@@ -1,12 +1,14 @@
 "use client"
+import dynamic from "next/dynamic"
 import HeroSection from "@/components/HeroSection"
-import MetricsSection from "@/components/MetricsSection"
-import AboutSection from "@/components/AboutSection"
-import TechStackSection from "@/components/TechStackSection"
-import ProjectsSection from "@/components/ProjectsSection"
-import AutomationSection from "@/components/AutomationSection"
-import TestimonialsSection from "@/components/TestimonialsSection"
-import ContactSection from "@/components/ContactSection"
+// Fold optimization: dynamically import sections below initial viewport
+const MetricsSection = dynamic(() => import("@/components/MetricsSection"), { loading: () => <div className="h-32" /> })
+const AboutSection = dynamic(() => import("@/components/AboutSection"))
+const TechStackSection = dynamic(() => import("@/components/TechStackSection"))
+const ProjectsSection = dynamic(() => import("@/components/ProjectsSection"))
+const AutomationSection = dynamic(() => import("@/components/AutomationSection"))
+const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"))
+const ContactSection = dynamic(() => import("@/components/ContactSection"))
 import Navbar from "@/components/Navbar"
 import ScrollProgress from "@/components/ScrollProgress"
 
