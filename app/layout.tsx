@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     siteName: "Shriraj Naik Portfolio",
     images: [
       {
-        url: "/profile-image.png",
+        url: "https://res.cloudinary.com/dfvyqtli8/image/upload/v1756014604/profile-image_kcrna3.png",
         width: 1200,
         height: 630,
         alt: "Shriraj Naik - QA Automation & AI Engineer",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Shriraj Naik | QA Automation & AI Engineer",
     description: "Expert QA Automation Engineer and AI Developer from Goa, India. Specializing in enterprise testing solutions and AI chatbot development.",
-    images: ["/profile-image.png"],
+  images: ["https://res.cloudinary.com/dfvyqtli8/image/upload/v1756014604/profile-image_kcrna3.png"],
     creator: "@ShrirajNaik", // Add your Twitter handle
   },
   icons: {
@@ -100,7 +100,7 @@ export default function RootLayout({
         "url": "https://shrirajnaik.dev",
         "image": {
           "@type": "ImageObject",
-          "url": "https://shrirajnaik.dev/profile-image.png",
+          "url": "https://res.cloudinary.com/dfvyqtli8/image/upload/v1756014604/profile-image_kcrna3.png",
           "width": 400,
           "height": 400
         },
