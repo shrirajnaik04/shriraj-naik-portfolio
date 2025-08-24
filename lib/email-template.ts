@@ -1,0 +1,297 @@
+export interface EmailTemplateParams {
+  FNAME: string;
+  EMAIL: string;
+  SUBJECT: string;
+  MESSAGE: string;
+}
+
+export function generateEmailTemplate(params: EmailTemplateParams): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="x-apple-disable-message-reformatting" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>New Contact Form Submission</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, table, td, p, a, li, blockquote {
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+
+    table, td {
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+    }
+
+    img {
+      -ms-interpolation-mode: bicubic;
+      border: 0;
+      outline: none;
+      text-decoration: none;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f1f5f9;
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+      min-width: 100% !important;
+    }
+
+    .wrapper {
+      width: 100% !important;
+      table-layout: fixed !important;
+      -webkit-text-size-adjust: 100% !important;
+      -ms-text-size-adjust: 100% !important;
+    }
+
+    .webkit {
+      max-width: 600px !important;
+      margin: 0 auto !important;
+    }
+
+    .outer {
+      margin: 0 auto !important;
+      width: 100% !important;
+      max-width: 600px !important;
+    }
+
+    .full-width {
+      width: 100% !important;
+      max-width: 600px !important;
+      height: auto !important;
+      margin: 0 auto !important;
+    }
+
+    .inner {
+      padding: 10px !important;
+    }
+
+    .h1 {
+      font-size: 28px !important;
+      line-height: 34px !important;
+      font-weight: 700 !important;
+      color: #ffffff !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .h2 {
+      font-size: 18px !important;
+      line-height: 24px !important;
+      font-weight: 600 !important;
+      color: #1e293b !important;
+      margin: 0 0 15px 0 !important;
+    }
+
+    .subtitle {
+      font-size: 16px !important;
+      line-height: 22px !important;
+      font-weight: 500 !important;
+      color: rgba(255, 255, 255, 0.9) !important;
+      margin: 8px 0 0 0 !important;
+    }
+
+    .body-text {
+      font-size: 16px !important;
+      line-height: 24px !important;
+      color: #64748b !important;
+      margin: 0 0 20px 0 !important;
+    }
+
+    .label {
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      color: #14b8a6 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.5px !important;
+      margin: 0 0 8px 0 !important;
+      display: block !important;
+    }
+
+    .value {
+      font-size: 16px !important;
+      line-height: 24px !important;
+      color: #374151 !important;
+      margin: 0 0 20px 0 !important;
+      word-wrap: break-word !important;
+      word-break: break-word !important;
+    }
+
+    .message-text {
+      font-size: 15px !important;
+      line-height: 22px !important;
+      color: #374151 !important;
+      background-color: #ffffff !important;
+      border: 1px solid #e5e7eb !important;
+      border-radius: 8px !important;
+      padding: 20px !important;
+      margin: 8px 0 0 0 !important;
+      white-space: pre-wrap !important;
+      word-break: break-word !important;
+      overflow-wrap: break-word !important;
+    }
+
+    .email-link {
+      color: #3b82f6 !important;
+      text-decoration: none !important;
+      font-weight: 500 !important;
+    }
+
+    .button {
+      display: inline-block !important;
+      padding: 14px 28px !important;
+      background: linear-gradient(135deg, #14b8a6 0%, #9333ea 100%) !important;
+      color: #ffffff !important;
+      text-decoration: none !important;
+      border-radius: 8px !important;
+      font-weight: 600 !important;
+      font-size: 16px !important;
+      line-height: 20px !important;
+      text-align: center !important;
+    }
+
+    .footer-text {
+      font-size: 14px !important;
+      line-height: 20px !important;
+      color: #94a3b8 !important;
+      text-align: center !important;
+      margin: 0 0 10px 0 !important;
+    }
+
+    .brand {
+      font-size: 16px !important;
+      font-weight: 600 !important;
+      color: #14b8a6 !important;
+      text-align: center !important;
+      margin: 0 !important;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .inner {
+        padding: 15px !important;
+      }
+
+      .h1 {
+        font-size: 24px !important;
+        line-height: 30px !important;
+      }
+
+      .h2, .body-text, .label, .value, .message-text, .button, .footer-text, .brand {
+        font-size: 14px !important;
+        line-height: 22px !important;
+      }
+
+      .button {
+        padding: 12px 24px !important;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .body-text {
+        color: #e2e8f0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hidden Gmail preview -->
+  <div style="display:none; max-height:0; overflow:hidden;">
+    Hi Shriraj! 👋 You've received a new enquiry from your portfolio website.
+  </div>
+
+  <div class="wrapper">
+    <table role="presentation" class="full-width" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td align="center" style="padding: 20px 10px;">
+          <table role="presentation" class="outer" cellpadding="0" cellspacing="0" border="0">
+
+            <!-- Header -->
+            <tr>
+              <td style="background: linear-gradient(135deg, #14b8a6 0%, #9333ea 100%); border-radius: 16px 16px 0 0;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="inner" style="text-align: center; padding: 30px 20px;">
+                      <h1 class="h1" style="color: #ffffff !important;">
+  <a href="https://www.shrirajnaik.com" style="color: #ffffff !important; text-decoration: none;">
+    www.shrirajnaik.com
+  </a>
+</h1>
+                      <p class="subtitle">QA Automation & AI Engineer</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Content -->
+            <tr>
+              <td style="background-color: #ffffff;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="inner" style="padding: 30px 20px;">
+                      <h2 class="h2">Hi Shriraj! 👋</h2>
+                      <p class="body-text">You've received a new enquiry through your portfolio contact form. Here are the details:</p>
+
+                      <!-- Card -->
+                      <table role="presentation" width="100%" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 2px solid #e2e8f0; border-radius: 12px; margin-bottom: 25px;">
+                        <tr><td style="background: linear-gradient(90deg, #14b8a6 0%, #9333ea 100%); height: 4px; border-radius: 12px 12px 0 0;"></td></tr>
+                        <tr>
+                          <td style="padding: 25px 20px;">
+                            <div style="margin-bottom: 20px;"><span class="label">From:</span><div class="value">${params.FNAME}</div></div>
+                            <div style="margin-bottom: 20px;"><span class="label">Email:</span><div class="value"><a href="mailto:${params.EMAIL}" class="email-link">${params.EMAIL}</a></div></div>
+                            <div style="margin-bottom: 20px;"><span class="label">Subject:</span><div class="value">${params.SUBJECT}</div></div>
+                            <div><span class="label">Message:</span><div class="message-text">${params.MESSAGE}</div></div>
+                          </td>
+                        </tr>
+                      </table>
+
+                      <!-- CTA -->
+                      <table role="presentation" width="100%" style="background: linear-gradient(135deg, #f0fdfa 0%, #faf5ff 100%); border: 1px solid #d1fae5; border-radius: 12px;">
+                        <tr>
+                          <td style="padding: 25px 20px; text-align: center;">
+                            <p style="font-size: 16px; color: #065f46; font-weight: 500; margin: 0 0 20px 0;">Ready to respond?</p>
+                            <a href="mailto:${params.EMAIL}?subject=Re: ${params.SUBJECT}" class="button">Reply to ${params.FNAME}</a>
+                          </td>
+                        </tr>
+                      </table>
+
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td style="background-color: #1e293b; border-radius: 0 0 16px 16px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="inner" style="padding: 25px 20px; text-align: center;">
+                      <p class="footer-text">This email was automatically generated from your portfolio contact form.<br>The sender's information is included above for your reference.</p>
+                      <p class="brand">Portfolio Contact System</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>`;
+}

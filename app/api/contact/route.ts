@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { sendEmail } from '@/lib/nodemailer'
+import { generateEmailTemplate } from '@/lib/email-template'
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,77 +23,55 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get Brevo configuration from environment variables
-    const brevoApiKey = process.env.BREVO_API_KEY
-    const brevoEndpoint = process.env.BREVO_EMAIL_ENDPOINT || 'https://api.brevo.com/v3/smtp/email'
-    const templateId = 2 // Your Brevo template ID
-
-    if (!brevoApiKey) {
-      return NextResponse.json(
-        { error: 'Email service configuration is missing' },
-        { status: 500 }
-      )
-    }
-
-    // Prepare email data for Brevo API using template
-    const emailData = {
-      sender: {
-        name: "Shriraj Naik - Portfolio",
-        email: "shriraj.naik04@gmail.com"
-      },
-      to: [
-        {
-          email: "nykshriraj4nov@gmail.com",
-          name: "Shriraj Naik"
-        }
-      ],
-      replyTo: {
-        email: email,
-        name: name
-      },
-      templateId: templateId,
-      params: {
-        SUBJECT: subject,
-        MESSAGE: message,
-        FNAME: name,
-        EMAIL: email
-      }
-    }
-
-    // Send email using Brevo API
-    const response = await fetch(brevoEndpoint, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'api-key': brevoApiKey,
-      },
-      body: JSON.stringify(emailData),
+    // Get email configuration from environment variables
+    const recipientEmail = process.env.RECIPIENT_EMAIL || 'nykshriraj4nov@gmail.com'
+    
+    // Generate HTML email template
+    const htmlContent = generateEmailTemplate({
+      FNAME: name,
+      EMAIL: email,
+      SUBJECT: subject,
+      MESSAGE: message
     })
 
-    const responseData = await response.json()
+    // Send email using Nodemailer
+    const emailResult = await sendEmail({
+      to: recipientEmail,
+      subject: `New Enquiry from Shriraj Naik's Website`,
+      html: htmlContent,
+      replyTo: email,
+      from: process.env.EMAIL_FROM || process.env.EMAIL_USER
+    })
 
-    if (!response.ok) {
-      console.error('Brevo API error:', responseData)
-      return NextResponse.json(
-        { error: 'Failed to send email', details: responseData },
-        { status: 500 }
-      )
-    }
-
-    console.log('Email sent successfully:', responseData)
+    console.log('Email sent successfully:', emailResult)
 
     return NextResponse.json(
       { 
         success: true, 
         message: 'Email sent successfully!',
-        messageId: responseData.messageId 
+        messageId: emailResult.messageId 
       },
       { status: 200 }
     )
 
   } catch (error) {
     console.error('Error sending email:', error)
+    
+    // Handle specific nodemailer errors
+    if (error instanceof Error) {
+      if (error.message.includes('Email configuration is missing')) {
+        return NextResponse.json(
+          { error: 'Email service configuration is missing' },
+          { status: 500 }
+        )
+      }
+      
+      return NextResponse.json(
+        { error: 'Failed to send email', details: error.message },
+        { status: 500 }
+      )
+    }
+    
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
