@@ -71,8 +71,8 @@ export default function AboutSection() {
               className="mt-6 lg:mt-8"
             >
               <motion.a
-                href="/Shriraj_Naik_Resume.pdf"
-                download="Shriraj_Naik_Resume.pdf"
+                href="/SHRIRAJ NAIK - QA Analyst III.pdf"
+                download="SHRIRAJ_NAIK_QA_Analyst_III.pdf"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="inline-flex items-center space-x-2 bg-gradient-to-r from-teal-500 to-purple-600 px-6 py-3 lg:px-8 lg:py-4 rounded-lg font-semibold hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300"
