@@ -13,12 +13,12 @@ export default function AboutSection() {
     {
       icon: <Shield className="w-8 h-8 text-purple-400" />,
       title: "QA Automation Excellence",
-      description: "Building scalable test frameworks with Selenium, Playwright, and JMeter",
+      description: "Building scalable test frameworks with Playwright MCP, Vision-AI QA and JMeter",
     },
     {
       icon: <Code className="w-8 h-8 text-teal-400" />,
-      title: "SaaS AI Development",
-      description: "Creating production-grade chatbots and AI solutions",
+      title: "Agentic & Generative AI",
+      description: "Shipping autonomous agents and production-grade Generative AI chatbots",
     },
     {
       icon: <Rocket className="w-8 h-8 text-purple-400" />,
@@ -47,19 +47,20 @@ export default function AboutSection() {
             <article className="space-y-4 lg:space-y-6 text-base lg:text-lg text-slate-300 leading-relaxed" itemProp="description">
               <p>
                 I specialize in architecting{" "}
-                <strong className="text-teal-400">MCP Context Engineering Frameworks</strong> that enable{" "}
-                <strong className="text-purple-400">Rapid AI Development and Testing</strong>.
+                <strong className="text-teal-400">MCP Context Engineering Frameworks</strong> and{" "}
+                <strong className="text-purple-400">Agentic AI</strong> systems that enable rapid Generative-AI
+                product delivery.
               </p>
 
               <p>
                 With a passion for innovation and excellence, I bridge the gap between traditional QA methodologies and
-                cutting-edge AI technologies, creating solutions that transform how businesses approach quality
-                assurance and artificial intelligence.
+                cutting-edge AI technologies — combining Vision-AI QA, Playwright MCP and Generative-AI tooling to
+                transform how businesses ship and validate software.
               </p>
 
               <p>
-                My expertise lies in building scalable QA Automation Frameworks and production-grade SaaS AI Chatbots
-                that deliver speed, accuracy, and real-world impact.
+                My expertise lies in building scalable QA automation frameworks, multi-tenant SaaS platforms and
+                production-grade RAG chatbots that deliver speed, accuracy and real-world impact.
               </p>
             </article>
 

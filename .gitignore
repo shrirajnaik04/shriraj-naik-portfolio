@@ -30,3 +30,41 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# reference projects (not shipped)
+/new-projects/
+
+# playwright smoke-test artifacts
+/scripts/screenshots/
+/test-results/
+/playwright-report/
+/.playwright-mcp/
+/*.png
+
+# claude code project settings (local dev only)
+/.claude/
+
+# os artifacts
+.DS_Store
+Thumbs.db
+
+# editor / IDE
+.vscode/
+.idea/
+.history/
+*.code-workspace
+*.swp
+*.swo
+
+# markdown scratchpads — only README.md is tracked, all other .md files are local
+*.md
+!README.md
+
+# local-only tooling configs (not required for deployment)
+.mcp.json
+
+# misc temp / backup files
+*.log
+*.bak
+*.tmp
+*.old

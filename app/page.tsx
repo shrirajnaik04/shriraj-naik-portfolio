@@ -15,10 +15,11 @@ import ScrollProgress from "@/components/ScrollProgress"
 export default function Home() {
   return (
     <div className="bg-slate-900 text-white overflow-x-hidden">
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <ScrollProgress />
       <Navbar />
 
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <HeroSection />
         <MetricsSection />
         <AboutSection />
@@ -29,8 +30,8 @@ export default function Home() {
         <ContactSection />
       </main>
 
-      <footer className="bg-slate-950 py-8 text-center text-slate-400">
-        <p>&copy; 2025 Shriraj Naik. All rights reserved.</p>
+      <footer className="bg-slate-950 py-8 text-center text-slate-400" role="contentinfo">
+        <p>&copy; 2026 Shriraj Naik. All rights reserved.</p>
       </footer>
     </div>
   )

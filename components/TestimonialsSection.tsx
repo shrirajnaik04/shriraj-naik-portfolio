@@ -116,22 +116,30 @@ export default function TestimonialsSection() {
           </motion.div>
 
           {/* Navigation */}
-          <div className="flex justify-center items-center mt-4 sm:mt-6 lg:mt-8 space-x-4">
+          <div
+            className="flex justify-center items-center mt-4 sm:mt-6 lg:mt-8 space-x-4"
+            role="group"
+            aria-label="Testimonial controls"
+          >
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={prevTestimonial}
               className="p-3 bg-slate-800 rounded-full border border-slate-700 hover:border-teal-500/50 transition-all duration-300"
+              aria-label="Previous testimonial"
             >
-              <ChevronLeft className="w-6 h-6 text-teal-400" />
+              <ChevronLeft className="w-6 h-6 text-teal-400" aria-hidden="true" />
             </motion.button>
 
             {/* Dots */}
-            <div className="flex space-x-2">
-              {testimonials.map((_, index) => (
+            <div className="flex space-x-2" role="tablist" aria-label="Select testimonial">
+              {testimonials.map((t, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentIndex(index)}
+                  role="tab"
+                  aria-selected={index === currentIndex}
+                  aria-label={`Show testimonial ${index + 1} of ${testimonials.length} — ${t.name}`}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
                     index === currentIndex ? "bg-teal-400 scale-125" : "bg-slate-600 hover:bg-slate-500"
                   }`}
@@ -144,8 +152,9 @@ export default function TestimonialsSection() {
               whileTap={{ scale: 0.9 }}
               onClick={nextTestimonial}
               className="p-3 bg-slate-800 rounded-full border border-slate-700 hover:border-teal-500/50 transition-all duration-300"
+              aria-label="Next testimonial"
             >
-              <ChevronRight className="w-6 h-6 text-teal-400" />
+              <ChevronRight className="w-6 h-6 text-teal-400" aria-hidden="true" />
             </motion.button>
           </div>
         </div>

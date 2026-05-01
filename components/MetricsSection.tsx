@@ -92,7 +92,7 @@ export default function MetricsSection() {
     {
       icon: <Bot className="w-8 h-8 text-teal-400" />,
       value: 5,
-      label: "SaaS AI Chatbots Delivered",
+      label: "Agentic & Generative AI Apps Shipped",
       suffix: "+",
       delay: 600,
     },

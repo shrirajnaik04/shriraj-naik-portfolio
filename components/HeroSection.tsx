@@ -9,7 +9,14 @@ export default function HeroSection() {
   const [currentText, setCurrentText] = useState(0)
   const [displayText, setDisplayText] = useState("")
   const [isDeleting, setIsDeleting] = useState(false)
-  const texts = ["QA Automation Engineer", "Rapid AI Developer", "MCP Context Engineering Expert", "RAG AI Chatbot System Architect"]
+  const texts = [
+    "Agentic AI Engineer",
+    "Generative AI Developer",
+    "QA Automation Engineer",
+    "MCP Context Engineering Expert",
+    "Vision-AI QA Architect",
+    "RAG AI System Architect",
+  ]
 
   useEffect(() => {
     const currentFullText = texts[currentText]
@@ -92,7 +99,7 @@ export default function HeroSection() {
                 className="text-lg sm:text-xl lg:text-2xl text-slate-400 mt-4"
                 role="banner"
               >
-                Building Scalable QA Frameworks and SaaS AI Chatbots for Rapid AI Development
+                Building Agentic AI Systems, Generative AI Chatbots and Scalable QA Frameworks
               </motion.p>
             </header>
 
@@ -182,7 +189,7 @@ export default function HeroSection() {
                 className="relative w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 border-slate-700 shadow-2xl"
               >
                 <Image
-                  src="https://res.cloudinary.com/dfvyqtli8/image/upload/f_auto,q_auto,w_640,h_640,c_fill,g_face/v1756014604/profile-image_kcrna3.png"
+                  src="https://res.cloudinary.com/dfvyqtli8/image/upload/f_auto,q_auto,w_640,h_640,c_fill,g_face,y_-90/v1777649066/profile.jpg"
                   alt="Shriraj Naik - Professional QA Automation Engineer and AI Developer from Goa, India"
                   width={320}
                   height={320}

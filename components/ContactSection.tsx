@@ -343,8 +343,13 @@ export default function ContactSection() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
                 <div className="relative">
                   <input
+                    id="contact-name"
                     type="text"
                     name="name"
+                    autoComplete="name"
+                    aria-required="true"
+                    aria-invalid={!!(validationErrors.name && touched.name)}
+                    aria-describedby={validationErrors.name && touched.name ? "contact-name-error" : undefined}
                     value={formData.name}
                     onChange={handleChange}
                     onFocus={handleFocus}
@@ -363,24 +368,30 @@ export default function ContactSection() {
                     }`}
                     placeholder=""
                   />
-                  <label 
+                  <label
+                    htmlFor="contact-name"
                     className={`absolute left-3 px-2 font-medium transition-all duration-300 pointer-events-none ${
-                      formData.name || focused.name 
-                        ? '-top-2 text-xs text-teal-400 bg-slate-800' 
+                      formData.name || focused.name
+                        ? '-top-2 text-xs text-teal-400 bg-slate-800'
                         : 'top-4 text-sm lg:text-base text-slate-400'
                     }`}
                   >
-                    Full Name <span className="text-red-400">*</span>
+                    Full Name <span className="text-red-400" aria-hidden="true">*</span>
                   </label>
                   {validationErrors.name && touched.name && (
-                    <p className="mt-1 text-xs text-red-400">{validationErrors.name}</p>
+                    <p id="contact-name-error" className="mt-1 text-xs text-red-400">{validationErrors.name}</p>
                   )}
                 </div>
 
                 <div className="relative">
                   <input
+                    id="contact-email"
                     type="email"
                     name="email"
+                    autoComplete="email"
+                    aria-required="true"
+                    aria-invalid={!!(validationErrors.email && touched.email)}
+                    aria-describedby={validationErrors.email && touched.email ? "contact-email-error" : undefined}
                     value={formData.email}
                     onChange={handleChange}
                     onFocus={handleFocus}
@@ -399,25 +410,30 @@ export default function ContactSection() {
                     }`}
                     placeholder=""
                   />
-                  <label 
+                  <label
+                    htmlFor="contact-email"
                     className={`absolute left-3 px-2 font-medium transition-all duration-300 pointer-events-none ${
-                      formData.email || focused.email 
-                        ? '-top-2 text-xs text-teal-400 bg-slate-800' 
+                      formData.email || focused.email
+                        ? '-top-2 text-xs text-teal-400 bg-slate-800'
                         : 'top-4 text-sm lg:text-base text-slate-400'
                     }`}
                   >
-                    Email Address <span className="text-red-400">*</span>
+                    Email Address <span className="text-red-400" aria-hidden="true">*</span>
                   </label>
                   {validationErrors.email && touched.email && (
-                    <p className="mt-1 text-xs text-red-400">{validationErrors.email}</p>
+                    <p id="contact-email-error" className="mt-1 text-xs text-red-400">{validationErrors.email}</p>
                   )}
                 </div>
               </div>
 
               <div className="relative">
                 <input
+                  id="contact-subject"
                   type="text"
                   name="subject"
+                  aria-required="true"
+                  aria-invalid={!!(validationErrors.subject && touched.subject)}
+                  aria-describedby={validationErrors.subject && touched.subject ? "contact-subject-error" : undefined}
                   value={formData.subject}
                   onChange={handleChange}
                   onFocus={handleFocus}
@@ -434,25 +450,30 @@ export default function ContactSection() {
                       ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
                       : 'border-slate-600 focus:border-teal-500 focus:ring-teal-500/20'
                   }`}
-                  placeholder=""
+                  placeholder=" "
                 />
-                <label 
+                <label
+                  htmlFor="contact-subject"
                   className={`absolute left-3 px-2 font-medium transition-all duration-300 pointer-events-none ${
-                    formData.subject || focused.subject 
-                      ? '-top-2 text-xs text-teal-400 bg-slate-800' 
+                    formData.subject || focused.subject
+                      ? '-top-2 text-xs text-teal-400 bg-slate-800'
                       : 'top-4 text-sm lg:text-base text-slate-400'
                   }`}
                 >
-                  Subject <span className="text-red-400">*</span>
+                  Subject <span className="text-red-400" aria-hidden="true">*</span>
                 </label>
                 {validationErrors.subject && touched.subject && (
-                  <p className="mt-1 text-xs text-red-400">{validationErrors.subject}</p>
+                  <p id="contact-subject-error" className="mt-1 text-xs text-red-400">{validationErrors.subject}</p>
                 )}
               </div>
 
               <div className="relative">
                 <textarea
+                  id="contact-message"
                   name="message"
+                  aria-required="true"
+                  aria-invalid={!!(validationErrors.message && touched.message)}
+                  aria-describedby={`contact-message-counter${validationErrors.message && touched.message ? ' contact-message-error' : ''}`}
                   value={formData.message}
                   onChange={handleChange}
                   onFocus={handleFocus}
@@ -470,27 +491,32 @@ export default function ContactSection() {
                       ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
                       : 'border-slate-600 focus:border-teal-500 focus:ring-teal-500/20'
                   }`}
-                  placeholder=""
+                  placeholder=" "
                 />
-                <label 
+                <label
+                  htmlFor="contact-message"
                   className={`absolute left-3 px-2 font-medium transition-all duration-300 pointer-events-none ${
-                    formData.message || focused.message 
-                      ? '-top-2 text-xs text-teal-400 bg-slate-800' 
+                    formData.message || focused.message
+                      ? '-top-2 text-xs text-teal-400 bg-slate-800'
                       : 'top-4 text-sm lg:text-base text-slate-400'
                   }`}
                 >
-                  Message <span className="text-red-400">*</span>
+                  Message <span className="text-red-400" aria-hidden="true">*</span>
                 </label>
                 <div className="flex justify-between items-center mt-1">
                   {validationErrors.message && touched.message ? (
-                    <p className="text-xs text-red-400">{validationErrors.message}</p>
+                    <p id="contact-message-error" className="text-xs text-red-400">{validationErrors.message}</p>
                   ) : (
                     <div></div>
                   )}
-                  <p className={`text-xs ${
-                    formData.message.length > 1000 ? 'text-red-400' : 
-                    formData.message.length > 800 ? 'text-yellow-400' : 'text-slate-500'
-                  }`}>
+                  <p
+                    id="contact-message-counter"
+                    aria-live="polite"
+                    className={`text-xs ${
+                      formData.message.length > 1000 ? 'text-red-400' :
+                      formData.message.length > 800 ? 'text-yellow-400' : 'text-slate-500'
+                    }`}
+                  >
                     {formData.message.length}/1000
                   </p>
                 </div>
@@ -499,18 +525,19 @@ export default function ContactSection() {
               <motion.button
                 type="submit"
                 disabled={isSubmitting}
+                aria-busy={isSubmitting}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="w-full bg-gradient-to-r from-teal-500 to-purple-600 px-6 py-3 lg:px-8 lg:py-4 rounded-lg font-semibold text-white flex items-center justify-center space-x-2 hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm lg:text-base"
               >
                 {isSubmitting ? (
                   <>
-                    <Loader className="w-4 h-4 lg:w-5 lg:h-5 animate-spin" />
+                    <Loader className="w-4 h-4 lg:w-5 lg:h-5 animate-spin" aria-hidden="true" />
                     <span>Sending Message...</span>
                   </>
                 ) : (
                   <>
-                    <Send className="w-4 h-4 lg:w-5 lg:h-5" />
+                    <Send className="w-4 h-4 lg:w-5 lg:h-5" aria-hidden="true" />
                     <span>Send Message</span>
                   </>
                 )}
@@ -519,6 +546,8 @@ export default function ContactSection() {
               {/* Status Messages */}
               {(submitStatus === 'success' || submitStatus === 'error') && (
                 <motion.div
+                  role="status"
+                  aria-live="polite"
                   initial={{ opacity: 0, y: 20, scale: 0.95 }}
                   animate={{ 
                     opacity: showMessage ? 1 : 0, 

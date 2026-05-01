@@ -5,35 +5,58 @@ import "./globals.css"
 
 const dmSans = DM_Sans({ subsets: ["latin"], display: 'swap' })
 
+const SITE_URL = "https://shrirajnaik.dev"
+const OG_IMAGE = "https://res.cloudinary.com/dfvyqtli8/image/upload/c_pad,w_1200,h_630,b_rgb:0f172a/v1777649066/profile.jpg"
+
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
+  themeColor: '#0f172a',
+  colorScheme: 'dark',
 }
 
 export const metadata: Metadata = {
-  title: "Shriraj Naik | QA Automation & AI Engineer Portfolio",
-  description: "Shriraj Naik - Expert QA Automation Engineer, AI Developer, and MCP Context Engineering Specialist. Building scalable QA frameworks, RAG AI chatbots, and enterprise automation solutions. Contact Shriraj for QA consulting and AI development services.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Shriraj Naik | Agentic AI Engineer & QA Automation Architect",
+    template: "%s | Shriraj Naik",
+  },
+  description: "Shriraj Naik — Agentic AI Engineer, Generative AI Developer and QA Automation Architect from Goa, India. Building autonomous agents, RAG chatbots, Vision-AI testing platforms and Playwright MCP frameworks for production SaaS.",
+  applicationName: "Shriraj Naik Portfolio",
   keywords: [
     "Shriraj Naik",
-    "Shriraj Naik QA Engineer", 
     "Shriraj Naik Portfolio",
-    "QA Automation Engineer",
-    "AI Developer",
+    "Shriraj Naik QA Engineer",
+    "Agentic AI Engineer",
+    "Generative AI Developer",
+    "Vision AI QA",
+    "Vision-AI Test Architect",
+    "RAG AI Engineer",
+    "RAG Chatbot Developer",
     "MCP Context Engineering",
-    "RAG AI Chatbot",
-    "Selenium Automation",
-    "Playwright Testing",
+    "Playwright MCP",
+    "QA Automation Engineer",
+    "Test Automation Architect",
+    "AI Powered Automation QA Framework",
+    "Multi-Tenant SaaS Developer",
+    "Next.js Developer",
     "Python Developer",
-    "Flask Developer",
-    "QA Consultant",
-    "Test Automation Expert",
-    "Goa India",
-    "Software Testing Professional"
+    "TypeScript Developer",
+    "FastAPI Developer",
+    "Google Gemini Developer",
+    "Together AI Developer",
+    "Goa India Developer",
+    "Software Testing Professional",
   ].join(", "),
-  authors: [{ name: "Shriraj Naik", url: "https://shrirajnaik.dev" }],
+  authors: [{ name: "Shriraj Naik", url: SITE_URL }],
   creator: "Shriraj Naik",
   publisher: "Shriraj Naik",
+  formatDetection: {
+    email: false,
+    telephone: false,
+    address: false,
+  },
   robots: {
     index: true,
     follow: true,
@@ -45,34 +68,38 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: 'YOUR_GOOGLE_VERIFICATION_CODE', // Add your Google Search Console verification
-  },
   alternates: {
-    canonical: 'https://shrirajnaik.dev',
+    canonical: '/',
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://shrirajnaik.dev",
-    title: "Shriraj Naik | QA Automation & AI Engineer Portfolio",
-    description: "Expert QA Automation Engineer and AI Developer specializing in MCP Context Engineering, RAG AI Chatbots, and enterprise automation solutions.",
+    url: SITE_URL,
+    title: "Shriraj Naik | Agentic AI Engineer & QA Automation Architect",
+    description: "Building Agentic AI Systems, Generative AI Chatbots and Scalable QA Frameworks. Travel-OTA RAG widgets, Vision-AI test platforms and multi-tenant SaaS — engineered end to end.",
     siteName: "Shriraj Naik Portfolio",
     images: [
       {
-        url: "https://res.cloudinary.com/dfvyqtli8/image/upload/v1756014604/profile-image_kcrna3.png",
+        url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Shriraj Naik - QA Automation & AI Engineer",
+        alt: "Shriraj Naik — Agentic AI Engineer & QA Automation Architect",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shriraj Naik | QA Automation & AI Engineer",
-    description: "Expert QA Automation Engineer and AI Developer from Goa, India. Specializing in enterprise testing solutions and AI chatbot development.",
-  images: ["https://res.cloudinary.com/dfvyqtli8/image/upload/v1756014604/profile-image_kcrna3.png"],
-    creator: "@ShrirajNaik", // Add your Twitter handle
+    title: "Shriraj Naik | Agentic AI Engineer & QA Automation Architect",
+    description: "Agentic AI, Generative AI and QA Automation engineer from Goa, India. Building RAG chatbots, Vision-AI testing platforms and Playwright MCP frameworks.",
+    images: [OG_IMAGE],
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Shriraj Naik",
   },
   icons: {
     icon: "/favicon.ico",
@@ -93,39 +120,43 @@ export default function RootLayout({
     "@graph": [
       {
         "@type": "Person",
-        "@id": "https://shrirajnaik.dev/#person",
+        "@id": `${SITE_URL}/#person`,
         "name": "Shriraj Naik",
         "givenName": "Shriraj",
         "familyName": "Naik",
-        "url": "https://shrirajnaik.dev",
+        "url": SITE_URL,
         "image": {
           "@type": "ImageObject",
-          "url": "https://res.cloudinary.com/dfvyqtli8/image/upload/v1756014604/profile-image_kcrna3.png",
+          "url": "https://res.cloudinary.com/dfvyqtli8/image/upload/v1777649066/profile.jpg",
           "width": 400,
           "height": 400
         },
         "sameAs": [
           "https://www.linkedin.com/in/shriraj-naik-494421154/",
-          "https://github.com/shrirajnaik04",
-          "mailto:nykshriraj4nov@gmail.com"
+          "https://github.com/shrirajnaik04"
         ],
-        "jobTitle": "QA Automation & AI Engineer",
-        "description": "Expert QA Automation Engineer and AI Developer specializing in MCP Context Engineering, RAG AI Chatbots, and enterprise automation solutions.",
+        "jobTitle": "Agentic AI Engineer & QA Automation Architect",
+        "description": "Agentic AI Engineer, Generative AI Developer and QA Automation Architect specializing in MCP Context Engineering, RAG chatbots, Vision-AI testing and Playwright MCP frameworks.",
         "knowsAbout": [
-          "QA Automation",
-          "AI Development", 
+          "Agentic AI",
+          "Generative AI",
+          "Vision AI",
+          "RAG",
           "MCP Context Engineering",
-          "RAG AI Chatbots",
-          "Selenium",
+          "QA Automation",
+          "Test Automation",
+          "Playwright MCP",
           "Playwright",
+          "JMeter",
           "Python",
-          "Flask",
-          "Test Automation"
+          "TypeScript",
+          "Next.js",
+          "FastAPI",
+          "Google Gemini",
+          "Together AI",
+          "Multi-Tenant SaaS"
         ],
-        "alumniOf": {
-          "@type": "EducationalOrganization",
-          "name": "Educational Institution" // Add your education details
-        },
+        "award": "Quality Analyst of the Quarter — FinTech Company, Goa",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Goa",
@@ -136,58 +167,59 @@ export default function RootLayout({
       },
       {
         "@type": "WebSite",
-        "@id": "https://shrirajnaik.dev/#website",
-        "url": "https://shrirajnaik.dev",
+        "@id": `${SITE_URL}/#website`,
+        "url": SITE_URL,
         "name": "Shriraj Naik Portfolio",
-        "description": "Professional portfolio of Shriraj Naik - QA Automation Engineer, AI Developer, and MCP Context Engineering Expert",
+        "description": "Professional portfolio of Shriraj Naik — Agentic AI Engineer, Generative AI Developer and QA Automation Architect.",
+        "inLanguage": "en-US",
         "publisher": {
-          "@id": "https://shrirajnaik.dev/#person"
-        },
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": "https://shrirajnaik.dev/?s={search_term_string}"
-          },
-          "query-input": "required name=search_term_string"
+          "@id": `${SITE_URL}/#person`
         }
       },
       {
         "@type": "ProfessionalService",
-        "@id": "https://shrirajnaik.dev/#service",
-        "name": "Shriraj Naik QA Automation Services",
+        "@id": `${SITE_URL}/#service`,
+        "name": "Shriraj Naik AI & QA Engineering Services",
         "provider": {
-          "@id": "https://shrirajnaik.dev/#person"
+          "@id": `${SITE_URL}/#person`
         },
-        "serviceType": "QA Automation & AI Development",
-        "description": "Professional QA automation, AI chatbot development, and MCP context engineering services",
+        "serviceType": "Agentic AI, Generative AI & QA Automation Engineering",
+        "description": "Agentic AI development, Generative AI chatbot delivery, Vision-AI test automation and Playwright MCP framework engineering for production SaaS.",
         "areaServed": "Global",
         "hasOfferCatalog": {
           "@type": "OfferCatalog",
-          "name": "QA & AI Services",
+          "name": "AI & QA Engineering Services",
           "itemListElement": [
             {
               "@type": "Offer",
               "itemOffered": {
                 "@type": "Service",
-                "name": "QA Automation Testing",
-                "description": "Comprehensive test automation using Selenium, Playwright, and custom frameworks"
-              }
-            },
-            {
-              "@type": "Offer", 
-              "itemOffered": {
-                "@type": "Service",
-                "name": "AI Chatbot Development",
-                "description": "RAG AI chatbot development using Flask, Together AI, and enterprise solutions"
+                "name": "Agentic AI Development",
+                "description": "Autonomous agents for outreach pipelines, content extraction and workflow automation using multi-provider LLM orchestration."
               }
             },
             {
               "@type": "Offer",
               "itemOffered": {
-                "@type": "Service", 
+                "@type": "Service",
+                "name": "Generative AI & RAG Chatbot Development",
+                "description": "Production-grade Generative AI and RAG chatbots using Google Gemini, Together AI, Qdrant and MongoDB Atlas vector search."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "QA Automation & Vision-AI Testing",
+                "description": "Test automation across Web, Mobile and API using Playwright MCP, Vision-AI element detection and JMeter performance frameworks."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
                 "name": "MCP Context Engineering",
-                "description": "Model Context Protocol engineering for rapid AI testing and validation"
+                "description": "Model Context Protocol engineering and Agentic AI test generation for rapid LLM evaluation and delivery cycles."
               }
             }
           ]

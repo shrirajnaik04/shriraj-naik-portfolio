@@ -2,6 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Skip-to-content link (a11y) */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  z-index: 200;
+  padding: 0.5rem 1rem;
+  background: #14b8a6;
+  color: #0f172a;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 1rem;
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* Visible keyboard focus across the app (a11y) */
+:focus-visible {
+  outline: 2px solid #2dd4bf;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+button:focus-visible,
+a:focus-visible {
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.45);
+}
+
+/* Respect users who prefer reduced motion (a11y / WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Mobile viewport fix for keyboard issues */
 @supports (-webkit-touch-callout: none) {
   .mobile-vh-fix {

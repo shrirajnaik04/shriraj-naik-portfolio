@@ -14,37 +14,45 @@ export default function TechStackSection() {
   const [hoveredTech, setHoveredTech] = useState<string | null>(null)
 
   const technologies: TechItem[] = [
-    // Row 1
-    { name: "Selenium IDE", category: "Testing", description: "Web automation testing framework", logo: "🔧" },
-    { name: "Playwright", category: "Testing", description: "Modern web testing framework", logo: "🎭" },
-    { name: "JMeter", category: "Testing", description: "Performance testing tool", logo: "⚡" },
-    { name: "Testsigma", category: "Testing", description: "Cloud-based test automation", logo: "☁️" },
-    { name: "TestProject", category: "Testing", description: "Free test automation platform", logo: "🧪" },
-    { name: "Python", category: "Language", description: "Programming language for automation", logo: "🐍" },
+    // Row 1 — Modern AI
+    { name: "Generative AI", category: "AI", description: "LLM-driven content & code generation", logo: "✨" },
+    { name: "Agentic AI", category: "AI", description: "Autonomous goal-driven AI agents", logo: "🤖" },
+    { name: "Vision AI", category: "AI", description: "Vision-model element detection for QA", logo: "👁️" },
+    { name: "RAG", category: "AI", description: "Retrieval-Augmented Generation pipelines", logo: "🧠" },
+    { name: "MCP Context Engineering", category: "AI", description: "Model Context Protocol for AI testing", logo: "⚙️" },
+    { name: "Google Gemini", category: "AI", description: "Multimodal generative AI model", logo: "💎" },
 
-    // Row 2
-    { name: "Flask", category: "Framework", description: "Python web framework", logo: "🌶️" },
-    { name: "Next.js", category: "Framework", description: "React production framework", logo: "▲" },
-    { name: "Tailwind CSS", category: "Styling", description: "Utility-first CSS framework", logo: "🎨" },
-    { name: "Docker Desktop", category: "DevOps", description: "Containerization platform", logo: "🐳" },
-    { name: "Portainer", category: "DevOps", description: "Container management UI", logo: "📦" },
-    { name: "Postman", category: "API", description: "API development platform", logo: "📮" },
-
-    // Row 3
+    // Row 2 — AI platforms & QA tooling
+    { name: "LM Studio", category: "Local AI", description: "Local LLM runtime & model playground", logo: "🖥️" },
+    { name: "Playwright MCP", category: "Testing", description: "MCP-driven AI-native browser automation", logo: "🪄" },
+    { name: "Playwright", category: "Testing", description: "Modern cross-browser test framework", logo: "🎭" },
+    { name: "Upstash", category: "Serverless DB", description: "Serverless Redis & Kafka data layer", logo: "🚀" },
+    { name: "Postman", category: "API", description: "API development & testing platform", logo: "📮" },
     { name: "Git", category: "Version Control", description: "Distributed version control", logo: "🔀" },
-    { name: "Redis", category: "Database", description: "In-memory data structure store", logo: "🔴" },
-    { name: "N8N", category: "Automation", description: "Workflow automation tool", logo: "🔗" },
-    { name: "Opensearch", category: "Search", description: "Search and analytics engine", logo: "🔍" },
-    { name: "Digital Ocean", category: "Cloud", description: "Cloud infrastructure provider", logo: "🌊" },
-    { name: "Supabase", category: "Backend", description: "Open source Firebase alternative", logo: "⚡" },
 
-    // Row 4
+    // Row 3 — Frontend & languages
+    { name: "Next.js", category: "Framework", description: "React production framework", logo: "▲" },
+    { name: "TypeScript", category: "Language", description: "Type-safe JavaScript at scale", logo: "🟦" },
+    { name: "Tailwind CSS", category: "Styling", description: "Utility-first CSS framework", logo: "🎨" },
+    { name: "Claude Code", category: "AI Dev Tool", description: "Anthropic's agentic coding assistant", logo: "🪶" },
+    { name: "Vercel", category: "Edge Cloud", description: "Frontend deployment & edge platform", logo: "🔼" },
+    { name: "Socket.IO", category: "Real-time", description: "Real-time bi-directional events", logo: "🔌" },
+
+    // Row 4 — Databases & backend
+    { name: "Supabase", category: "Backend", description: "Postgres + auth backend platform", logo: "🟢" },
+    { name: "Prisma", category: "ORM", description: "Type-safe database ORM", logo: "🔺" },
+    { name: "PostgreSQL", category: "Database", description: "Relational database with RLS", logo: "🐘" },
     { name: "MongoDB", category: "Database", description: "NoSQL document database", logo: "🍃" },
     { name: "MySQL", category: "Database", description: "Relational database management", logo: "🐬" },
-    { name: "Together AI", category: "AI", description: "AI model inference platform", logo: "🤖" },
-    { name: "SaaS RAG AI", category: "AI", description: "Retrieval-Augmented Generation", logo: "🧠" },
-    { name: "MCP Context Engineering", category: "AI", description: "Context engineering framework", logo: "⚙️" },
-    { name: "API Automation", category: "Testing", description: "Automated API testing", logo: "🔄" },
+    { name: "Redis", category: "Database", description: "In-memory cache & data store", logo: "⚡" },
+
+    // Row 5 — Vector store, infra & SaaS
+    { name: "Qdrant", category: "Vector DB", description: "Vector search for RAG pipelines", logo: "🧬" },
+    { name: "Docker Desktop", category: "DevOps", description: "Containerization platform", logo: "🐳" },
+    { name: "Digital Ocean", category: "Cloud", description: "Cloud infrastructure provider", logo: "🌊" },
+    { name: "N8N", category: "Automation", description: "Workflow automation engine", logo: "🔗" },
+    { name: "Opensearch", category: "Search", description: "Search & analytics engine", logo: "🔍" },
+    { name: "Railway", category: "Cloud Hosting", description: "Modern app deployment platform", logo: "🚄" },
   ]
 
   return (
