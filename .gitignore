@@ -68,3 +68,15 @@ Thumbs.db
 *.bak
 *.tmp
 *.old
+
+# private / local-only (never commit)
+/docs/private/
+.confidential-terms
+/.superpowers/
+
+# measurement artifacts (JSON summaries are tracked; raw reports and screenshots are not)
+/docs/evidence/**/raw/
+/.lighthouseci/
+
+# tracked markdown exceptions
+!HARNESS.md
