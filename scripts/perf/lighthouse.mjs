@@ -2,7 +2,7 @@
  * Runs Lighthouse CI (mobile preset, 3 runs) using Playwright's Chromium, then prints the
  * median run's scores and key metrics per URL.
  *
- * Usage: node scripts/perf/lighthouse.mjs [--assert] [--url <url> ...] [--out <file>]
+ * Usage: node scripts/perf/lighthouse.mjs [--assert] [--url <url> ...] [--out <file>] [--throttling devtools]
  * Without --url, the URLs in lighthouserc.json are used.
  */
 import { chromium } from '@playwright/test'
@@ -24,7 +24,13 @@ const env = { ...process.env, CHROME_PATH: chromium.executablePath() }
 const lhci = (cmd, extra = []) =>
   spawnSync(process.execPath, [lhciCli, cmd, ...extra], { stdio: 'inherit', env })
 
-const collect = lhci('collect', urls.map((u) => `--url=${u}`))
+// --throttling devtools: Chromium is actually throttled (applied) instead of Lantern's simulation.
+const throttlingIndex = args.indexOf('--throttling')
+const throttling = throttlingIndex !== -1 ? args[throttlingIndex + 1] : undefined
+const collect = lhci('collect', [
+  ...urls.map((u) => `--url=${u}`),
+  ...(throttling ? [`--settings.throttlingMethod=${throttling}`] : []),
+])
 if (collect.status !== 0) process.exit(collect.status ?? 1)
 lhci('upload')
 
@@ -38,6 +44,7 @@ for (const entry of manifest.filter((e) => e.isRepresentativeRun)) {
   summary[entry.url] = {
     lighthouseVersion: lhr.lighthouseVersion,
     formFactor: lhr.configSettings.formFactor,
+    throttlingMethod: lhr.configSettings.throttlingMethod,
     performance: lhr.categories.performance?.score,
     accessibility: lhr.categories.accessibility?.score,
     bestPractices: lhr.categories['best-practices']?.score,

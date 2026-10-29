@@ -4,7 +4,7 @@ import type { Project } from '@/content/types'
 /** The rest of the collection: ruled rows that expand to show what was built and how it is verified. */
 export function WorkIndex({ projects }: { projects: Project[] }) {
   return (
-    <div className="mt-20 lg:mt-28">
+    <div className="cv-auto mt-20 lg:mt-28">
       <h3 className="t-h3">More work</h3>
       <ul className="mt-6 border-t border-rule">
         {projects.map((project) => (

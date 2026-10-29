@@ -10,7 +10,8 @@ const SURFACE_CLASS: Record<Surface, string> = {
 
 /**
  * A page section: a serif h2 and its content. No eyebrow labels or numbering.
- * `split` puts the heading in a left column on wide screens.
+ * `split` puts the heading in a left column on wide screens. `deferRendering` skips layout and
+ * paint until the section nears the viewport (below-the-fold sections only).
  */
 export function Section({
   id,
@@ -18,6 +19,7 @@ export function Section({
   intro,
   surface = 'paper',
   layout = 'stacked',
+  deferRendering = false,
   children,
 }: {
   id: string
@@ -25,6 +27,7 @@ export function Section({
   intro?: string
   surface?: Surface
   layout?: 'stacked' | 'split'
+  deferRendering?: boolean
   children: ReactNode
 }) {
   const heading = (
@@ -36,7 +39,11 @@ export function Section({
     </div>
   )
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className={`section ${SURFACE_CLASS[surface]}`}>
+    <section
+      id={id}
+      aria-labelledby={`${id}-title`}
+      className={`section ${SURFACE_CLASS[surface]} ${deferRendering ? 'cv-auto' : ''}`}
+    >
       <div className="page">
         {layout === 'split' ? (
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">

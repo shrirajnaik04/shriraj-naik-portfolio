@@ -51,11 +51,6 @@
     text-wrap: balance;
   }
 
-  p,
-  li,
-  dd {
-    text-wrap: pretty;
-  }
 
   ::selection {
     background: var(--signal);
@@ -157,7 +152,9 @@
     line-height: 1.25;
   }
 
+  /* text-wrap: pretty only on the few ledes: applied to every paragraph it cost ~80 ms of layout on a throttled phone */
   .t-lede {
+    text-wrap: pretty;
     font-family: var(--font-display);
     font-size: clamp(1.25rem, 1.1rem + 0.55vw, 1.625rem);
     line-height: 1.4;
@@ -522,6 +519,15 @@
   /* Pointing at a project strengthens its guardrail (instant, user-triggered). */
   .spread:is(:hover, :focus-within) .sch-guard {
     stroke-width: 3;
+  }
+}
+
+/* Below-the-fold blocks: skip their layout and paint until they near the viewport. */
+@supports (content-visibility: auto) {
+  .spread,
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 900px;
   }
 }
 
