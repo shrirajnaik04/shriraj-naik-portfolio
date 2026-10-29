@@ -1,9 +1,9 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { DM_Sans } from "next/font/google"
+import { fontVariables } from "./fonts"
 import "./globals.css"
 
-const dmSans = DM_Sans({ subsets: ["latin"], display: 'swap' })
+
 
 const SITE_URL = "https://shrirajnaik.dev"
 const OG_IMAGE = "https://res.cloudinary.com/dfvyqtli8/image/upload/c_pad,w_1200,h_630,b_rgb:0f172a/v1777649066/profile.jpg"
@@ -229,7 +229,7 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={fontVariables}>
       <head>
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
@@ -239,7 +239,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body className={dmSans.className}>{children}</body>
+      <body>{children}</body>
     </html>
   )
 }

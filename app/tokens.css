@@ -1,0 +1,51 @@
+/*
+ * Editorial Engineering colour tokens. Each colour has one job:
+ *   ink-blue = identity (type, linework, bands)   terracotta "signal" = guardrail or action only
+ *   sage "evidence" = verified only                paper = the ground
+ * Contrast pairs are enforced by tests/unit/tokens.test.ts.
+ */
+:root {
+  color-scheme: light dark;
+
+  --paper: #f1efe9;
+  --paper-deep: #e6e3da;
+  --card: #faf9f5;
+  --ink: #18233a;
+  --ink-soft: #4a5568;
+  --rule: #d3cfc4;
+  --signal: #a3462a;
+  --signal-bright: #c65f3c;
+  --evidence: #4a6352;
+  --on-signal: #ffffff;
+
+  --band: #18233a;
+  --on-band: #efede6;
+  --band-soft: #a8b3c4;
+  --signal-on-band: #e8916c;
+  --evidence-on-band: #9fc0aa;
+  --band-rule: rgb(239 237 230 / 0.16);
+
+  --focus: var(--signal);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #101827;
+    --paper-deep: #152033;
+    --card: #18243a;
+    --ink: #eeebe3;
+    --ink-soft: #a9b4c5;
+    --rule: #26324a;
+    --signal: #e8916c;
+    --signal-bright: #e8916c;
+    --evidence: #9fc0aa;
+    --on-signal: #101827;
+
+    --band: #213352;
+    --on-band: #eeebe3;
+    --band-soft: #a9b4c5;
+    --signal-on-band: #e8916c;
+    --evidence-on-band: #9fc0aa;
+    --band-rule: rgb(238 235 227 / 0.18);
+  }
+}

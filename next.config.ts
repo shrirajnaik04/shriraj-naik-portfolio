@@ -3,13 +3,9 @@ import type { NextConfig } from 'next'
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com',
-        pathname: '/dfvyqtli8/image/upload/**',
-      },
-    ],
+    // Cloudinary's free tier serves the portrait; Vercel Image Optimization is not used.
+    loader: 'custom',
+    loaderFile: './lib/cloudinary-loader.ts',
   },
 }
 
