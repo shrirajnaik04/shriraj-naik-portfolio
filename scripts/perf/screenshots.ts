@@ -44,6 +44,9 @@ async function main(argv: string[]) {
             await page.waitForTimeout(120)
           }
           await page.evaluate(() => window.scrollTo(0, 0))
+          // content-visibility: auto skips off-screen blocks, and a full-page capture does not
+          // scroll them into view, so render everything for the capture (what a scrolling reader sees).
+          await page.addStyleTag({ content: '* { content-visibility: visible !important; }' })
           await page.waitForTimeout(800)
           const name = `${path === '/' ? 'home' : path.replace(/^\//, '').replace(/\//g, '_')}-${width}-${scheme}.png`
           await page.screenshot({ path: join(outDir, name), fullPage: true })

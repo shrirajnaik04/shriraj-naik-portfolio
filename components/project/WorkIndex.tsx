@@ -11,14 +11,17 @@ export function WorkIndex({ projects }: { projects: Project[] }) {
           <li key={project.slug} className="border-b border-rule">
             <details className="disclosure">
               <summary className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 gap-y-1 py-5 md:grid-cols-[minmax(0,13rem)_minmax(0,1fr)_5.5rem_auto]">
-                <span data-project-name className="font-display text-[1.375rem] leading-snug">
+                <span data-project-name className="col-start-1 row-start-1 font-display text-[1.375rem] leading-snug">
                   {project.name}
                 </span>
-                <span className="t-small col-span-2 row-start-2 text-ink-soft md:col-span-1 md:row-start-auto">
+                <span className="t-small col-span-2 col-start-1 row-start-2 text-ink-soft md:col-span-1 md:col-start-2 md:row-start-1">
                   {project.summary}
                 </span>
-                <span className="t-meta hidden md:block">{project.period}</span>
-                <span aria-hidden="true" className="disclosure-sign row-start-1 self-center md:row-start-auto">
+                <span className="t-meta hidden md:col-start-3 md:row-start-1 md:block">{project.period}</span>
+                <span
+                  aria-hidden="true"
+                  className="disclosure-sign col-start-2 row-start-1 self-center md:col-start-4"
+                >
                   +
                 </span>
               </summary>
