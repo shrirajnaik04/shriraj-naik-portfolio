@@ -105,6 +105,11 @@
     background: var(--paper-deep);
   }
 
+  /* The header stays put during route transitions; only page content moves. */
+  .site-header {
+    view-transition-name: site-header;
+  }
+
   /* An ink-blue band: children read the same semantic tokens, remapped for a dark ground. */
   .band {
     --ink: var(--on-band);
@@ -117,6 +122,9 @@
     background: var(--band);
     color: var(--on-band);
     border-block: 1px solid var(--band-rule);
+  }
+  .band + .band {
+    border-top: 0;
   }
 
   /* ---------- type ---------- */

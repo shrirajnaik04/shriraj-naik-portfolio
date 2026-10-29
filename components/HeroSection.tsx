@@ -46,7 +46,7 @@ export default function HeroSection() {
   }, [displayText, isDeleting, currentText])
 
   return (
-    <main>
+    <div>
       <section id="home" className="min-h-screen flex items-center relative overflow-hidden">
         {/* Decorative dotted background */}
         <div
@@ -98,7 +98,7 @@ export default function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
                 className="text-lg sm:text-xl lg:text-2xl text-slate-400 mt-4"
-                role="banner"
+
               >
                 Building Agentic AI Systems, Generative AI Chatbots and Scalable QA Frameworks
               </motion.p>
@@ -236,6 +236,6 @@ export default function HeroSection() {
         </div>
       </div>
       </section>
-    </main>
+    </div>
   )
 }
