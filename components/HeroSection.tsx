@@ -5,18 +5,19 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import { ChevronRight, Award } from "lucide-react"
 
+const texts = [
+  "Agentic AI Engineer",
+  "Generative AI Developer",
+  "QA Automation Engineer",
+  "MCP Context Engineering Expert",
+  "Vision-AI QA Architect",
+  "RAG AI System Architect",
+]
+
 export default function HeroSection() {
   const [currentText, setCurrentText] = useState(0)
   const [displayText, setDisplayText] = useState("")
   const [isDeleting, setIsDeleting] = useState(false)
-  const texts = [
-    "Agentic AI Engineer",
-    "Generative AI Developer",
-    "QA Automation Engineer",
-    "MCP Context Engineering Expert",
-    "Vision-AI QA Architect",
-    "RAG AI System Architect",
-  ]
 
   useEffect(() => {
     const currentFullText = texts[currentText]
@@ -42,7 +43,7 @@ export default function HeroSection() {
     )
 
     return () => clearTimeout(timeout)
-  }, [displayText, isDeleting, currentText, texts])
+  }, [displayText, isDeleting, currentText])
 
   return (
     <main>

@@ -140,7 +140,7 @@ export default function AutomationSection() {
             whileTap={{ scale: 0.95 }}
             className="bg-gradient-to-r from-teal-500 to-purple-600 px-8 py-4 rounded-lg font-semibold text-lg hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300 group"
           >
-            <span>Let's Collaborate</span>
+            <span>Let&apos;s Collaborate</span>
             <motion.span
               animate={{ x: [0, 5, 0] }}
               transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}

@@ -1,7 +1,12 @@
 allowBuilds:
   esbuild: true
+  msw: false
   unrs-resolver: false
 
 overrides:
   # styled-jsx (via next) peer; GHSA-4x5r-pxfx-6jf8 fixed in 7.29.6
   "@babel/core@<7.29.6": 7.29.7
+  # next > styled-jsx > @babel/core > browserslist; GHSA-c83g-rgw3-j3cx, GHSA-73wf-gq98-2v4g fixed in 4.28.7
+  "browserslist@<4.28.7": 4.29.4
+  # next > postcss > source-map-js; GHSA-68fv-2mgg-jv7q fixed in 1.2.2
+  "source-map-js@<1.2.2": 1.2.2

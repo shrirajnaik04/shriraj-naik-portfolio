@@ -39,7 +39,6 @@ export default function ContactSection() {
   // Auto-hide success/error messages after 5 seconds
   useEffect(() => {
     if (submitStatus === 'success' || submitStatus === 'error') {
-      setShowMessage(true)
       const timer = setTimeout(() => {
         setShowMessage(false)
         setTimeout(() => {
@@ -142,6 +141,7 @@ export default function ContactSection() {
 
       console.log('Email sent successfully:', data)
       setSubmitStatus('success')
+      setShowMessage(true)
       setFormData({ name: "", email: "", subject: "", message: "" })
       setValidationErrors({ name: '', email: '', subject: '', message: '' })
       setTouched({ name: false, email: false, subject: false, message: false })
@@ -150,6 +150,7 @@ export default function ContactSection() {
     } catch (error) {
       console.error('Failed to send email:', error)
       setSubmitStatus('error')
+      setShowMessage(true)
       setErrorMessage(error instanceof Error ? error.message : 'Failed to send message')
     } finally {
       setIsSubmitting(false)
@@ -254,11 +255,11 @@ export default function ContactSection() {
         >
           <h2 className="text-4xl lg:text-5xl font-bold mb-4" itemProp="headline">
             <span className="bg-gradient-to-r from-teal-400 to-purple-500 bg-clip-text text-transparent">
-              Let's Work Together
+              Let&apos;s Work Together
             </span>
           </h2>
           <p className="text-xl text-slate-400 max-w-3xl mx-auto" itemProp="description">
-            Ready to transform your QA processes with cutting-edge automation and AI? Let's discuss your project.
+            Ready to transform your QA processes with cutting-edge automation and AI? Let&apos;s discuss your project.
           </p>
         </motion.div>
 
@@ -274,7 +275,7 @@ export default function ContactSection() {
             <div>
               <h3 className="text-xl lg:text-2xl font-bold text-white mb-4 lg:mb-6">Get In Touch</h3>
               <p className="text-slate-400 text-base lg:text-lg leading-relaxed mb-6 lg:mb-8">
-                I'm always interested in discussing new opportunities, innovative projects, and ways to help businesses
+                I&apos;m always interested in discussing new opportunities, innovative projects, and ways to help businesses
                 achieve their QA and AI goals.
               </p>
             </div>

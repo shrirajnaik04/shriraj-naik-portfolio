@@ -103,7 +103,7 @@ export default function TestimonialsSection() {
             {/* Quote - Scrollable content area */}
             <div className="flex-1 flex items-center justify-center px-2">
               <blockquote className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-300 text-center leading-relaxed overflow-y-auto max-h-full">
-                "{testimonials[currentIndex].content}"
+                &ldquo;{testimonials[currentIndex].content}&rdquo;
               </blockquote>
             </div>
 
