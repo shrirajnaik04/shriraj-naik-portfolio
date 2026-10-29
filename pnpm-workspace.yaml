@@ -1,0 +1,7 @@
+allowBuilds:
+  esbuild: true
+  unrs-resolver: false
+
+overrides:
+  # styled-jsx (via next) peer; GHSA-4x5r-pxfx-6jf8 fixed in 7.29.6
+  "@babel/core@<7.29.6": 7.29.7

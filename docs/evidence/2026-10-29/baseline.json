@@ -1,0 +1,97 @@
+{
+  "commit": "30eee9b",
+  "note": "Before state = main@30eee9b. Production verified to serve 30eee9b on 2026-10-29 (identical meta description; Vercel cache HIT, age ~15.8 days). Lab results vary run to run: the same commit scored 0.74 (2026-10-27) and 0.98 (2026-10-29) on production.",
+  "production_2026_10_29": {
+    "environment": "https://www.shrirajnaik.com/ (Vercel, brotli). measure.ts: Playwright Chromium 1280x800, 2s settle, 10s idle; hidden tab via raw CDP background tab. Lighthouse 12.6.1 mobile via @lhci/cli 0.15.1, median of 3.",
+    "measure": {
+      "url": "https://www.shrirajnaik.com/",
+      "requestCount": 17,
+      "totalBytes": 242545,
+      "scriptBytes": 167080,
+      "stylesheetBytes": 14676,
+      "fontBytes": 37272,
+      "preloadedFontBytes": 37272,
+      "scriptGzipBytes": 158392,
+      "scriptBrotliBytes": 137406,
+      "frameworkScriptGzipBytes": null,
+      "appScriptGzipBytes": null,
+      "infiniteAnimations": 1,
+      "idleTaskMs": 648.6,
+      "timersAfterLoad": 85,
+      "rafAfterLoad": 601,
+      "scrollTaskMs": 505.8,
+      "jsHeapUsedMB": 6.13,
+      "hidden": {
+        "visibility": "hidden",
+        "taskMs": 60.6
+      }
+    },
+    "lighthouse": {
+      "lighthouseVersion": "12.6.1",
+      "formFactor": "mobile",
+      "performance": 0.98,
+      "accessibility": 0.96,
+      "bestPractices": 1,
+      "seo": 1,
+      "fcpMs": 1314,
+      "lcpMs": 2143,
+      "cls": 0.011,
+      "tbtMs": 70,
+      "speedIndexMs": 2494,
+      "scriptTransferBytes": 167172,
+      "stylesheetTransferBytes": 14682,
+      "fontTransferBytes": 37272,
+      "totalTransferBytes": 2996248
+    },
+    "heapGrowthMB": "n/a: main has no internal routes to cycle",
+    "screenshots": "docs/evidence/2026-10-29/raw/before/home-{390,768,1280,1920}-{light,dark}.png (git-ignored)"
+  },
+  "local_2026_10_27": {
+    "provenance": "Measured 2026-10-27 on this machine at the same commit with the same measure/Lighthouse tooling (recorded on the since-deleted branch, 4fe81a9:docs/evidence/2026-10-27/baseline.json). Not re-run: reinstalling the 54 legacy dependencies would churn node_modules under the user's running dev server for no new information.",
+    "environment": "local next start (Next 14.2.16), Windows 11, Node 24.17.0, Playwright Chromium 1.64.1; Lighthouse via @lhci/cli 0.15.1 default mobile emulation, median of 3",
+    "measure": {
+      "url": "http://localhost:3100/",
+      "scriptBytes": 173053,
+      "stylesheetBytes": 14100,
+      "totalBytes": 249467,
+      "requestCount": 17,
+      "infiniteAnimations": 8,
+      "idleTaskMs": 186.8,
+      "jsHeapUsedMB": 6.15
+    },
+    "lighthouse": {
+      "http://localhost:3100/": {
+        "performance": 0.75,
+        "accessibility": 0.96,
+        "bestPractices": 1,
+        "seo": 1,
+        "lcpMs": 16956,
+        "cls": 0.004,
+        "tbtMs": 29,
+        "scriptTransferBytes": 173053,
+        "stylesheetTransferBytes": 14100
+      }
+    },
+    "production_2026_10_27": {
+      "note": "informational, network-dependent",
+      "lighthouse": {
+        "https://www.shrirajnaik.com/": {
+          "performance": 0.74,
+          "accessibility": 0.96,
+          "bestPractices": 1,
+          "seo": 1,
+          "lcpMs": 9216,
+          "cls": 0.003,
+          "tbtMs": 81,
+          "scriptTransferBytes": 167113,
+          "stylesheetTransferBytes": 14681
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "runtimeDependencyCount": 54,
+    "osvScanner": "Total 26 packages affected by 111 known vulnerabilities (6 Critical, 49 High, 46 Medium, 10 Low, 0 Unknown) from 1 ecosystem."
+  },
+  "resumePdfBytes": 4044332
+}
