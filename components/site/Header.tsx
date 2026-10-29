@@ -11,7 +11,7 @@ export function Header() {
   const items = NAV.map((n) => ({ label: n.label, href: sectionHref(n.hash) }))
   return (
     <header className="site-header sticky top-0 z-40 border-b border-rule bg-paper">
-      <div className="page relative flex h-16 items-center justify-between gap-6">
+      <div className="page relative flex min-h-16 flex-wrap items-center justify-between gap-x-6 gap-y-2 py-2">
         <Link
           href="/"
           prefetch={false}

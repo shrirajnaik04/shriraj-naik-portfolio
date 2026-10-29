@@ -4,7 +4,7 @@ import type React from "react"
 
 import { motion } from "framer-motion"
 import { useState, useEffect } from "react"
-import { Mail, Phone, MapPin, Linkedin, Github, Send, Loader } from "lucide-react"
+import { Mail, MapPin, Linkedin, Github, Send, Loader } from "lucide-react"
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -208,12 +208,6 @@ export default function ContactSection() {
       label: "Email",
       value: "nykshriraj4nov@gmail.com",
       href: "mailto:nykshriraj4nov@gmail.com",
-    },
-    {
-      icon: <Phone className="w-6 h-6 text-purple-400" />,
-      label: "Phone",
-      value: "+91 9764904641",
-      href: "tel:+919764904641",
     },
     {
       icon: <MapPin className="w-6 h-6 text-teal-400" />,

@@ -1,0 +1,137 @@
+import { expect, test } from '@playwright/test'
+import { approachClosing, getFeaturedProjects, getMoreProjects, getPublishedProjects, principles, profile } from '../../content'
+import { RESUME_PATH } from '../../lib/site'
+
+const STATUS_WORDS = ['live', 'in development', 'prototype', 'client work']
+
+test.describe('hero', () => {
+  test('one h1 and the agreed hero copy', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.locator('h1')).toHaveCount(1)
+    await expect(page.locator('h1')).toHaveText(profile.name)
+    const hero = page.locator('#home')
+    await expect(hero).toContainText(profile.hero.subtitle)
+    await expect(hero).toContainText(profile.hero.statement)
+    await expect(hero).toContainText(profile.hero.body)
+  })
+
+  test('the test report lists the five facts as label/value pairs', async ({ page }) => {
+    await page.goto('/')
+    const dl = page.locator('#home dl')
+    expect(await dl.locator('dt').allTextContents()).toEqual(profile.facts.map((f) => f.label))
+    expect(await dl.locator('dd').allTextContents()).toEqual(profile.facts.map((f) => f.value))
+    await expect(page.locator('#home')).toContainText(`${profile.facts.length} checks passed`)
+  })
+
+  test('calls to action', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.getByRole('link', { name: 'See selected work' })).toHaveAttribute('href', '#projects')
+    const resume = page.locator('#home').getByRole('link', { name: /Download resume/ })
+    await expect(resume).toHaveAttribute('href', RESUME_PATH)
+    await expect(resume).toHaveAttribute('download', '')
+  })
+
+  test('portrait is served by Cloudinary, not the Next image optimizer', async ({ page }) => {
+    await page.goto('/')
+    const img = page.locator('#home img')
+    await expect(img).toHaveAttribute('alt', profile.portrait.alt)
+    await expect(img).toHaveAttribute('src', /^https:\/\/res\.cloudinary\.com\/dfvyqtli8\/image\/upload\/f_auto,/)
+  })
+
+  test('the hero name fits at 320px with 200% text', async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 640 })
+    await page.goto('/')
+    await page.addStyleTag({ content: 'html { font-size: 200% !important; }' })
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)
+    expect(overflow).toBeLessThanOrEqual(0)
+  })
+
+  test('no animation on the page loops forever', async ({ page }) => {
+    await page.goto('/')
+    const infinite = await page.evaluate(
+      () => document.getAnimations().filter((a) => a.effect?.getTiming().iterations === Infinity).length,
+    )
+    expect(infinite).toBe(0)
+  })
+})
+
+test.describe('selected work', () => {
+  test('featured spreads: the four featured projects, in order', async ({ page }) => {
+    await page.goto('/')
+    const names = await page.locator('#projects article h3').allTextContents()
+    expect(names).toEqual(getFeaturedProjects().map((p) => p.name))
+  })
+
+  test('each spread shows evidence and a captioned schematic', async ({ page }) => {
+    await page.goto('/')
+    for (const article of await page.locator('#projects article').all()) {
+      await expect(article.getByRole('heading', { name: 'How I know it works' })).toBeVisible()
+      await expect(article.locator('[data-evidence] li').first()).toBeVisible()
+      const svg = article.locator('figure svg[role="img"]')
+      await expect(svg).toHaveCount(1)
+      expect((await svg.locator('title').textContent())?.trim().length).toBeGreaterThan(0)
+      expect((await article.locator('figcaption').textContent())?.trim().length).toBeGreaterThan(0)
+    }
+  })
+
+  test('the More work index lists the rest, and every published project appears exactly once', async ({ page }) => {
+    await page.goto('/')
+    const more = await page.locator('#projects details > summary [data-project-name]').allTextContents()
+    expect(more).toEqual(getMoreProjects().map((p) => p.name))
+    const featured = await page.locator('#projects article h3').allTextContents()
+    expect([...featured, ...more].sort()).toEqual(getPublishedProjects().map((p) => p.name).sort())
+  })
+
+  test('an index row expands to show what was built', async ({ page }) => {
+    await page.goto('/')
+    const first = page.locator('#projects details').first()
+    await first.locator('summary').click()
+    await expect(first).toHaveAttribute('open', '')
+    await expect(first.getByRole('heading', { name: 'What I built' })).toBeVisible()
+  })
+
+  test('the RAG chatbot states its verification gap plainly, without a check mark', async ({ page }) => {
+    await page.goto('/')
+    const row = page.locator('details', { has: page.locator('[data-project-name]', { hasText: 'RAG chatbot builder' }) })
+    await expect(row.locator('[data-gap]')).toContainText('No automated tests yet')
+    expect(await row.locator('[data-gap]').textContent()).not.toContain('✓')
+  })
+
+  test('a general note covers work still in development', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.locator('#projects')).toContainText('A few more products are in development.')
+  })
+
+  test('no project carries a status label', async ({ page }) => {
+    await page.goto('/')
+    const labels = await page
+      .locator('#projects *')
+      .evaluateAll((els, words) => els.filter((e) => words.includes((e.textContent ?? '').trim().toLowerCase())).length, STATUS_WORDS)
+    expect(labels).toBe(0)
+    await expect(page.locator('[data-status]')).toHaveCount(0)
+  })
+
+  test('case-study links and the live site link', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.getByRole('link', { name: 'Read the Gym Daddy case study' })).toHaveAttribute('href', '/work/gym-daddy')
+    await expect(page.getByRole('link', { name: 'Read the PrintSaathi case study' })).toHaveAttribute(
+      'href',
+      '/work/printsaathi',
+    )
+    const live = page.locator('#projects a[href="https://www.gymdaddy.in"]')
+    await expect(live).toHaveAttribute('rel', /noopener/)
+  })
+})
+
+test.describe('approach', () => {
+  test('the four principles and the closing line', async ({ page }) => {
+    await page.goto('/')
+    expect(await page.locator('#approach h3').allTextContents()).toEqual(principles.map((p) => p.title))
+    await expect(page.locator('#approach')).toContainText(approachClosing)
+  })
+})
+
+test('no phone number anywhere in the page', async ({ page }) => {
+  await page.goto('/')
+  expect((await page.content()).replace(/\D/g, '')).not.toContain('9764904641')
+})

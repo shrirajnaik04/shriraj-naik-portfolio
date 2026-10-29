@@ -130,7 +130,8 @@
   /* ---------- type ---------- */
   .t-name {
     font-family: var(--font-display);
-    font-size: clamp(min(3.5rem, 16vw), 1.5rem + 8vw, 8.5rem);
+    /* viewport-based with a px cap on purpose: text zoom must not push the name off a 320px screen */
+    font-size: clamp(min(3.5rem, 18vw), 20vw, 136px);
     line-height: 0.92;
     letter-spacing: -0.025em;
     font-weight: 400;
@@ -263,6 +264,270 @@
   .disclosure > summary::-webkit-details-marker {
     display: none;
   }
+  .disclosure-sign {
+    display: inline-grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    font-size: 1.125rem;
+    line-height: 1;
+    color: var(--ink-soft);
+  }
+  .disclosure > summary:hover .disclosure-sign {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+  .disclosure[open] .disclosure-sign {
+    transform: rotate(45deg);
+  }
+
+  /* ---------- evidence mark: a sage disc with the check knocked out ---------- */
+  .mark-pass {
+    display: inline-block;
+    flex: none;
+    width: 1rem;
+    height: 1rem;
+    background: var(--evidence);
+    -webkit-mask: var(--mask-pass) center / contain no-repeat;
+    mask: var(--mask-pass) center / contain no-repeat;
+  }
+
+  /* ---------- hero: portrait plate and test report ---------- */
+  .plate {
+    background: var(--card);
+    padding: 0.625rem;
+    border: 1px solid var(--rule);
+  }
+  .plate img {
+    outline: 1px solid color-mix(in oklab, var(--ink) 16%, transparent);
+    outline-offset: -1px;
+  }
+  .report {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1.125rem 1.25rem 1rem;
+    box-shadow:
+      0 1px 0 color-mix(in oklab, var(--ink) 4%, transparent),
+      0 22px 44px -28px color-mix(in oklab, var(--ink) 45%, transparent);
+  }
+  /* value then label on one line; the label wraps under the value when space runs out */
+  .ledger-row {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.625rem;
+    padding: 0.5rem 0 0.5rem 1.75rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+  .ledger-row:first-child {
+    border-top: 0;
+  }
+  .ledger-row dt {
+    min-width: 0;
+    color: var(--ink-soft);
+  }
+  .ledger-row dd {
+    order: -1;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  /* pending ring underneath, passed mark on top, both beside the first line */
+  .ledger-row::before,
+  .ledger-row::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 999px;
+  }
+  .ledger-row::before {
+    border: 1.5px solid var(--rule);
+  }
+  .ledger-row::after {
+    background: var(--evidence);
+    -webkit-mask: var(--mask-pass) center / contain no-repeat;
+    mask: var(--mask-pass) center / contain no-repeat;
+  }
+  .ledger-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--rule);
+    color: var(--evidence);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  /* ---------- featured spread: title, then schematic, then details on small screens ---------- */
+  .spread {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'head'
+      'figure'
+      'body';
+    row-gap: 2rem;
+  }
+  .spread__head {
+    grid-area: head;
+  }
+  .spread__figure {
+    grid-area: figure;
+  }
+  .spread__body {
+    grid-area: body;
+  }
+  @media (min-width: 64rem) {
+    .spread {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+        'figure head'
+        'figure body';
+      column-gap: 4rem;
+      row-gap: 1.5rem;
+    }
+    .spread--flip {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      grid-template-areas:
+        'head figure'
+        'body figure';
+    }
+  }
+  @media (min-width: 64rem) {
+    /* the drawing stays beside the text while you read the long column (CSS only) */
+    .spread__figure {
+      position: sticky;
+      top: 6rem;
+      align-self: start;
+    }
+  }
+  .figure-plate {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    padding: clamp(0.75rem, 0.5rem + 1.5vw, 1.75rem);
+  }
+
+  .list-built li,
+  .list-evidence li {
+    position: relative;
+  }
+  .list-built li + li,
+  .list-evidence li + li {
+    margin-top: 0.5rem;
+  }
+  .list-built li {
+    padding-left: 1.25rem;
+  }
+  .list-built li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.75em;
+    width: 0.5rem;
+    height: 1px;
+    background: var(--ink-soft);
+  }
+  .list-evidence li {
+    padding-left: 1.625rem;
+  }
+  .list-evidence li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    width: 1rem;
+    height: 1rem;
+    background: var(--evidence);
+    -webkit-mask: var(--mask-pass) center / contain no-repeat;
+    mask: var(--mask-pass) center / contain no-repeat;
+  }
+
+  /* ---------- schematics: one drafting style for every figure ---------- */
+  .sch {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-inline: auto;
+    max-width: 34rem;
+    font-family: var(--font-sans);
+    overflow: visible;
+  }
+  .sch-box {
+    fill: var(--card);
+    stroke: var(--ink);
+    stroke-width: 1.25;
+  }
+  .sch-box--quiet {
+    fill: var(--paper-deep);
+  }
+  .sch-label {
+    fill: var(--ink);
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .sch-mono {
+    fill: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 14px;
+  }
+  .sch-line {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1.25;
+  }
+  .sch-head {
+    fill: var(--ink);
+  }
+  .sch-guard {
+    fill: none;
+    stroke: var(--signal-bright);
+    stroke-width: 2;
+    stroke-dasharray: 7 6;
+  }
+  .sch-head-guard {
+    fill: var(--signal-bright);
+  }
+  .sch-guard-label {
+    fill: var(--signal);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .sch-ok {
+    fill: var(--evidence);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .sch-ok-disc {
+    fill: var(--evidence);
+  }
+  .sch-ok-tick {
+    fill: none;
+    stroke: var(--card);
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  /* Pointing at a project strengthens its guardrail (instant, user-triggered). */
+  .spread:is(:hover, :focus-within) .sch-guard {
+    stroke-width: 3;
+  }
+}
+
+/* The evidence mark, reused by lists, the hero report and the approach band. */
+:root {
+  --mask-pass: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16Zm3.62-10.08a.8.8 0 0 0-1.24-1.01L7.03 8.96 5.6 7.53a.8.8 0 1 0-1.13 1.13l2.06 2.06a.8.8 0 0 0 1.19-.06l3.9-4.74Z'/%3E%3C/svg%3E");
 }
 
 /* ---------- motion: finite, opacity/transform only, and never without consent ---------- */
@@ -281,17 +546,26 @@
     block-size: auto;
   }
 
-  /* Hero test report: each mark resolves from pending to passed, once. */
-  .ledger-mark::after {
+  /* Hero test report: each mark resolves from pending to passed, once (the page's one orchestrated moment). */
+  .ledger-row::after {
     animation: mark-pass 260ms cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
   }
-  .ledger-row:nth-child(1) .ledger-mark::after { animation-delay: 220ms; }
-  .ledger-row:nth-child(2) .ledger-mark::after { animation-delay: 340ms; }
-  .ledger-row:nth-child(3) .ledger-mark::after { animation-delay: 460ms; }
-  .ledger-row:nth-child(4) .ledger-mark::after { animation-delay: 580ms; }
-  .ledger-row:nth-child(5) .ledger-mark::after { animation-delay: 700ms; }
+  .ledger-row:nth-child(1)::after { animation-delay: 220ms; }
+  .ledger-row:nth-child(2)::after { animation-delay: 340ms; }
+  .ledger-row:nth-child(3)::after { animation-delay: 460ms; }
+  .ledger-row:nth-child(4)::after { animation-delay: 580ms; }
+  .ledger-row:nth-child(5)::after { animation-delay: 700ms; }
   .ledger-summary {
-    animation: summary-in 240ms ease-out 760ms backwards;
+    animation: summary-in 240ms ease-out 780ms backwards;
+  }
+
+  .disclosure-sign,
+  .sch-guard {
+    transition:
+      transform 180ms ease,
+      stroke-width 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
   }
 }
 

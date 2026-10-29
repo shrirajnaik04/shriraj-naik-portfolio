@@ -39,7 +39,7 @@ export function Section({
     <section id={id} aria-labelledby={`${id}-title`} className={`section ${SURFACE_CLASS[surface]}`}>
       <div className="page">
         {layout === 'split' ? (
-          <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
             <div className="lg:col-span-4">{heading}</div>
             <div className="lg:col-span-8">{children}</div>
           </div>
