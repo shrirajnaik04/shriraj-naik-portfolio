@@ -1,38 +1,11 @@
-import { MetadataRoute } from 'next'
- 
+import type { MetadataRoute } from 'next'
+import { getCaseStudySlugs } from '@/content'
+import { CONTENT_UPDATED, SITE_URL } from '@/lib/site'
+
+/** Canonical pages only (no #fragments), dated by the content review, so the file is stable across builds. */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://shrirajnaik.dev' // Replace with your actual domain
-  
   return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/#about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/#projects`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/#tech`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/#contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
+    { url: SITE_URL, lastModified: CONTENT_UPDATED },
+    ...getCaseStudySlugs().map((slug) => ({ url: `${SITE_URL}/work/${slug}`, lastModified: CONTENT_UPDATED })),
   ]
 }

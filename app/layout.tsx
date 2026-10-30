@@ -8,15 +8,26 @@ import { SITE_URL } from '@/lib/site'
 import { fontVariables } from './fonts'
 import './globals.css'
 
+const TITLE = 'Shriraj Naik — QA Automation Engineer & AI Product Engineer'
+const DESCRIPTION =
+  'QA automation engineer with 4+ years in FinTech testing, who also builds and ships full-stack AI products. Case studies, experience and resume.'
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: {
-    default: 'Shriraj Naik — QA Automation Engineer & AI Product Engineer',
-    template: '%s | Shriraj Naik',
-  },
-  description:
-    'QA automation engineer with 4+ years in FinTech testing, who also builds and ships full-stack AI products. Case studies, experience and resume.',
+  title: { default: TITLE, template: '%s | Shriraj Naik' },
+  description: DESCRIPTION,
   alternates: { canonical: '/' },
+  manifest: '/site.webmanifest',
+  openGraph: {
+    type: 'website',
+    url: '/',
+    siteName: 'Shriraj Naik',
+    title: TITLE,
+    description: DESCRIPTION,
+    locale: 'en_IN',
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Shriraj Naik, QA Automation Engineer & AI Product Engineer' }],
+  },
+  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION, images: ['/og.png'] },
 }
 
 export const viewport: Viewport = {
