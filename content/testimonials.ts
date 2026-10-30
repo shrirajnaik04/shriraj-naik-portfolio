@@ -10,6 +10,13 @@ export const testimonials: Testimonial[] = [
       "Shriraj’s approach of AI in QA is both exciting and forward-thinking. His custom frameworks reflect a deep understanding of automation and innovation in testing. Truly impressive work—he’s clearly pushing boundaries in the QA space.",
   },
   {
+    name: 'Ajay Pareek',
+    role: 'TechOps and Cloud Infrastructure Manager',
+    company: 'FinTech Company',
+    quote:
+      'I had the pleasure of working with Shriraj for almost four years, and it has been a great experience. He has strong technical knowledge and a genuine passion for learning new things. He is proactive in his domain, takes initiative, and is always ready to take on new challenges. His problem-solving approach and willingness to continuously improve make him a valuable professional. I truly appreciate his dedication and commitment, and I wish him continued success in his career.',
+  },
+  {
     name: 'Marcelino Fernandes',
     role: 'QA Automation Team Lead',
     company: 'FinTech Company',
