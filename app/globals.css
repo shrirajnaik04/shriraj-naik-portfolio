@@ -118,8 +118,40 @@
     color: var(--on-band);
     border-block: 1px solid var(--band-rule);
   }
-  .band + .band {
+  .band + .band,
+  main:has(> .band:last-child) + .band {
     border-top: 0;
+  }
+
+  /* ---------- form fields: boundaries keep 3:1 against their surface (WCAG 1.4.11) ---------- */
+  .field {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid color-mix(in oklab, var(--ink) 48%, transparent);
+    border-radius: 6px;
+    background: color-mix(in oklab, var(--ink) 5%, transparent);
+    color: var(--ink);
+    font: inherit;
+    transition: border-color 150ms ease;
+  }
+  .field:hover {
+    border-color: color-mix(in oklab, var(--ink) 70%, transparent);
+  }
+  .field:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  .field[aria-invalid='true'] {
+    border-color: var(--signal);
+  }
+  textarea.field {
+    min-height: 9rem;
+    resize: vertical;
+  }
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: progress;
   }
 
   /* ---------- type ---------- */
