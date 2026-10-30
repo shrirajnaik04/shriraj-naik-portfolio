@@ -1,4 +1,4 @@
-import { RESUME_PATH } from './site'
+import { LEGACY_RESUME_PATH, RESUME_PATH } from './site'
 
 /**
  * Response headers for every route. 'unsafe-inline' for scripts is a deliberate trade-off: the
@@ -34,7 +34,7 @@ export function securityHeaders({ vercel }: { vercel: boolean }): { key: string;
 /** The old download URL keeps working (permanently moved); /resume is a memorable alias. */
 export function redirects() {
   return [
-    { source: '/SHRIRAJ%20NAIK%20-%20QA%20Analyst%20III.pdf', destination: RESUME_PATH, permanent: true },
+    { source: encodeURI(LEGACY_RESUME_PATH), destination: RESUME_PATH, permanent: true },
     { source: '/resume', destination: RESUME_PATH, permanent: false },
   ]
 }

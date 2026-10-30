@@ -4,6 +4,7 @@ import { CaseStudy } from '@/components/project/CaseStudy'
 import { JsonLd } from '@/components/site/JsonLd'
 import { getCaseStudySlugs, getProject } from '@/content'
 import { articleJsonLd } from '@/lib/json-ld'
+import { SITE_NAME, socialMetadata } from '@/lib/metadata'
 
 export const dynamicParams = false
 
@@ -15,10 +16,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const project = getProject(slug)
   if (!project?.caseStudy) return {}
+  const title = `${project.name} case study | ${SITE_NAME}`
+  const path = `/work/${slug}`
   return {
-    title: `${project.name} case study`,
+    title: { absolute: title },
     description: project.summary,
-    alternates: { canonical: `/work/${slug}` },
+    alternates: { canonical: path },
+    ...socialMetadata({ title, description: project.summary, path, type: 'article' }),
   }
 }
 

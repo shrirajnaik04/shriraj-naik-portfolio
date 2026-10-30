@@ -37,11 +37,36 @@ test('social image is absolute and served', async ({ page, request }) => {
   expect(og.headers()['content-type']).toBe('image/png')
 })
 
-test('the site icon is served', async ({ page, request }) => {
+test('each case study shares its own title and URL, with the social image', async ({ page }) => {
+  for (const path of ROUTES.slice(1)) {
+    await page.goto(path)
+    const title = await page.title()
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `${SITE_URL}${path}`)
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', `${SITE_URL}${path}`)
+    await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article')
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', title)
+    await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content', title)
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', `${SITE_URL}/og.png`)
+  }
+})
+
+test('the site and Apple touch icons are served', async ({ page, request }) => {
   await page.goto('/')
-  const href = await page.locator('link[rel="icon"]').first().getAttribute('href')
-  expect(href).toBeTruthy()
-  expect((await request.get(href!)).status()).toBe(200)
+  for (const rel of ['icon', 'apple-touch-icon']) {
+    const href = await page.locator(`link[rel="${rel}"]`).first().getAttribute('href')
+    expect(href, rel).toBeTruthy()
+    expect((await request.get(href!)).status(), rel).toBe(200)
+  }
+})
+
+test('every manifest icon is served with its declared type', async ({ request }) => {
+  const manifest = (await (await request.get('/site.webmanifest')).json()) as { icons: { src: string; type: string }[] }
+  expect(manifest.icons.length).toBeGreaterThan(0)
+  for (const icon of manifest.icons) {
+    const res = await request.get(icon.src)
+    expect(res.status(), icon.src).toBe(200)
+    expect(res.headers()['content-type'], icon.src).toContain(icon.type)
+  }
 })
 
 test('legacy resume URL redirects permanently to the current PDF', async ({ request }) => {
