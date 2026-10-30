@@ -1,38 +1,25 @@
-"use client"
-import dynamic from "next/dynamic"
-import HeroSection from "@/components/HeroSection"
-// Fold optimization: dynamically import sections below initial viewport
-const MetricsSection = dynamic(() => import("@/components/MetricsSection"), { loading: () => <div className="h-32" /> })
-const AboutSection = dynamic(() => import("@/components/AboutSection"))
-const TechStackSection = dynamic(() => import("@/components/TechStackSection"))
-const ProjectsSection = dynamic(() => import("@/components/ProjectsSection"))
-const AutomationSection = dynamic(() => import("@/components/AutomationSection"))
-const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"))
-const ContactSection = dynamic(() => import("@/components/ContactSection"))
-import Navbar from "@/components/Navbar"
-import ScrollProgress from "@/components/ScrollProgress"
+import { About } from '@/components/sections/About'
+import { Agentic } from '@/components/sections/Agentic'
+import { Approach } from '@/components/sections/Approach'
+import { Contact } from '@/components/sections/Contact'
+import { Experience } from '@/components/sections/Experience'
+import { Hero } from '@/components/sections/Hero'
+import { Skills } from '@/components/sections/Skills'
+import { Testimonials } from '@/components/sections/Testimonials'
+import { Work } from '@/components/sections/Work'
 
 export default function Home() {
   return (
-    <div className="bg-slate-900 text-white overflow-x-hidden">
-      <a href="#main-content" className="skip-link">Skip to main content</a>
-      <ScrollProgress />
-      <Navbar />
-
-      <main id="main-content" tabIndex={-1}>
-        <HeroSection />
-        <MetricsSection />
-        <AboutSection />
-        <TechStackSection />
-        <ProjectsSection />
-        <AutomationSection />
-        <TestimonialsSection />
-        <ContactSection />
-      </main>
-
-      <footer className="bg-slate-950 py-8 text-center text-slate-400" role="contentinfo">
-        <p>&copy; 2026 Shriraj Naik. All rights reserved.</p>
-      </footer>
-    </div>
+    <>
+      <Hero />
+      <Work />
+      <Approach />
+      <Agentic />
+      <Experience />
+      <About />
+      <Skills />
+      <Testimonials />
+      <Contact />
+    </>
   )
 }

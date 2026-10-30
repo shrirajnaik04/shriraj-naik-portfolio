@@ -1,0 +1,85 @@
+# Triaged advisories in development-only tooling. `pnpm why --prod` is empty for every package
+# below; the paths were traced with `pnpm why` on 2026-10-30. Nothing here ships: production
+# dependencies are gated separately by `pnpm audit --prod`, which has no exceptions. Each entry
+# expires, so it is re-reviewed rather than forgotten; a new advisory, or any advisory past its
+# date, fails `pnpm audit:deps`. Lighthouse CI runs only `collect`, `upload` (filesystem) and
+# `assert`, locally, against this repository's own build.
+
+# basic-ftp: @lhci/cli > proxy-agent > pac-proxy-agent > get-uri > basic-ftp (also via lighthouse > puppeteer-core)
+[[IgnoredVulns]]
+id = "GHSA-c475-qrg2-pj4r"
+ignoreUntil = 2027-01-31
+reason = "dev-only (Lighthouse CI proxy support); no proxy or ftp:// URL is ever configured"
+
+# extract-zip: @lhci/cli > lighthouse > puppeteer-core > @puppeteer/browsers > extract-zip
+[[IgnoredVulns]]
+id = "GHSA-7pqw-9j4j-h8q3"
+ignoreUntil = 2027-01-31
+reason = "dev-only (Puppeteer browser download); not used: CHROME_PATH points at Playwright's Chromium"
+
+[[IgnoredVulns]]
+id = "GHSA-jmr9-qjv8-65gv"
+ignoreUntil = 2027-01-31
+reason = "dev-only (Puppeteer browser download); not used: CHROME_PATH points at Playwright's Chromium"
+
+# lodash: @lhci/cli > inquirer > lodash
+[[IgnoredVulns]]
+id = "GHSA-f23m-r3pf-42rh"
+ignoreUntil = 2027-01-31
+reason = "dev-only (Lighthouse CI interactive prompts); `lhci wizard` is never run"
+
+[[IgnoredVulns]]
+id = "GHSA-r5fr-rjxr-66jc"
+ignoreUntil = 2027-01-31
+reason = "dev-only (Lighthouse CI interactive prompts); `lhci wizard` is never run"
+
+[[IgnoredVulns]]
+id = "GHSA-xxjr-mmjv-4gpg"
+ignoreUntil = 2027-01-31
+reason = "dev-only (Lighthouse CI interactive prompts); `lhci wizard` is never run"
+
+# picomatch@2.3.1: eslint-config-next > @next/eslint-plugin-next > fast-glob > micromatch > picomatch
+[[IgnoredVulns]]
+id = "GHSA-3v7f-55p6-f55p"
+ignoreUntil = 2027-01-31
+reason = "dev-only (ESLint plugin file globbing); patterns come from this repository's own config"
+
+[[IgnoredVulns]]
+id = "GHSA-c2c7-rcm5-vvqj"
+ignoreUntil = 2027-01-31
+reason = "dev-only (ESLint plugin file globbing); patterns come from this repository's own config"
+
+# proxy-addr: @lhci/cli > express > proxy-addr
+[[IgnoredVulns]]
+id = "GHSA-jqcg-44mw-7w3h"
+ignoreUntil = 2027-01-31
+reason = "dev-only (Lighthouse CI server); `lhci server` is never run"
+
+# tmp@0.1.0: @lhci/cli > tmp; tmp@0.0.33: @lhci/cli > inquirer > external-editor > tmp
+[[IgnoredVulns]]
+id = "GHSA-52f5-9888-hmc6"
+ignoreUntil = 2027-01-31
+reason = "dev-only (Lighthouse CI temp files); names and directories come from the tool, run locally, never from user input"
+
+[[IgnoredVulns]]
+id = "GHSA-ph9p-34f9-6g65"
+ignoreUntil = 2027-01-31
+reason = "dev-only (Lighthouse CI temp files); names and directories come from the tool, run locally, never from user input"
+
+# uuid@8.3.2: @lhci/cli > uuid
+[[IgnoredVulns]]
+id = "GHSA-w5hq-g745-h8pq"
+ignoreUntil = 2027-01-31
+reason = "dev-only (Lighthouse CI build ids for local reports)"
+
+# yaml@2.8.0: vitest > vite > yaml
+[[IgnoredVulns]]
+id = "GHSA-48c2-rrv3-qjmp"
+ignoreUntil = 2027-01-31
+reason = "dev-only (Vite config parsing in the unit-test runner); parses this repository's own files"
+
+# zod@3.25.76: lighthouse > puppeteer-core > chromium-bidi > zod; eslint-config-next > eslint-plugin-react-hooks > zod
+[[IgnoredVulns]]
+id = "GHSA-mrhx-c7xc-m3w5"
+ignoreUntil = 2027-01-31
+reason = "dev-only (Lighthouse and ESLint internals); the shipped zod is 4.6.7, which is not affected"

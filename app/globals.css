@@ -1,349 +1,1055 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "./tokens.css";
 
-/* Skip-to-content link (a11y) */
-.skip-link {
-  position: absolute;
-  left: 1rem;
-  top: -3rem;
-  z-index: 200;
-  padding: 0.5rem 1rem;
-  background: #14b8a6;
-  color: #0f172a;
-  font-weight: 600;
-  border-radius: 0.5rem;
-  text-decoration: none;
-  transition: top 0.2s ease;
-}
-.skip-link:focus,
-.skip-link:focus-visible {
-  top: 1rem;
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-}
+/*
+ * Editorial Engineering design system.
+ * The default Tailwind palette is cleared so only the semantic tokens can be used.
+ */
+@theme inline {
+  --color-*: initial;
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-rule: var(--rule);
+  --color-signal: var(--signal);
+  --color-signal-bright: var(--signal-bright);
+  --color-evidence: var(--evidence);
+  --color-on-signal: var(--on-signal);
+  --color-transparent: transparent;
+  --color-current: currentColor;
 
-/* Visible keyboard focus across the app (a11y) */
-:focus-visible {
-  outline: 2px solid #2dd4bf;
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-button:focus-visible,
-a:focus-visible {
-  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.45);
-}
-
-/* Respect users who prefer reduced motion (a11y / WCAG 2.3.3) */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Mobile viewport fix for keyboard issues */
-@supports (-webkit-touch-callout: none) {
-  .mobile-vh-fix {
-    height: 100vh;
-    height: -webkit-fill-available;
-  }
-}
-
-/* Prevent form jumping on mobile */
-@media screen and (max-width: 768px) {
-  html {
-    height: -webkit-fill-available;
-  }
-  
-  body {
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-  }
-  
-  /* Smooth viewport transitions */
-  .viewport-stable {
-    transition: none !important;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-  }
-  
-  /* Prevent bouncing when keyboard opens/closes */
-  #contact-form {
-    position: relative;
-    will-change: transform;
-    transform: translateZ(0);
-  }
-  
-  /* Keep inputs stable during keyboard transitions */
-  input, textarea {
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
+  --font-display: var(--font-newsreader), ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-instrument-sans), ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "Cascadia Mono", Consolas, monospace;
 }
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-  }
-  
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
-
   html {
-    scroll-behavior: smooth;
-  }
-
-  * {
-    @apply border-border;
+    background: var(--paper);
+    color: var(--ink);
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   body {
-    @apply bg-slate-900 text-white;
-    font-family: "DM Sans", sans-serif;
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    font-synthesis: none;
+    font-kerning: normal;
+    /* A word wider than its line breaks instead of overflowing (narrow screens with enlarged text). */
+    overflow-wrap: break-word;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+
+  ::selection {
+    background: var(--signal);
+    color: var(--on-signal);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  /* Anchor targets that receive programmatic focus must not show a ring for the whole section. */
+  [tabindex='-1']:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }
 
 @layer components {
-  .gradient-text {
-    @apply bg-gradient-to-r from-teal-400 to-purple-500 bg-clip-text text-transparent;
+  /* ---------- layout ---------- */
+  .page {
+    margin-inline: auto;
+    max-width: 80rem;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 40rem) {
+    .page {
+      padding-inline: 2rem;
+    }
+  }
+  @media (min-width: 64rem) {
+    .page {
+      padding-inline: 3rem;
+    }
   }
 
-  .card-hover {
-    @apply hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300;
+  .section {
+    padding-block: clamp(5rem, 3rem + 6vw, 9rem);
   }
 
-  .btn-primary {
-    @apply bg-gradient-to-r from-teal-500 to-purple-600 px-8 py-4 rounded-lg font-semibold hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300;
+  .surface-deep {
+    background: var(--paper-deep);
+  }
+  /* In dark mode paper-deep is only 1.09:1 against the page: hairlines keep the band visible. */
+  :root[data-theme='dark'] .surface-deep {
+    border-block: 1px solid var(--rule);
   }
 
-  .btn-secondary {
-    @apply border-2 border-teal-500 text-teal-400 px-8 py-4 rounded-lg font-semibold hover:bg-teal-500 hover:text-white transition-all duration-300;
+  /* The header stays put during route transitions; only page content moves. */
+  .site-header {
+    view-transition-name: site-header;
   }
-}
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
+  /* An ink-blue band: children read the same semantic tokens, remapped for a dark ground. */
+  .band {
+    --ink: var(--on-band);
+    --ink-soft: var(--band-soft);
+    --signal: var(--signal-on-band);
+    --evidence: var(--evidence-on-band);
+    --rule: var(--band-rule);
+    --on-signal: var(--band);
+    --focus: var(--signal-on-band);
+    background: var(--band);
+    color: var(--on-band);
+    border-block: 1px solid var(--band-rule);
+  }
+  .band + .band,
+  main:has(> .band:last-child) + .band {
+    border-top: 0;
+  }
 
-::-webkit-scrollbar-track {
-  @apply bg-slate-900;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-slate-700 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-600;
-}
-
-/* Smooth animations */
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Loading animation */
-@keyframes pulse {
-  0%,
-  100% {
+  /* ---------- form fields: boundaries keep 3:1 against their surface (WCAG 1.4.11) ---------- */
+  .field {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid color-mix(in oklab, var(--ink) 48%, transparent);
+    border-radius: 6px;
+    background: color-mix(in oklab, var(--ink) 5%, transparent);
+    color: var(--ink);
+    font: inherit;
+    transition: border-color 150ms ease;
+  }
+  .field:hover {
+    border-color: color-mix(in oklab, var(--ink) 70%, transparent);
+  }
+  /* Placeholders are hints, at body-copy contrast (ink-soft meets 4.5:1 on every surface). */
+  .field::placeholder {
+    color: var(--ink-soft);
     opacity: 1;
   }
-  50% {
-    opacity: 0.5;
+  .field:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
   }
-}
-
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Gradient animations */
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
+  .field[aria-invalid='true'] {
+    border-color: var(--signal);
   }
-  50% {
-    background-position: 100% 50%;
+  textarea.field {
+    min-height: 9rem;
+    resize: vertical;
   }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.animate-gradient {
-  background-size: 200% 200%;
-  animation: gradient 3s ease infinite;
-}
-
-/* Floating animation */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-/* Glow effect */
-.glow {
-  box-shadow: 0 0 20px rgba(49, 151, 149, 0.3);
-}
-
-.glow:hover {
-  box-shadow: 0 0 30px rgba(49, 151, 149, 0.5);
-}
-
-/* Mobile-specific improvements */
-@media (max-width: 640px) {
-  body {
-    padding-top: 60px; /* Reduced padding for mobile */
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: progress;
   }
 
-  .text-responsive {
-    font-size: clamp(1rem, 4vw, 1.25rem);
+  /* ---------- type ---------- */
+  .t-name {
+    font-family: var(--font-display);
+    /* viewport-based with a px cap on purpose: text zoom must not push the name off a 320px screen */
+    font-size: clamp(min(3.5rem, 18vw), 20vw, 136px);
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+    font-weight: 400;
+  }
+  /* Beside the portrait (from 480 px) the name shares its row: 17vw keeps "Shriraj" on one line,
+   * and it still reaches the 136 px cap from ~800 px, so wide screens are unchanged. */
+  @media (min-width: 30rem) {
+    .t-name {
+      font-size: clamp(min(3.5rem, 18vw), 17vw, 136px);
+    }
+  }
+  /* The name on one line: sized from its column (container units), so it fills the column at any
+   * width without wrapping; 4.7em wide in Newsreader, capped at 128 px. */
+  .t-name--line {
+    white-space: nowrap;
+    font-size: min(128px, 20.5cqi);
   }
 
-  .heading-responsive {
-    font-size: clamp(2rem, 8vw, 3rem);
+  .t-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 1.4rem + 3.2vw, 4.25rem);
+    line-height: 1.02;
+    letter-spacing: -0.018em;
   }
 
-  /* Ensure proper touch targets */
-  button,
-  a {
-    min-height: 44px;
-    min-width: 44px;
+  .t-h3 {
+    text-wrap: balance;
+    font-family: var(--font-display);
+    font-size: clamp(1.625rem, 1.3rem + 1.1vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
   }
 
-  /* Improve readability on small screens */
-  p {
-    line-height: 1.6;
+  .t-h4 {
+    text-wrap: balance;
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    line-height: 1.25;
   }
 
-  /* Better spacing for mobile */
-  .mobile-padding {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-}
-
-/* Improve scroll behavior on mobile */
-@media (max-width: 768px) {
-  body {
-    padding-top: 60px; /* Reduced for mobile */
+  /* text-wrap: pretty only on the few ledes: applied to every paragraph it cost ~80 ms of layout on a throttled phone */
+  .t-lede {
+    text-wrap: pretty;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 1.1rem + 0.55vw, 1.625rem);
+    line-height: 1.4;
   }
 
-  html {
-    scroll-padding-top: 60px;
+  /* ~70–75 characters a line in Instrument Sans (66ch measured ~100: "ch" is the width of a zero) */
+  .t-body {
+    max-width: 32em;
   }
 
-  /* Prevent horizontal scroll */
-  body {
-    overflow-x: hidden;
+  .t-small {
+    font-size: 0.9375rem;
+    line-height: 1.55;
   }
 
-  /* Better button spacing on mobile */
-  .btn-mobile {
-    padding: 0.75rem 1.5rem;
+  .t-meta {
+    text-wrap: balance;
     font-size: 0.875rem;
+    line-height: 1.5;
+    font-weight: 500;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Code-like tokens only: stack identifiers and schematic annotations. */
+  .t-code {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- links and buttons ---------- */
+  .link {
+    color: inherit;
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in oklab, currentColor 45%, transparent);
+    text-underline-offset: 0.22em;
+    transition:
+      text-decoration-thickness 150ms ease,
+      text-decoration-color 150ms ease;
+  }
+  .link:hover {
+    text-decoration-thickness: 2px;
+    text-decoration-color: currentColor;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.625rem 1.25rem;
+    border-radius: 6px;
+    border: 1.5px solid transparent;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1.2;
+    text-decoration: none;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+  .btn-primary {
+    background: var(--signal);
+    color: var(--on-signal);
+  }
+  .btn-primary:hover {
+    background: color-mix(in oklab, var(--signal) 86%, var(--ink));
+  }
+  .btn-secondary {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+  .btn-secondary:hover {
+    background: color-mix(in oklab, var(--ink) 7%, transparent);
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: 0.75rem;
+    z-index: 100;
+    padding: 0.625rem 1rem;
+    border-radius: 6px;
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 600;
+    transform: translateY(-200%);
+  }
+  .skip-link:focus-visible {
+    transform: none;
+  }
+
+  /* ---------- disclosure rows (More work index) ---------- */
+  .disclosure > summary {
+    cursor: pointer;
+    list-style: none;
+  }
+  .disclosure > summary::-webkit-details-marker {
+    display: none;
+  }
+  .disclosure-sign {
+    display: inline-grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    font-size: 1.125rem;
+    line-height: 1;
+    color: var(--ink-soft);
+  }
+  .disclosure > summary:hover .disclosure-sign {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+  .disclosure > summary:hover [data-project-name] {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+  .disclosure[open] .disclosure-sign {
+    transform: rotate(45deg);
+  }
+
+  /* ---------- evidence mark: a sage disc with the check knocked out ---------- */
+  .mark-pass {
+    display: inline-block;
+    flex: none;
+    width: 1rem;
+    height: 1rem;
+    background: var(--evidence);
+    -webkit-mask: var(--mask-pass) center / contain no-repeat;
+    mask: var(--mask-pass) center / contain no-repeat;
+  }
+
+  /* ---------- hero: portrait plate and test report ---------- */
+  .plate {
+    background: var(--card);
+    padding: 0.625rem;
+    border: 1px solid var(--rule);
+  }
+  .plate img {
+    outline: 1px solid color-mix(in oklab, var(--ink) 16%, transparent);
+    outline-offset: -1px;
+  }
+  /* A plate like the portrait's: square, no floating shadow (an ink-mixed shadow glowed in dark mode). */
+  .report {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    padding: 1.125rem 1.25rem 1rem;
+  }
+  /* value then label on one line; the label wraps under the value when space runs out */
+  .ledger-row {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.625rem;
+    padding: 0.5rem 0 0.5rem 1.75rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+  .ledger-row:first-child {
+    border-top: 0;
+  }
+  .ledger-row dt {
+    min-width: 0;
+    color: var(--ink-soft);
+  }
+  .ledger-row dd {
+    order: -1;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  /* pending ring underneath, passed mark on top, both beside the first line */
+  .ledger-row::before,
+  .ledger-row::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 999px;
+  }
+  .ledger-row::before {
+    border: 1.5px solid var(--rule);
+  }
+  .ledger-row::after {
+    background: var(--evidence);
+    -webkit-mask: var(--mask-pass) center / contain no-repeat;
+    mask: var(--mask-pass) center / contain no-repeat;
+  }
+  .ledger-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--rule);
+    color: var(--evidence);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  /* The report is its own bar (never over the portrait): title, the checks, then the summary. Wide
+     screens set the checks in one row, value above label, with the summary beside the title. */
+  .report {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'title' 'rows' 'summary';
+  }
+  .report-title {
+    grid-area: title;
+  }
+  .report-rows {
+    grid-area: rows;
+    margin-top: 0.5rem;
+  }
+  .report .ledger-summary {
+    grid-area: summary;
+  }
+  @media (min-width: 64rem) {
+    .report {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: 'title summary' 'rows rows';
+      align-items: center;
+      padding: 1.25rem 1.5rem;
+    }
+    .report .ledger-summary {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
+    }
+    .report-rows {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--rule);
+    }
+    .report .ledger-row {
+      align-content: flex-start;
+      padding: 0 1rem 0 2.75rem;
+      border-top: 0;
+      border-left: 1px solid var(--rule);
+    }
+    .report .ledger-row:first-child {
+      padding-left: 1.75rem;
+      border-left: 0;
+    }
+    .report .ledger-row dt,
+    .report .ledger-row dd {
+      flex-basis: 100%;
+    }
+    .report .ledger-row::before,
+    .report .ledger-row::after {
+      top: 0.2rem;
+      left: 1rem;
+    }
+    .report .ledger-row:first-child::before,
+    .report .ledger-row:first-child::after {
+      left: 0;
+    }
+  }
+
+  /* ---------- featured spread: title, then schematic, then details on small screens ---------- */
+  .spread {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'head'
+      'figure'
+      'body';
+    row-gap: 2rem;
+  }
+  .spread__head {
+    grid-area: head;
+  }
+  .spread__figure {
+    grid-area: figure;
+  }
+  .spread__body {
+    grid-area: body;
+  }
+  @media (min-width: 64rem) {
+    .spread {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+        'figure head'
+        'figure body';
+      column-gap: 4rem;
+      row-gap: 1.5rem;
+    }
+    .spread--flip {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      grid-template-areas:
+        'head figure'
+        'body figure';
+    }
+  }
+  @media (min-width: 64rem) {
+    /* the drawing stays beside the text while you read the long column (CSS only) */
+    .spread__figure {
+      position: sticky;
+      top: 6rem;
+      align-self: start;
+    }
+  }
+  .figure-plate {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    padding: clamp(0.75rem, 0.5rem + 1.5vw, 1.75rem);
+  }
+  /* Phones: the drawing bleeds to the screen edges (.page's 1.25rem), so its labels stay at 11 px or more. */
+  @media (max-width: 39.99rem) {
+    .figure-plate {
+      margin-inline: -1.25rem;
+      border-inline: 0;
+    }
+  }
+
+  .list-built li,
+  .list-evidence li {
+    position: relative;
+  }
+  .list-built li + li,
+  .list-evidence li + li {
+    margin-top: 0.5rem;
+  }
+  .list-built li {
+    padding-left: 1.25rem;
+  }
+  .list-built li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.75em;
+    width: 0.5rem;
+    height: 1px;
+    background: var(--ink-soft);
+  }
+  .list-evidence li {
+    padding-left: 1.625rem;
+  }
+  .list-evidence li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    width: 1rem;
+    height: 1rem;
+    background: var(--evidence);
+    -webkit-mask: var(--mask-pass) center / contain no-repeat;
+    mask: var(--mask-pass) center / contain no-repeat;
+  }
+
+  /* ---------- testimonials: hanging quote marks, decorative only (not read aloud) ---------- */
+  .quote {
+    position: relative;
+  }
+  .quote::before {
+    content: '“' / '';
+    color: var(--ink-soft);
+  }
+  .quote::after {
+    content: '”' / '';
+    color: var(--ink-soft);
+  }
+  /* The opening mark hangs in the margin only where there is a margin for it. */
+  @media (min-width: 40rem) {
+    .quote::before {
+      position: absolute;
+      left: -0.62em;
+      top: -0.12em;
+      font-size: 1.6em;
+      line-height: 1;
+    }
+  }
+
+  /* ---------- testimonials carousel: native scroll-snap; buttons are an enhancement ---------- */
+  .carousel-track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 100%;
+    gap: 2rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    /* Moved by swipe, keys on the focused track, the buttons or the autoplay: no scrollbar needed. */
+    scrollbar-width: none;
+    padding-bottom: 0.25rem;
+  }
+  .carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+  @media (min-width: 48rem) {
+    .carousel-track {
+      grid-auto-columns: calc((100% - 4rem) / 2);
+      gap: 4rem;
+    }
+  }
+  .carousel-slide {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+  /* Inside a scrolling track a hanging mark would be clipped: set it inline. */
+  .carousel .quote::before {
+    position: static;
+    font-size: inherit;
+    line-height: inherit;
+  }
+  .carousel-button,
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1.5px solid var(--ink);
+    border-radius: 6px;
+    color: var(--ink);
+    font-size: 1.125rem;
+  }
+  .carousel-button:hover:not(:disabled) {
+    background: color-mix(in oklab, var(--ink) 8%, transparent);
+  }
+  .carousel-button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .carousel-track {
+      scroll-behavior: smooth;
+    }
+  }
+
+  .theme-toggle {
+    position: relative;
+  }
+  .theme-icon {
+    position: absolute;
+    transition:
+      transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      opacity 200ms ease;
+  }
+  .theme-icon--moon,
+  .theme-toggle[aria-pressed='true'] .theme-icon--sun {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+  }
+  .theme-toggle[aria-pressed='true'] .theme-icon--moon {
+    opacity: 1;
+    transform: none;
+  }
+  .theme-toggle:hover {
+    background: color-mix(in oklab, var(--ink) 8%, transparent);
+  }
+
+  /* ---------- schematics: one drafting style for every figure ---------- */
+  .sch {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-inline: auto;
+    max-width: 34rem;
+    font-family: var(--font-sans);
+    overflow: visible;
+  }
+  .sch-box {
+    fill: var(--card);
+    stroke: var(--ink);
+    stroke-width: 1.25;
+  }
+  .sch-box--quiet {
+    fill: var(--paper-deep);
+  }
+  .sch-label {
+    fill: var(--ink);
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .sch-mono {
+    fill: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 15px;
+  }
+  .sch-line {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1.25;
+  }
+  .sch-head {
+    fill: var(--ink);
+  }
+  .sch-guard {
+    fill: none;
+    stroke: var(--signal-bright);
+    stroke-width: 2;
+    stroke-dasharray: 7 6;
+  }
+  .sch-head-guard {
+    fill: var(--signal-bright);
+  }
+  .sch-guard-label {
+    fill: var(--signal);
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .sch-ok {
+    fill: var(--evidence);
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .sch-ok-disc {
+    fill: var(--evidence);
+  }
+  .sch-ok-tick {
+    fill: none;
+    stroke: var(--card);
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  /* A bead that slides along a connector; hidden unless the drawing's motion is running. */
+  .sch-bead {
+    fill: var(--ink);
+    opacity: 0;
+    pointer-events: none;
+  }
+  /* Carries a guard arrow's head on a one-unit stub; the marching shaft is drawn separately. */
+  .sch-head-carrier {
+    fill: none;
+    stroke: none;
+  }
+  /* Pointing at a project strengthens its guardrail (instant, user-triggered). */
+  .spread:is(:hover, :focus-within) .sch-guard {
+    stroke-width: 3;
   }
 }
 
-/* Desktop improvements */
-@media (min-width: 769px) {
-  body {
-    padding-top: 70px; /* Normal padding for desktop */
+/* The evidence mark, reused by lists, the hero report and the approach band. */
+:root {
+  --mask-pass: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16Zm3.62-10.08a.8.8 0 0 0-1.24-1.01L7.03 8.96 5.6 7.53a.8.8 0 1 0-1.13 1.13l2.06 2.06a.8.8 0 0 0 1.19-.06l3.9-4.74Z'/%3E%3C/svg%3E");
+}
+
+/* ---------- motion: finite, opacity/transform only, and never without consent ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+  .disclosure::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    transition:
+      block-size 220ms ease,
+      content-visibility 220ms allow-discrete;
+  }
+  .disclosure[open]::details-content {
+    block-size: auto;
   }
 
-  html {
-    scroll-padding-top: 70px;
+  /* Hero test report: each mark resolves from pending to passed, once (the page's one orchestrated moment). */
+  .ledger-row::after {
+    animation: mark-pass 260ms cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  }
+  .ledger-row:nth-child(1)::after { animation-delay: 120ms; }
+  .ledger-row:nth-child(2)::after { animation-delay: 220ms; }
+  .ledger-row:nth-child(3)::after { animation-delay: 320ms; }
+  .ledger-row:nth-child(4)::after { animation-delay: 420ms; }
+  .ledger-row:nth-child(5)::after { animation-delay: 520ms; }
+  .ledger-summary {
+    animation: summary-in 240ms ease-out 600ms backwards;
+  }
+
+  /* Drawings are always moving while they're on screen (owner's call, 2026-10-30): a bead loops
+   * along each connector in flow order and the guardrail dashes march. MotionGate marks on-screen
+   * drawings with data-inview and only those animate; background tabs don't render, and
+   * reduced motion (this block) turns it off. */
+  @media screen {
+    /* Transform only, so the GPU runs it: ~50 ms of main thread per 10 s with a drawing on screen,
+     * against ~950 ms for animated dash offsets (measured 2026-10-30). */
+    /* Created only while the drawing is on screen, so nothing exists (or costs) at load. */
+    .figure-plate[data-inview] .sch-bead {
+      animation: sch-bead 3.6s linear infinite;
+      animation-delay: calc(var(--seq, 0) * 0.5s);
+    }
+    .figure-plate[data-inview] .sch-march--right {
+      animation: sch-march-right 1.6s linear infinite;
+    }
+    .figure-plate[data-inview] .sch-march--left {
+      animation: sch-march-left 1.6s linear infinite;
+    }
+    .figure-plate[data-inview] .sch-march--down {
+      animation: sch-march-down 1.6s linear infinite;
+    }
+    .figure-plate[data-inview] .sch-march--up {
+      animation: sch-march-up 1.6s linear infinite;
+    }
+  }
+
+  .disclosure-sign,
+  .sch-guard {
+    transition:
+      transform 180ms ease,
+      stroke-width 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
   }
 }
 
-/* Tablet improvements */
-@media (min-width: 641px) and (max-width: 1024px) {
-  .tablet-grid {
-    grid-template-columns: repeat(2, 1fr);
+@keyframes mark-pass {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
   }
 }
 
-/* High DPI displays */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .crisp-edges {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
+@keyframes summary-in {
+  from {
+    opacity: 0.25;
+    transform: translateY(2px);
   }
 }
 
-/* Form improvements */
-.form-input {
-  @apply bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-4 text-white focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20 transition-all duration-300;
+/* ---------- scroll: purposeful reveals and drawings ----------
+ * CSS scroll-driven animations: no script, no scroll listener, off the main thread for
+ * opacity and transform. Screens only (print is static), only with motion allowed, only where the
+ * browser supports view timelines; everywhere else the page is simply complete. Sticky elements and
+ * section elements (anchor targets) are never moved. Home-page drawings draw themselves as they
+ * enter; a case study's drawing is complete on arrival. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* Section headings and a few blocks rise in; item-level reveals were dropped (2026-10-30): with
+     * the drawings, setting up their animations delayed the first paint on a throttled phone by
+     * ~300 ms (LCP 924 ms without them vs 1,232 ms with, median of 5). */
+    .reveal,
+    .carousel {
+      animation: reveal-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 220px;
+    }
+
+    /* Drawings. As a drawing enters, its lines draw and, after the flow (--seq, set by the drawing),
+     * its evidence resolves. The endless beads and marching guardrails are time-based (see the
+     * motion block above). */
+    :is(#projects, #agentic) .figure-plate {
+      view-timeline: --figure block;
+    }
+    .spread,
+    .agentic-flow {
+      view-timeline: --flow block;
+    }
+    :is(#projects, #agentic) .figure-plate .sch-draw {
+      stroke-dasharray: 1;
+      animation: sch-draw linear both;
+      animation-timeline: --figure;
+      animation-range: entry 10% cover 30%;
+    }
+    /* Boxes and labels stay solid: per-element fades cost ~70 ms of load-time main thread on a
+     * throttled phone (measured 2026-10-30) for little effect. */
+    :is(#projects, #agentic) .figure-plate .sch-ok-disc {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: sch-pop linear both;
+    }
+    :is(#projects, #agentic) .figure-plate .sch-ok-tick {
+      stroke-dasharray: 1;
+      animation: sch-draw linear both;
+    }
+    :is(#projects, #agentic) .figure-plate .sch-ok {
+      animation: sch-fade linear both;
+    }
+    /* One step of the flow per --seq, after the lines are drawn and while the drawing is in view. */
+    :is(#projects, #agentic) .figure-plate :is(.sch-ok-disc, .sch-ok-tick, .sch-ok) {
+      animation-timeline: --figure;
+      animation-range: cover calc(24% + var(--seq, 0) * 4%) cover calc(32% + var(--seq, 0) * 4%);
+    }
+    @media (min-width: 64rem) {
+      /* Wide screens: the drawing is sticky beside the text, which would hold its own timeline still,
+       * so the flow follows the reading of the whole project instead. */
+      :is(#projects, #agentic) .figure-plate :is(.sch-ok-disc, .sch-ok-tick, .sch-ok) {
+        animation-timeline: --flow;
+        animation-range: cover calc(26% + var(--seq, 0) * 5%) cover calc(34% + var(--seq, 0) * 5%);
+      }
+    }
+
+    /* The experience line fills in ink as the roles are read. */
+    .timeline {
+      position: relative;
+      view-timeline: --timeline block;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -1px;
+      width: 1px;
+      background: var(--ink);
+      transform-origin: top;
+      animation: timeline-fill linear both;
+      animation-timeline: --timeline;
+      animation-range: entry 40% cover 65%;
+    }
+  }
 }
 
-.form-label {
-  @apply absolute -top-2 left-3 bg-slate-800 px-2 text-xs text-teal-400 font-medium;
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sch-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes sch-fade {
+  from {
+    opacity: 0.12;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* One dash period (7 + 6 = 13 units) per cycle, so the march loops seamlessly. */
+@keyframes sch-march-right {
+  to {
+    transform: translateX(13px);
+  }
+}
+@keyframes sch-march-left {
+  to {
+    transform: translateX(-13px);
+  }
+}
+@keyframes sch-march-down {
+  to {
+    transform: translateY(13px);
+  }
+}
+@keyframes sch-march-up {
+  to {
+    transform: translateY(-13px);
+  }
+}
+/* A bead crosses its connector (--bx, --by) in the first 40 % of the cycle, then waits. */
+@keyframes sch-bead {
+  0% {
+    opacity: 0;
+    transform: none;
+  }
+  6%,
+  34% {
+    opacity: 1;
+  }
+  40%,
+  100% {
+    opacity: 0;
+    transform: translate(var(--bx), var(--by));
+  }
+}
+@keyframes sch-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes timeline-fill {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* ---------- route transitions: cross-document view transitions (CSS only, no JS) ----------
+ * Opening a case study is a normal page load. Both documents opt in, and a project's title and
+ * drawing carry the same view-transition-name on the home spread and its case study, so the browser
+ * morphs them into place. The new document starts at the top, so the pair forms even when the link
+ * was clicked far down the page (an in-app router transition captures before the scroll resets).
+ * The rest of the page swaps without animation. Unsupported browsers simply navigate. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+.vt-morph {
+  view-transition-class: morph;
+}
+::view-transition {
+  pointer-events: none;
+}
+::view-transition-group(.morph) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+  /* State feedback (hover, focus, press) still changes, instantly: nothing moves or fades without consent. */
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
 }
