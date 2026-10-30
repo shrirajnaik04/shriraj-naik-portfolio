@@ -25,11 +25,11 @@ export function TravelConciergeSchematic() {
       <Box x={262} y={146} w={168} h={48} label="Groq, then xAI" quiet />
 
       <Note x={10} y={244} text="Real-time messaging" />
-      <Box x={10} y={258} w={92} h={50} label="Host" />
-      <Arrow id={ID} d="M102 283 H124" both />
-      <Box x={128} y={252} w={184} h={62} label="Messaging SDK" sub="Socket.IO, Redis" />
-      <Arrow id={ID} d="M312 283 H334" both />
-      <Box x={338} y={258} w={92} h={50} label="Guest" />
+      <Box x={10} y={258} w={84} h={50} label="Host" />
+      <Arrow id={ID} d="M94 283 H130" both />
+      <Box x={134} y={252} w={172} h={62} label="Messaging SDK" sub="Socket.IO, Redis" />
+      <Arrow id={ID} d="M306 283 H342" both />
+      <Box x={346} y={258} w={84} h={50} label="Guest" />
 
       <Check x={10} y={372} text="Jest suite on the SDK" />
       <Check x={10} y={404} text="Detox and Maestro gate the mobile app" />

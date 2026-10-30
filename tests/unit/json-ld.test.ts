@@ -13,7 +13,7 @@ describe('JSON-LD', () => {
   })
 
   test('person describes the live site without a phone number', () => {
-    expect(personJsonLd()).toMatchObject({ '@type': 'Person', url: `${SITE_URL}/`, jobTitle: 'QA Automation Engineer' })
+    expect(personJsonLd()).toMatchObject({ '@type': 'Person', url: `${SITE_URL}/`, jobTitle: 'SDET and QA Automation Engineer' })
     expect(JSON.stringify(personJsonLd())).not.toMatch(/telephone|9764904641/)
   })
 

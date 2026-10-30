@@ -65,7 +65,8 @@ async function openGymDaddyCaseStudy(page: import('@playwright/test').Page) {
   await expect(page).toHaveURL(/\/work\/gym-daddy$/)
   await expect(page.locator('h1')).toHaveText('Gym Daddy')
   await page.waitForTimeout(800)
-  return (await page.evaluate(() => (window as unknown as { __vt?: string[] }).__vt ?? [])) as string[]
+  // null when the recorder never ran, so "no animations" can't pass without having been observed
+  return (await page.evaluate(() => (window as unknown as { __vt?: string[] }).__vt ?? null)) as string[] | null
 }
 
 test('opening a case study morphs the drawing into place (Chromium, cross-document)', async ({ page, browserName }) => {

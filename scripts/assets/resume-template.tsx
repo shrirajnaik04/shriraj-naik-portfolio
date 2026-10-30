@@ -40,9 +40,11 @@ h4 { margin-top: 4pt; }
 .meta { font-weight: 400; color: #3d4656; }
 .entry + .entry, .entry-line + .entry-line { margin-top: 4pt; }
 .employer > h3 + .entry > h4 { margin-top: 2pt; }
-ul { padding-left: 11pt; }
-li { margin-top: 1.5pt; padding-left: 1pt; break-inside: avoid; }
-li::marker { color: #18233a; }
+ul { list-style: none; padding-left: 11pt; }
+/* A real "•" in the text, hung in the indent: parsers that ignore layout split items on it. In
+   normal flow, never positioned: positioned boxes are painted later, which reorders the PDF text. */
+li { margin-top: 1.5pt; text-indent: -9pt; break-inside: avoid; }
+.bullet { display: inline-block; width: 9pt; text-indent: 0; color: #18233a; }
 .labelled + .labelled { margin-top: 1.5pt; }
 .label { font-weight: 600; color: #18233a; }
 `
@@ -83,7 +85,10 @@ function Bullets({ items }: { items: string[] }) {
   return (
     <ul>
       {items.map((item) => (
-        <li key={item}>{item}</li>
+        <li key={item}>
+          <span className="bullet">• </span>
+          {item}
+        </li>
       ))}
     </ul>
   )

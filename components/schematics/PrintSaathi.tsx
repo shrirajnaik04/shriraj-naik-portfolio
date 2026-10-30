@@ -15,13 +15,13 @@ export function PrintSaathiSchematic() {
       <Arrow id={ID} d="M105 64 V140" />
 
       <Boundary x={10} y={96} w={420} h={258} label="On the phone, no internet permission" labelAt="bottom" />
-      <Box x={28} y={146} w={180} h={62} label="Interface" sub="Preact, pdf.js" />
+      <Box x={28} y={146} w={160} h={62} label="Interface" sub="Preact, pdf.js" />
       <rect className="sch-guard" x={226} y={140} width={192} height={74} rx={6} />
       <Box x={232} y={146} w={180} h={62} label="Isolated engine" sub="Kotlin process" />
       <Note x={322} y={234} text="no permissions" anchor="middle" />
-      <Arrow id={ID} d="M210 177 H228" both />
+      <Arrow id={ID} d="M190 177 H228" both />
 
-      <Arrow id={ID} d="M118 208 V262" />
+      <Arrow id={ID} d="M108 208 V262" />
       <Box x={28} y={268} w={384} h={52} label="Android print service" />
 
       <Check x={10} y={396} text="Manifest checked on the built APK" />

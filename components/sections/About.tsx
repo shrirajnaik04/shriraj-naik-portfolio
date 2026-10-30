@@ -14,7 +14,7 @@ function parseDefinition(definition: string) {
 export function About() {
   const { term, partOfSpeech, sense } = parseDefinition(profile.vibeDefinition)
   return (
-    <Section id="about" title="About" surface="deep" layout="split" deferRendering>
+    <Section id="about" title="About" surface="deep" layout="split">
       <p className="t-lede max-w-[40ch]">{profile.about.intro}</p>
 
       <div className="mt-12 border-l-2 border-signal py-1 pl-6 sm:pl-8">
@@ -25,7 +25,7 @@ export function About() {
         <p className="t-body mt-3">{sense}</p>
       </div>
 
-      <p className="t-body mt-12 text-ink-soft">{profile.about.outro}</p>
+      <p className="t-body mt-12 text-ink-soft text-pretty">{profile.about.outro}</p>
       <p className="mt-8">
         <a href={RESUME_PATH} download className="btn btn-secondary">
           Download resume (PDF) <IconDownload />

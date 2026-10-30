@@ -19,7 +19,7 @@ export const profile: Profile = {
     subtitle: 'QA Automation Engineer & AI Product Engineer in Goa, India',
     statement:
       'I test FinTech software for a living and build AI products end to end, with one rule for both: it isn’t done until it’s tested.',
-    body: 'Four years of test automation, API testing and release quality on financial systems. Outside of it, I design, build and run full-stack products, including a multi-tenant SaaS that’s in production today.',
+    body: 'Four years of test automation, API testing and release quality on financial systems. Outside of it, I design, build and run full-stack products, including Gym Daddy, a multi-tenant SaaS for gyms that’s in production today.',
   },
   facts: [
     { value: '4+ yrs', label: 'QA in FinTech' },

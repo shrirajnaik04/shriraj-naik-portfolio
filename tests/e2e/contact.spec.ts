@@ -4,6 +4,7 @@ import { FIELD_ERRORS } from '../../lib/contact/schema'
 const SUCCESS = 'Thanks — your message is on its way. I’ll reply by email.'
 const RATE_LIMITED = 'Too many messages from your network. Please try again in a few minutes, or email me directly.'
 const GENERIC = 'Something went wrong sending your message. Please email me at nykshriraj4nov@gmail.com.'
+const TOO_FAST = 'Please wait a few seconds, then send your message again.'
 const NOSCRIPT = 'The form needs JavaScript. Email me at nykshriraj4nov@gmail.com instead.'
 
 async function fillValid(page: Page, name = 'Ada Lovelace') {
@@ -32,6 +33,26 @@ test('an empty submit shows four linked errors and focuses the first field', asy
   await expect(page.locator('#contact-name')).toBeFocused()
 })
 
+test('after an empty submit, errors clear as the fields are fixed and one click sends', async ({ page }) => {
+  // Regression: the message error used to clear only on blur, so the click on Send blurred the field,
+  // the error line vanished, the button moved up under the pointer and the click was lost.
+  let posts = 0
+  await page.route('**/api/contact', (route) => {
+    posts += 1
+    return route.fulfill({ status: 200, json: { ok: true } })
+  })
+  await openContact(page)
+  const send = page.locator('#contact form').getByRole('button', { name: 'Send message' })
+  await send.click()
+  await expect(page.locator('#contact-message')).toHaveAttribute('aria-invalid', 'true')
+  await fillValid(page) // the cursor stays in the message field
+  for (const field of Object.keys(FIELD_ERRORS))
+    await expect(page.locator(`#contact-${field}`)).not.toHaveAttribute('aria-invalid', 'true')
+  await send.click()
+  await expect(page.locator('#contact [role="status"]')).toHaveText(SUCCESS)
+  expect(posts).toBe(1)
+})
+
 test('a sent message shows a status that stays', async ({ page }) => {
   await page.route('**/api/contact', (route) => route.fulfill({ status: 200, json: { ok: true } }))
   await openContact(page)
@@ -43,7 +64,7 @@ test('a sent message shows a status that stays', async ({ page }) => {
   await expect(status).toHaveText(SUCCESS)
 })
 
-test('rate limiting and server errors show the agreed copy', async ({ page }) => {
+test('rate limiting, server errors and a too-quick send show the agreed copy', async ({ page }) => {
   let reply = { status: 429, json: { ok: false, error: 'rate_limited' } }
   await page.route('**/api/contact', (route) => route.fulfill(reply))
   await openContact(page)
@@ -54,6 +75,9 @@ test('rate limiting and server errors show the agreed copy', async ({ page }) =>
   reply = { status: 500, json: { ok: false, error: 'send_failed' } }
   await send.click()
   await expect(page.locator('#contact [role="status"]')).toHaveText(GENERIC)
+  reply = { status: 400, json: { ok: false, error: 'too_fast' } }
+  await send.click()
+  await expect(page.locator('#contact [role="status"]')).toHaveText(TOO_FAST)
 })
 
 test('field errors returned by the server are shown on their fields', async ({ page }) => {
@@ -75,18 +99,57 @@ test('accented names are accepted in the browser', async ({ page }) => {
   await expect(name).not.toHaveAttribute('aria-invalid', 'true')
 })
 
-test('the honeypot is unreachable by keyboard and hidden from assistive technology', async ({ page }) => {
+test('the honeypot is unreachable by keyboard, hidden from assistive technology and no autofill target', async ({ page }) => {
   await openContact(page)
-  const trap = page.locator('#contact input[name="company"]')
+  const trap = page.locator('#contact form [aria-hidden="true"] input')
+  await expect(trap).toHaveCount(1)
   await expect(trap).toHaveAttribute('tabindex', '-1')
   await expect(trap).toHaveAttribute('autocomplete', 'off')
-  expect(await trap.evaluate((el) => Boolean(el.closest('[aria-hidden="true"]')))).toBe(true)
+  // Browser autofill and password managers match fields by id, name and label; a trap they fill
+  // would discard a real message behind a success message.
+  const AUTOFILL = /company|organi[sz]ation|name|mail|phone|tel|fax|address|street|city|postal|zip|country|url|website/i
+  const id = (await trap.getAttribute('id')) ?? ''
+  const name = (await trap.getAttribute('name')) ?? ''
+  const label = await page.locator(`label[for="${id}"]`).innerText()
+  for (const value of [id.replace(/^contact-/, ''), name, label]) expect(value).not.toMatch(AUTOFILL)
+  expect(await trap.getAttribute('data-1p-ignore')).not.toBeNull()
+  await expect(trap).toHaveAttribute('data-lpignore', 'true')
+})
+
+test('the bot timer counts from page load, so a quick sender is not discarded', async ({ page }) => {
+  let elapsedMs = -1
+  await page.route('**/api/contact', async (route) => {
+    elapsedMs = (route.request().postDataJSON() as { elapsedMs: number }).elapsedMs
+    await route.fulfill({ status: 200, json: { ok: true } })
+  })
+  await openContact(page)
+  await page.waitForTimeout(3200) // reading the page first
+  await fillValid(page) // then filling the form in well under 3 s
+  await page.locator('#contact form').getByRole('button', { name: 'Send message' }).click()
+  await expect(page.locator('#contact [role="status"]')).toHaveText(SUCCESS)
+  expect(elapsedMs).toBeGreaterThanOrEqual(3000)
+})
+
+test.describe('without JavaScript', () => {
+  test.use({ javaScriptEnabled: false })
+
+  test('the form cannot submit, so nothing typed ends up in a URL', async ({ page }) => {
+    await page.goto('/')
+    const form = page.locator('#contact form')
+    await expect(form).toHaveAttribute('method', 'post')
+    await expect(form.getByRole('button', { name: 'Send message' })).toBeDisabled()
+    await page.locator('#contact-name').focus()
+    await page.keyboard.type('Ada Lovelace')
+    await page.keyboard.press('Enter')
+    await page.waitForTimeout(500)
+    expect(new URL(page.url()).search).toBe('')
+  })
 })
 
 test('the message counter tracks length', async ({ page }) => {
   await openContact(page)
   await page.locator('#contact-message').fill('twelve chars')
-  await expect(page.locator('#contact-message-count')).toHaveText('12 / 2000')
+  await expect(page.locator('#contact-message-count')).toHaveText('12 / 2,000')
 })
 
 test('without JavaScript the email fallback is in the page', async ({ request }) => {

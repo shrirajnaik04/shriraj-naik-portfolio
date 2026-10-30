@@ -1,3 +1,4 @@
+import { IconExternal } from '@/components/icons'
 import { profile } from '@/content'
 import { REPO_URL } from '@/lib/site'
 
@@ -12,8 +13,9 @@ export function Footer() {
         </p>
         <p className="text-ink-soft">AI-assisted, human-owned, test-gated</p>
         <p>
-          <a href={REPO_URL} className="link">
+          <a href={REPO_URL} rel="noopener noreferrer" className="link inline-flex items-center gap-1.5">
             Source on GitHub
+            <IconExternal />
           </a>
         </p>
       </div>

@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import * as content from '@/content'
+import { resumeTextLines } from '@/content/resume'
 import { walkStrings } from '../helpers/walk-strings'
 
 const BANNED = [
@@ -54,6 +55,28 @@ describe('copy style', () => {
   test('counts never carry a tool list (they would credit the listed tools with all of them)', () => {
     const hits = walkStrings(content, isQuote).filter(
       ({ value }) => /1,000\+/.test(value) && /\b(using|with) (Playwright|JMeter|Postman|TestSigma)/.test(value),
+    )
+    expect(hits).toEqual([])
+  })
+})
+
+describe('copy style: the resume', () => {
+  const lines = resumeTextLines()
+
+  test('no banned phrases, middle dots or bare status labels', () => {
+    const hits = lines.flatMap((line) => {
+      const found = BANNED.filter((re) => re.test(line)).map(String)
+      if (line.includes('·')) found.push('middle dot')
+      if (STATUS_WORDS.includes(line.trim().toLowerCase())) found.push('status label')
+      return found.map((hit) => `${line.slice(0, 48)}: ${hit}`)
+    })
+    expect(hits).toEqual([])
+  })
+
+  test('counts never carry a tool list, sentence by sentence', () => {
+    const sentences = lines.flatMap((line) => line.split(/(?<=\.)\s+/))
+    const hits = sentences.filter(
+      (s) => /1,000\+/.test(s) && /\b(using|with) (Playwright|JMeter|Postman|TestSigma)/.test(s),
     )
     expect(hits).toEqual([])
   })

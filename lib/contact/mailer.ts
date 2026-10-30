@@ -1,4 +1,5 @@
 import nodemailer, { type Transporter } from 'nodemailer'
+import { envValue } from './config'
 
 export class MailConfigError extends Error {
   constructor() {
@@ -31,11 +32,13 @@ export function createMailer(env: NodeJS.ProcessEnv = process.env, log: (event: 
       transporter = nodemailer.createTransport({ streamTransport: true, buffer: true })
       return transporter
     }
-    const { EMAIL_HOST: host, EMAIL_USER: user, EMAIL_PASS: pass } = env
+    const host = envValue(env.EMAIL_HOST)
+    const user = envValue(env.EMAIL_USER)
+    const pass = env.EMAIL_PASS // used as given: a password may legitimately start or end with spaces
     if (!host || !user || !pass) throw new MailConfigError()
     transporter = nodemailer.createTransport({
       host,
-      port: Number(env.EMAIL_PORT ?? 587),
+      port: Number(envValue(env.EMAIL_PORT) ?? 587),
       secure: env.EMAIL_SECURE === 'true',
       auth: { user, pass },
     })

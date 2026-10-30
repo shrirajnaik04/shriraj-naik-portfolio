@@ -13,7 +13,6 @@ import {
   testimonials,
 } from '../../content'
 import { RESUME_PATH } from '../../lib/site'
-import { renderAll } from './helpers'
 
 const STATUS_WORDS = ['live', 'in development', 'prototype', 'client work']
 
@@ -103,6 +102,38 @@ test.describe('selected work', () => {
     await expect(first.getByRole('heading', { name: 'What I built' })).toBeVisible()
   })
 
+  test('schematic labels render at 11 px or more on a 390 px phone', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto('/')
+    const smallest = await page.evaluate(() => {
+      let min = Number.POSITIVE_INFINITY
+      for (const text of document.querySelectorAll<SVGTextElement>('#projects figure svg text')) {
+        const scale = text.ownerSVGElement?.getScreenCTM()?.a ?? 1
+        min = Math.min(min, parseFloat(getComputedStyle(text).fontSize) * scale)
+      }
+      return Math.round(min * 10) / 10
+    })
+    expect(smallest).toBeGreaterThanOrEqual(11)
+  })
+
+  test('body text keeps a readable measure: at most 80 characters a line at 1280 px', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 })
+    for (const path of ['/', '/work/gym-daddy']) {
+      await page.goto(path)
+      const widest = await page.evaluate(() => {
+        let max = 0
+        for (const el of document.querySelectorAll<HTMLElement>('main .t-body, main article li')) {
+          const text = el.textContent?.trim() ?? ''
+          const lineHeight = parseFloat(getComputedStyle(el).lineHeight)
+          const lines = Math.max(1, Math.round(el.getBoundingClientRect().height / lineHeight))
+          if (lines > 1) max = Math.max(max, Math.round(text.length / lines))
+        }
+        return max
+      })
+      expect(widest, path).toBeLessThanOrEqual(80)
+    }
+  })
+
   test('the RAG chatbot states its verification gap plainly, without a check mark', async ({ page }) => {
     await page.goto('/')
     const row = page.locator('details', { has: page.locator('[data-project-name]', { hasText: 'RAG chatbot builder' }) })
@@ -112,7 +143,7 @@ test.describe('selected work', () => {
 
   test('a general note covers work still in development', async ({ page }) => {
     await page.goto('/')
-    await expect(page.locator('#projects')).toContainText('A few more products are in development.')
+    await expect(page.locator('#projects')).toContainText('A few more products are in development and aren’t listed yet.')
   })
 
   test('no project carries a status label', async ({ page }) => {
@@ -161,7 +192,6 @@ test.describe('experience, about, skills, testimonials', () => {
   test('about defines "vibe engineer" once, as a definition', async ({ page }) => {
     await page.goto('/')
     await expect(page.locator('#about dfn')).toHaveText('vibe engineer')
-    await renderAll(page)
     const text = await page.locator('body').innerText()
     expect(text.match(/vibe engineer/gi)?.length).toBe(1)
   })
@@ -169,7 +199,6 @@ test.describe('experience, about, skills, testimonials', () => {
   test('skills are eight plain-text groups with no emoji', async ({ page }) => {
     await page.goto('/')
     expect(await page.locator('#tech h3').allTextContents()).toEqual(skillGroups.map((g) => g.name))
-    await renderAll(page)
     const skillsText = await page.locator('#tech').innerText()
     expect(skillsText.length).toBeGreaterThan(100) // guards against a vacuous pass on unrendered text
     expect(skillsText).not.toMatch(/\p{Extended_Pictographic}/u)

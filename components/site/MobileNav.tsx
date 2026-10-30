@@ -46,7 +46,7 @@ export function MobileNav({ items, resumeHref }: MobileNavProps) {
         <span className="group-open:hidden">Menu</span>
         <span className="hidden group-open:inline">Close</span>
       </summary>
-      <nav aria-label="Menu" className="absolute inset-x-0 top-full border-b border-rule bg-paper">
+      <nav aria-label="Menu" className="absolute inset-x-0 top-full border-b border-rule bg-paper shadow-[0_18px_24px_-18px_rgb(0_0_0/0.4)]">
         <ul className="page flex flex-col py-3">
           {items.map((item) => (
             <li key={item.href}>

@@ -1,4 +1,5 @@
 import { profile } from '@/content'
+import { mailRoute } from '@/lib/contact/config'
 import { handleContact } from '@/lib/contact/handler'
 import { createMailer } from '@/lib/contact/mailer'
 import { createRateLimiter } from '@/lib/contact/rate-limit'
@@ -14,8 +15,7 @@ export async function POST(req: Request): Promise<Response> {
   return handleContact(req, {
     send: (mail) => mailer.send(mail),
     limiter,
-    recipient: process.env.RECIPIENT_EMAIL ?? profile.email,
-    from: process.env.EMAIL_FROM ?? process.env.EMAIL_USER,
+    ...mailRoute(process.env, profile.email),
     log,
   })
 }

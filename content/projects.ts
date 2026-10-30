@@ -10,7 +10,7 @@ export const projects: Project[] = [
     name: 'Gym Daddy',
     summary: 'Multi-tenant gym management SaaS for gym chains, in daily use at gyms.',
     role: 'Founder and sole engineer',
-    period: '2025 – present',
+    period: '2025 – Present',
     problem:
       'Gym chains run members, payments, biometric check-in and GST invoicing across branches, and one gym’s data must never reach another.',
     built: [
@@ -93,7 +93,7 @@ export const projects: Project[] = [
     name: 'FinTech QA automation',
     summary: 'UI, API and performance test automation for financial products, run across releases.',
     role: 'QA engineer, Software Quality Analyst to QA Analyst III',
-    period: '2022 – present',
+    period: '2022 – Present',
     context: 'Employer work at CodeMax IT Solutions',
     problem:
       'Financial products change with every release, and each release needs its user flows, APIs and data checked the same way every time.',
@@ -276,7 +276,7 @@ export const projects: Project[] = [
     name: 'shrirajnaik.com',
     summary: 'This site: a statically generated portfolio that has to pass its own tests before it ships.',
     role: 'Designer and engineer',
-    period: '2025 – present',
+    period: '2025 – Present',
     built: [
       'Next.js 16 App Router with Server Components; only the menu and the contact form run in the browser',
       'Contact endpoint with origin checks, rate limiting, a honeypot and HTML escaping',

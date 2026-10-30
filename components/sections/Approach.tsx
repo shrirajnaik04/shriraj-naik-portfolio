@@ -4,7 +4,7 @@ import { approachClosing, principles } from '@/content'
 /** The QA thinking behind the work, on the ink-blue band. Principles are not a sequence, so they are not numbered. */
 export function Approach() {
   return (
-    <Section id="approach" title="How I test what I build" surface="band" layout="split" deferRendering>
+    <Section id="approach" title="How I test what I build" surface="band" layout="split">
       <ul className="grid grid-cols-1 gap-x-12 gap-y-12 md:grid-cols-2">
         {principles.map((principle) => (
           <li key={principle.title}>

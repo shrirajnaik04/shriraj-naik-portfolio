@@ -1,6 +1,5 @@
 import { expect, test } from '@playwright/test'
 import { profile } from '../../content'
-import { renderAll } from './helpers'
 
 const ROUTES = ['/', '/work/gym-daddy', '/work/printsaathi', '/missing']
 
@@ -11,7 +10,6 @@ test.describe('at 320px wide', () => {
     for (const text of ['100%', '200%']) {
       test(`${path} fits with ${text} text: nothing overflows the viewport`, async ({ page }) => {
         await page.goto(path)
-        await renderAll(page)
         await page.addStyleTag({ content: `html { font-size: ${text} !important; }` })
         await page.locator('#projects details').evaluateAll((all) => all.forEach((d) => ((d as HTMLDetailsElement).open = true)))
         // The page must not scroll sideways, and no rendered box or line of text may cross the

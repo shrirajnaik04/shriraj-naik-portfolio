@@ -3,7 +3,9 @@ import type { ReactNode } from 'react'
 /**
  * Drafting-style schematic. One visual vocabulary for every figure:
  * ink-blue linework, terracotta (dashed) for the guardrail, sage for verified evidence.
- * Text sizes are in viewBox units: 16 for labels, 14 for annotations (≥ 11px at a 390px viewport).
+ * Text sizes are in viewBox units: 16 for labels, 15 for annotations. With the plate bleeding to
+ * the screen edges on phones, the smallest renders at 12+ px at 390 px and 11+ px at 360 px
+ * (home.spec checks 390 px).
  */
 export const WIDTH = 440
 

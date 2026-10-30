@@ -30,7 +30,7 @@ export function Header() {
               </li>
             ))}
             <li>
-              <a href={RESUME_PATH} download className="btn btn-secondary min-h-10 px-3.5 py-2">
+              <a href={RESUME_PATH} download className="btn btn-secondary min-h-11 px-3.5 py-2">
                 Resume <IconDownload />
               </a>
             </li>

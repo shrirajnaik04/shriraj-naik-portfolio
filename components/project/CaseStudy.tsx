@@ -99,7 +99,7 @@ export function CaseStudy({
           </ul>
         </nav>
 
-        <div className="lg:col-span-8 lg:col-start-5">
+        <div className="lg:col-span-6 lg:col-start-6">
           <Part id="context" label="Context">
             {cs.context.map((p) => (
               <p key={p} className="t-body mt-4 first:mt-0">
@@ -121,7 +121,7 @@ export function CaseStudy({
             <ol className="space-y-10">
               {cs.decisions.map((d) => (
                 <li key={d.title}>
-                  <h3 className="t-h4">{d.title}</h3>
+                  <h3 className="t-h4 text-[1.1875rem] sm:text-[1.375rem]">{d.title}</h3>
                   <dl className="mt-3 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-[6rem_minmax(0,1fr)]">
                     <dt className="font-semibold">Why</dt>
                     <dd className="text-ink-soft">{d.why}</dd>
@@ -154,16 +154,25 @@ export function CaseStudy({
             </ul>
           </Part>
 
-          <p className="mt-6 flex flex-wrap gap-x-8 gap-y-4 border-t border-rule pt-10">
-            <a href={sectionHref('projects')} className="btn btn-secondary">
-              All work
-            </a>
-            {other ? (
-              <a href={`/work/${other.slug}`} className="link self-center font-medium">
-                Read the {other.name} case study
+          <div className="mt-6 border-t border-rule pt-10">
+            <p className="flex flex-wrap gap-x-8 gap-y-4">
+              {other ? (
+                <a href={`/work/${other.slug}`} className="btn btn-secondary">
+                  Read the {other.name} case study
+                </a>
+              ) : null}
+              <a href={sectionHref('projects')} className="link self-center font-medium">
+                All work
               </a>
-            ) : null}
-          </p>
+            </p>
+            <p className="t-body mt-8 text-ink-soft">
+              Hiring for QA automation or quality engineering?{' '}
+              <a href={sectionHref('contact')} className="link font-medium text-ink">
+                Get in touch
+              </a>
+              .
+            </p>
+          </div>
         </div>
       </div>
     </article>

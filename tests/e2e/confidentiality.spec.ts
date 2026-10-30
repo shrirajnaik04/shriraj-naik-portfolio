@@ -2,7 +2,6 @@ import { readFileSync } from 'node:fs'
 import { expect, test } from '@playwright/test'
 import { RESUME_PATH } from '../../lib/site'
 import { findConfidentialTerms, loadConfidentialTerms } from '../helpers/confidential-terms'
-import { renderAll } from './helpers'
 
 /**
  * Everything the site publishes, checked for confidential and banned terms (local file or the
@@ -36,7 +35,6 @@ test.describe('no confidential or banned term', () => {
   test('in the rendered text or the JSON-LD of any page', async ({ page }) => {
     for (const path of ROUTES) {
       await page.goto(path)
-      await renderAll(page)
       const text = await page.locator('body').innerText()
       const jsonLd = (await page.locator('script[type="application/ld+json"]').allTextContents()).join('\n')
       expect(findConfidentialTerms(`${text}\n${jsonLd}`, terms!), path).toEqual([])
@@ -71,7 +69,6 @@ test('no page shows the phone number (it is on the resume only)', async ({ reque
 test('no element on any page is a bare status label', async ({ page }) => {
   for (const path of ROUTES) {
     await page.goto(path)
-    await renderAll(page)
     const labels = await page.evaluate((words) => {
       return [...document.querySelectorAll('body *')]
         .map((el) => (el as HTMLElement).innerText?.trim().toLowerCase())

@@ -90,10 +90,26 @@ describe('contact handler', () => {
     expect(logs).toContain('contact:honeypot')
   })
 
-  test('a form filled in under 3 seconds gets 200 and nothing is sent', async () => {
-    const { d, sent } = deps()
-    expect((await handleContact(request(body({ elapsedMs: 1200 })), d)).status).toBe(200)
+  test('a non-string honeypot counts as filled and never throws', async () => {
+    // A browser always sends the hidden field as a string; anything else is a script. `{"toString":1}`
+    // used to make String() throw, so the request failed with a bare 500.
+    for (const company of [{ toString: 1 }, 42, true, ['x'], {}]) {
+      const { d, sent } = deps()
+      const res = await json(await handleContact(request(body({ company })), d))
+      expect(res, JSON.stringify(company)).toEqual({ status: 200, body: { ok: true } })
+      expect(sent).toHaveLength(0)
+    }
+  })
+
+  test('a send within 3 seconds of the page opening is refused with a retryable error, never a fake success', async () => {
+    // A person can trip this too (a form restored by a reload, sent at once), so it must say so.
+    const { d, sent, logs } = deps()
+    expect(await json(await handleContact(request(body({ elapsedMs: 1200 })), d))).toEqual({
+      status: 400,
+      body: { ok: false, error: 'too_fast' },
+    })
     expect(sent).toHaveLength(0)
+    expect(logs).toContain('contact:too_fast')
   })
 
   test('a form open for more than 24 hours, or without a timer, is expired', async () => {

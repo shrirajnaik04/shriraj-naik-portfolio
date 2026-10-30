@@ -6,7 +6,9 @@ import { expect, test } from '@playwright/test'
  * The idle-resource budgets on the production build: script, CSS and font bytes, idle main-thread
  * time, timers and animation frames after load, endless animations, heap and heap growth.
  * Measured once, in Chromium (the only engine with these counters), by the same CLI `pnpm perf`
- * runs. The hidden-tab measurement needs a headed browser, so CI (no display) skips only that part.
+ * runs. The hidden-tab CPU budget is left to `pnpm perf`, which runs alone: here the other engines'
+ * tests run in parallel, and a background tab's page load then spills into the measured window
+ * (231 ms under load, 0.3–4.4 ms alone, 2026-10-30).
  */
 test('the home page stays within the resource budgets', async ({ baseURL }, testInfo) => {
   test.skip(testInfo.project.name !== 'chromium-desktop', 'measured once, in desktop Chromium')
@@ -23,7 +25,7 @@ test('the home page stays within the resource budgets', async ({ baseURL }, test
       '--assert',
       '--out',
       out,
-      ...(process.env.CI ? ['--no-hidden'] : []),
+      '--no-hidden',
     ],
     { encoding: 'utf8' },
   )

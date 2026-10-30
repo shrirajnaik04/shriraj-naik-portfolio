@@ -4,7 +4,7 @@ import type { RateLimiter } from './rate-limit'
 import { validateContactFields } from './schema'
 
 export const MAX_BODY_BYTES = 8192
-/** Faster than a person can fill the form: treated as a bot. */
+/** Sooner after the page opened than a person writes a message: refused with a retryable error. */
 export const MIN_FILL_MS = 3000
 /** Older than a day: the page should be reloaded. */
 export const MAX_AGE_MS = 86_400_000
@@ -17,6 +17,7 @@ export type ContactErrorCode =
   | 'invalid_json'
   | 'validation'
   | 'expired'
+  | 'too_fast'
   | 'send_failed'
 
 export interface ContactDeps {
@@ -126,16 +127,24 @@ export async function handleContact(req: Request, deps: ContactDeps): Promise<Re
   }
   const input = parsed as Record<string, unknown>
 
-  // Bots: a filled hidden field, or a form completed faster than a person could. Answer as if sent.
-  const elapsed = input.elapsedMs
-  const honeypot = input.company != null && String(input.company).trim() !== ''
-  if (honeypot || (typeof elapsed === 'number' && elapsed < MIN_FILL_MS)) {
+  // Bots: a filled hidden field, which no person can reach. Answer as if sent, so they learn nothing.
+  // A browser always sends the hidden field as a string, so any other non-null value is a script.
+  const company = input.company
+  const honeypot = typeof company === 'string' ? company.trim() !== '' : company != null
+  if (honeypot) {
     deps.log('contact:honeypot')
     return reply(200, { ok: true })
   }
+  const elapsed = input.elapsedMs
   if (typeof elapsed !== 'number' || !Number.isFinite(elapsed) || elapsed > MAX_AGE_MS) {
     deps.log('contact:expired')
     return fail(400, 'expired')
+  }
+  // Too soon after the page opened: usually a script, but a person can do it too (a form restored by
+  // a reload and sent at once). Say so, so they can send again; never pretend it was sent.
+  if (elapsed < MIN_FILL_MS) {
+    deps.log('contact:too_fast')
+    return fail(400, 'too_fast')
   }
 
   const result = validateContactFields(input)

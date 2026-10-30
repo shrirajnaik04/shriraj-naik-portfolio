@@ -4,7 +4,7 @@ import { award, earlierJobs, jobs } from '@/content'
 /** A real sequence, so it reads as a timeline: period beside each role, newest first. */
 export function Experience() {
   return (
-    <Section id="experience" title="Experience" deferRendering>
+    <Section id="experience" title="Experience">
       <div className="grid grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-12">
         <div className="lg:col-span-8">
           {jobs.map((job) => (

@@ -1,4 +1,5 @@
 import { profile } from '@/content'
+import { CLOUDINARY_BASE } from './cloudinary-loader'
 import type { Project } from '@/content/types'
 import { CONTENT_UPDATED, SITE_URL } from './site'
 
@@ -22,8 +23,8 @@ export function personJsonLd() {
     '@id': PERSON_ID,
     name: profile.name,
     url: `${SITE_URL}/`,
-    image: `https://res.cloudinary.com/dfvyqtli8/image/upload/f_auto,q_auto,c_fill,g_face,ar_1:1,w_400/${profile.portrait.src}`,
-    jobTitle: 'QA Automation Engineer',
+    image: `${CLOUDINARY_BASE}/f_auto,q_auto,c_fill,g_face,ar_1:1,w_400/${profile.portrait.src}`,
+    jobTitle: 'SDET and QA Automation Engineer',
     sameAs: [profile.links.linkedin, profile.links.github],
     address: { '@type': 'PostalAddress', addressLocality: 'Goa', addressCountry: 'IN' },
   }

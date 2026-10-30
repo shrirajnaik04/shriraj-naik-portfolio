@@ -7,7 +7,7 @@ export const testimonials: Testimonial[] = [
     role: 'Senior Technical Program Manager',
     company: 'Amazon Web Services',
     quote:
-      "Shriraj's approach of AI in QA is both exciting and forward-thinking. His custom frameworks reflect a deep understanding of automation and innovation in testing. Truly impressive work—he’s clearly pushing boundaries in the QA space.",
+      "Shriraj’s approach of AI in QA is both exciting and forward-thinking. His custom frameworks reflect a deep understanding of automation and innovation in testing. Truly impressive work—he’s clearly pushing boundaries in the QA space.",
   },
   {
     name: 'Marcelino Fernandes',

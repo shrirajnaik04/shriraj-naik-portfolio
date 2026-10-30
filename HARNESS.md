@@ -10,7 +10,7 @@ something to silence.
 | Command | Proves |
 |---|---|
 | `pnpm verify` | ESLint, `tsc --noEmit` and the Vitest suites: content rules, copy style, confidentiality, contact endpoint, SEO and headers, dependency policy, architecture (exactly two client components), the claims of the "shrirajnaik.com" project, generated images, and the resume PDF. Runs before every commit (pre-commit hook). |
-| `pnpm test:e2e` | Playwright against a fresh `next build && next start` on port 3100 (`CONTACT_TRANSPORT=stream`, so no mail is sent), on four engines: `chromium-desktop`, `chromium-mobile` (Pixel 7), `firefox-desktop`, `webkit-mobile` (iPhone 14). It covers navigation, the skip link, the mobile menu, case studies and the 404, the contact form (success, validation, server error, rate limit, real wiring), resume download and redirects, security headers and social tags. It also runs axe (WCAG 2.2 AA rules) on every route in light and dark, and checks reduced motion, no overflow at 320 px with 100 % and 200 % text, no JavaScript, the resource budgets and the confidentiality scan. |
+| `pnpm test:e2e` | Playwright against a fresh `next build && next start` on port 3100 (`CONTACT_TRANSPORT=stream`, so no mail is sent), on four engines: `chromium-desktop`, `chromium-mobile` (Pixel 7), `firefox-desktop`, `webkit-mobile` (iPhone 14). It covers navigation (every header and menu link, and every direct `/#section` load, lands on its section with smooth scrolling on), the skip link, the mobile menu, case studies and the 404, the contact form (success, validation, server error, rate limit, a too-quick send, errors clearing as fields are fixed, the honeypot staying out of autofill, no submission without JavaScript, real wiring), resume download and redirects, security headers and social tags. It also runs axe (WCAG 2.2 AA rules) on every route in light and dark, and checks reduced motion, no overflow at 320 px with 100 % and 200 % text (page, boxes and every line of text), schematic labels of 11 px or more at 390 px, a readable measure, no JavaScript, the resource budgets (all but the hidden-tab check, see Budgets) and the confidentiality scan. Tests see the page as a visitor does: nothing is pre-rendered for them. |
 | `pnpm test:visual` | Full-page screenshot baselines (home at 360 / 768 / 1280 / 1920 px, Gym Daddy case study at 1280 px, light and dark). Baselines are win32-only (see below). |
 | `pnpm resume:verify` | The committed resume PDF: size, A4 pages, title and language, tag tree (H1, H2 order, lists, links), outline, every line read in order by pdf.js and by `pdftotext`, no ligature, private-use or pictographic characters, embedded non-Type 3 fonts, exact link set, banned terms. |
 | `pnpm assets:build` | Regenerates the resume PDF, `public/og.png` and `app/apple-icon.png` from content. Run it after changing the resume or profile content, then commit the outputs. The PDF's bytes change on every run (creation date), so commit it only when its content or template changed. |
@@ -41,9 +41,9 @@ Chromium end-to-end projects, `pnpm audit --prod` and osv-scanner. Firefox, WebK
 | Budget | Gate | Measured by |
 |---|---|---|
 | Lighthouse performance ≥ 0.95, accessibility = 1, best practices ≥ 0.95, SEO = 1, CLS ≤ 0.02, TBT ≤ 100 ms | `lighthouserc.json` assertions, median of 3, `/` and `/work/gym-daddy` | Lighthouse mobile, **simulated** throttling |
-| LCP ≤ 2,000 ms | `lighthouse.mjs --max-lcp 2000`, median of 3 | Lighthouse mobile, **applied** (devtools) throttling |
+| LCP ≤ 2,000 ms | `lighthouse.mjs --max-lcp 2000`: the median LCP of 3 runs | Lighthouse mobile, **applied** (devtools) throttling |
 | App-owned script ≤ 20 KB gzip on top of the framework floor; CSS ≤ 15 KB; fonts ≤ 200 KB, preloaded ≤ 100 KB | `measure.ts --assert` | Bytes on the wire, recompressed (gzip and brotli); framework vs app split from `.next/build-manifest.json` |
-| Idle main thread ≤ 50 ms per 10 s; no timers, animation frames or endless animations after load; heap ≤ 10 MB; heap growth ≤ 1 MB over 10 interaction cycles; hidden tab ≤ 10 ms per 10 s | `measure.ts --assert` | Raw CDP counters in Chromium |
+| Idle main thread ≤ 50 ms per 10 s; no timers, animation frames or endless animations after load; heap ≤ 10 MB; heap growth ≤ 1 MB over 10 interaction cycles; hidden tab ≤ 10 ms per 10 s | `measure.ts --assert` (the hidden-tab check only in `pnpm perf`, which runs alone: under the parallel end-to-end load a background tab's page load spills into the window, 231 ms against 0.3–4.4 ms alone) | Raw CDP counters in Chromium |
 
 LCP is gated on applied throttling (owner's decision, 2026-10-29). On localhost, Lighthouse's
 simulation finishes every script before the first paint, which inflates simulated LCP (about 2.7 s
@@ -51,6 +51,10 @@ against about 1.8 s observed). The simulated value is still reported, as a warni
 on the Vercel preview, where it is meaningful. INP has no lab measurement; TBT stands in for it.
 
 A budget miss is recorded and reported to the owner. Budgets are never loosened silently.
+
+Lab numbers vary between runs on the same build (on 2026-10-30: applied LCP on `/` 1,791–1,968 ms,
+simulated TBT on `/work/gym-daddy` 47–103 ms). A gate that fails once is re-run once; a second
+failure is a real miss.
 
 ## Evidence
 
@@ -75,6 +79,14 @@ A budget miss is recorded and reported to the owner. Budgets are never loosened 
   for Windows and `test:visual` is not run in CI. Update them deliberately:
   `pnpm test:visual --update-snapshots`, then review every changed image.
 - **Engines.** CI runs Chromium only; Firefox and WebKit run locally.
+- **No `content-visibility`.** Skipping off-screen sections saved layout work (about 80 ms at 4×
+  CPU throttling), but section links then scrolled to positions computed from placeholder heights
+  and landed in the wrong section on every engine (WebKit has no scroll anchoring to correct it). It
+  was removed; the navigation spec guards against its return. Cost: applied-throttling LCP on `/`
+  rose from about 1.8 s to about 1.97 s (gate 2.0 s).
+- **CSS is linked, not inlined.** `experimental.inlineCss` cut applied LCP on `/` to about 1.13 s,
+  but Next.js also puts the CSS into every page's hydration payload, which pushed simulated TBT on
+  `/work/gym-daddy` to about 100–108 ms (budget 100). Not enabled; the owner's call.
 - **WebKit without JavaScript.** Playwright cannot scroll a JavaScript-disabled WebKit page to an
   off-screen element, so a pointer click misses. The no-JavaScript test opens the disclosure with the
   keyboard there (native behaviour either way); Chromium and Firefox use a click.

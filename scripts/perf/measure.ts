@@ -156,6 +156,12 @@ export async function measure(
       [...document.querySelectorAll<HTMLLinkElement>('link[rel="preload"][as="font"]')].map((l) => l.href),
     )
     const preloadedFontBytes = preloadHrefs.reduce((sum, href) => sum + (fontBytesByUrl.get(href) ?? 0), 0)
+    // CSS inlined into the HTML (next.config inlineCss) counts too, gzipped like a stylesheet transfer,
+    // so the CSS budget means the same whether the CSS arrives as a request or inside the page.
+    const inlineCss = await page.evaluate(() =>
+      [...document.querySelectorAll('head style')].map((style) => style.textContent ?? '').join(''),
+    )
+    if (inlineCss) bytes.stylesheet += gzipSync(Buffer.from(inlineCss), { level: 6 }).length
 
     // Idle window, tab visible: nothing should run.
     const sample = await taskSeconds(page)

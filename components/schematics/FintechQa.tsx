@@ -14,7 +14,7 @@ export function FintechQaSchematic() {
   return (
     <Schematic
       id={ID}
-      height={472}
+      height={526}
       title="FinTech QA automation: coverage layers"
       desc="A generalized view: a release candidate passes UI and end-to-end, API, data and performance checks before release. The suites run on Jenkins and Docker, and results are reported in OpenSearch."
     >
@@ -39,9 +39,9 @@ export function FintechQaSchematic() {
 
       <Arrow id={ID} d="M220 352 V382" />
       <Box x={120} y={386} w={200} h={40} label="Release" />
-      <Note x={10} y={374} text="runs on Jenkins, Docker" />
-      <Note x={430} y={374} text="reports in OpenSearch" anchor="end" />
-      <Check x={10} y={460} text="Defects found earlier, across releases" />
+      <Note x={220} y={456} text="suites run on Jenkins, Docker" anchor="middle" />
+      <Note x={220} y={478} text="results reported in OpenSearch" anchor="middle" />
+      <Check x={10} y={514} text="Defects found earlier, across releases" />
     </Schematic>
   )
 }

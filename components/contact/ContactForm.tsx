@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState, type FormEvent } from 'react'
+import { useState, useSyncExternalStore, type FormEvent } from 'react'
 import { CONTACT_FIELDS, CONTACT_LIMITS, validateContactFields, validateField, type ContactField } from '@/lib/contact/schema'
 
 type Status = { kind: 'idle' } | { kind: 'sending' } | { kind: 'sent' } | { kind: 'error'; message: string }
@@ -10,32 +10,44 @@ const SUCCESS = 'Thanks — your message is on its way. I’ll reply by email.'
 const ERROR_COPY: Record<string, string> = {
   rate_limited: 'Too many messages from your network. Please try again in a few minutes, or email me directly.',
   expired: 'This form has been open a long time. Please reload the page and try again.',
+  too_fast: 'Please wait a few seconds, then send your message again.',
 }
 
 const LABELS: Record<ContactField, string> = { name: 'Name', email: 'Email', subject: 'Subject', message: 'Message' }
 
+const noSubscription = () => () => {}
+
+/**
+ * False in the server HTML and during hydration, true once React has attached the submit handler.
+ * Until then Send stays disabled, so the browser never submits the form natively (which would put
+ * the fields in the URL and lose the message).
+ */
+function useHydrated(): boolean {
+  return useSyncExternalStore(
+    noSubscription,
+    () => true,
+    () => false,
+  )
+}
+
 /**
  * The contact form. Validation is the same set of rules the server uses (lib/contact/schema.ts),
  * run on blur and on submit. Errors are linked to their fields; on a failed submit, focus moves to the first invalid
- * field. The status message stays until the next submit. `elapsedMs` (time the form was open,
- * measured here) and the hidden `company` field let the server answer bots without sending.
+ * field. The status message stays until the next submit. `elapsedMs` (how long the page has been
+ * open) and the hidden trap field let the server answer bots without sending.
  */
 export function ContactForm({ email }: { email: string }) {
-  const mountedAt = useRef<number | null>(null)
+  const hydrated = useHydrated()
   const [errors, setErrors] = useState<Errors>({})
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [messageLength, setMessageLength] = useState(0)
-
-  const markStarted = () => {
-    mountedAt.current ??= performance.now()
-  }
 
   const focusFirstInvalid = (form: HTMLFormElement, found: Errors) => {
     const first = CONTACT_FIELDS.find((field) => found[field])
     if (first) form.querySelector<HTMLElement>(`#contact-${first}`)?.focus()
   }
 
-  const onBlur = (field: ContactField, value: string) => {
+  const revalidate = (field: ContactField, value: string) => {
     const error = validateField(field, value)
     setErrors((current) => ({ ...current, [field]: error ?? undefined }))
   }
@@ -61,8 +73,9 @@ export function ContactForm({ email }: { email: string }) {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
           ...checked.data,
-          company: String(data.get('company') ?? ''),
-          elapsedMs: Math.round(performance.now() - (mountedAt.current ?? performance.now())),
+          company: String(data.get('ref_code') ?? ''),
+          // Time since the page opened: people read before they write; scripts post at once.
+          elapsedMs: Math.round(performance.now()),
         }),
       })
       const result = (await response.json().catch(() => ({}))) as { ok?: boolean; error?: string; fields?: Errors }
@@ -100,8 +113,12 @@ export function ContactForm({ email }: { email: string }) {
         required: true,
         'aria-invalid': errors[name] ? true : undefined,
         'aria-describedby': describedBy(name),
-        onFocus: markStarted,
-        onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => onBlur(name, e.currentTarget.value),
+        // Errors appear on blur, and a shown error clears as soon as the value is valid. Clearing it
+        // only on blur would move the Send button between mousedown and mouseup and lose the click.
+        onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => revalidate(name, e.currentTarget.value),
+        onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+          if (errors[name]) revalidate(name, e.currentTarget.value)
+        },
         className: 'field',
       })}
       {errors[name] ? (
@@ -113,7 +130,7 @@ export function ContactForm({ email }: { email: string }) {
   )
 
   return (
-    <form noValidate onSubmit={onSubmit} onPointerDown={markStarted} className="grid gap-6">
+    <form method="post" action="/api/contact" noValidate onSubmit={onSubmit} className="grid gap-6">
       <div className="grid gap-6 sm:grid-cols-2">
         {field('name', (p) => <input type="text" autoComplete="name" maxLength={CONTACT_LIMITS.name[1]} {...p} />)}
         {field('email', (p) => (
@@ -130,17 +147,29 @@ export function ContactForm({ email }: { email: string }) {
         />
       ))}
       <p id="contact-message-count" className="t-small -mt-4 text-ink-soft tabular-nums" aria-live="off">
-        {messageLength} / {CONTACT_LIMITS.message[1]}
+        {messageLength.toLocaleString('en-US')} / {CONTACT_LIMITS.message[1].toLocaleString('en-US')}
       </p>
 
-      {/* Hidden from people and assistive technology; only bots fill it in. */}
+      {/* Hidden from people and assistive technology; only bots fill it in. Its id, name and label match
+          no autofill vocabulary and password managers are told to skip it, so a visitor's autofill never
+          fills it (a filled trap means the message is dropped behind a success message). */}
       <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
-        <label htmlFor="contact-company">Company</label>
-        <input id="contact-company" type="text" name="company" tabIndex={-1} autoComplete="off" defaultValue="" />
+        <label htmlFor="contact-ref-code">Referral code (leave empty)</label>
+        <input
+          id="contact-ref-code"
+          type="text"
+          name="ref_code"
+          tabIndex={-1}
+          autoComplete="off"
+          defaultValue=""
+          data-1p-ignore=""
+          data-lpignore="true"
+          data-bwignore=""
+        />
       </div>
 
       <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
-        <button type="submit" className="btn btn-primary" disabled={status.kind === 'sending'}>
+        <button type="submit" className="btn btn-primary" disabled={!hydrated || status.kind === 'sending'}>
           {status.kind === 'sending' ? 'Sending…' : 'Send message'}
         </button>
         <p role="status" className={status.kind === 'error' ? 'text-signal' : 'text-evidence'}>

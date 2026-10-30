@@ -62,8 +62,8 @@ describe('projects', () => {
     }
   })
 
-  test('periods are years backed by commit dates: "YYYY" or "YYYY – YYYY|present"', () => {
-    for (const p of projects) expect(p.period, p.slug).toMatch(/^\d{4}( – (\d{4}|present))?$/)
+  test('periods are years backed by commit dates: "YYYY" or "YYYY – YYYY|Present" (as in the experience timeline)', () => {
+    for (const p of projects) expect(p.period, p.slug).toMatch(/^\d{4}( – (\d{4}|Present))?$/)
   })
 
   test('every featured project has a schematic with a plain-sentence caption', () => {

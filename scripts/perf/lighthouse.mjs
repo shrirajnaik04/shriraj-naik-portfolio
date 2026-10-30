@@ -37,6 +37,14 @@ if (collect.status !== 0) process.exit(collect.status ?? 1)
 lhci('upload')
 
 const manifest = JSON.parse(readFileSync(join(outDir, 'manifest.json'), 'utf8'))
+// LCP of every run, per URL: the LCP gate uses the true median, not the representative run
+// (Lighthouse CI picks that one by FCP and interactive time, not by LCP).
+const lcpRuns = {}
+for (const entry of manifest) {
+  const lhr = JSON.parse(readFileSync(entry.jsonPath, 'utf8'))
+  ;(lcpRuns[entry.url] ??= []).push(Math.round(lhr.audits['largest-contentful-paint'].numericValue))
+}
+const median = (values) => [...values].sort((x, y) => x - y)[Math.floor(values.length / 2)]
 const summary = {}
 for (const entry of manifest.filter((e) => e.isRepresentativeRun)) {
   const lhr = JSON.parse(readFileSync(entry.jsonPath, 'utf8'))
@@ -53,6 +61,8 @@ for (const entry of manifest.filter((e) => e.isRepresentativeRun)) {
     seo: lhr.categories.seo?.score,
     fcpMs: Math.round(a['first-contentful-paint'].numericValue),
     lcpMs: Math.round(a['largest-contentful-paint'].numericValue),
+    lcpRunsMs: lcpRuns[entry.url],
+    lcpMedianMs: median(lcpRuns[entry.url]),
     cls: Number(a['cumulative-layout-shift'].numericValue.toFixed(3)),
     tbtMs: Math.round(a['total-blocking-time'].numericValue),
     speedIndexMs: Math.round(a['speed-index'].numericValue),
@@ -74,8 +84,10 @@ const maxLcpIndex = args.indexOf('--max-lcp')
 if (maxLcpIndex !== -1) {
   const maxLcp = Number(args[maxLcpIndex + 1])
   for (const [url, run] of Object.entries(summary)) {
-    const ok = run.lcpMs <= maxLcp
-    console.log(`${ok ? 'PASS' : 'FAIL'} LCP ${run.lcpMs} ms <= ${maxLcp} ms (${run.throttlingMethod}) ${url}`)
+    const ok = run.lcpMedianMs <= maxLcp
+    console.log(
+      `${ok ? 'PASS' : 'FAIL'} median LCP ${run.lcpMedianMs} ms <= ${maxLcp} ms (runs ${run.lcpRunsMs.join(', ')}; ${run.throttlingMethod}) ${url}`,
+    )
     if (!ok) failed = true
   }
 }

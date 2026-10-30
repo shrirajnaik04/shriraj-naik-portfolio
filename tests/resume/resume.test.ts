@@ -199,7 +199,26 @@ describe('pdftotext', () => {
     expect(out.status).toBe(0)
     expect(unreadLines(out.stdout)).toEqual([])
   })
+
+  test.skipIf(!hasPdftotext)('in plain reading order, every bullet is introduced by a real "•"', () => {
+    // Parsers that ignore layout may join lines; a real "•" still separates the items. Without one
+    // they run together ("… | Jun 2025 – Oct 2025 Led QA automation …"), as the original resume never does.
+    const out = spawnSync('pdftotext', ['-enc', 'UTF-8', PDF_FILE, '-'], { encoding: 'utf8' })
+    const text = out.stdout.replace(/\s+/g, ' ')
+    const missing = resumeBullets().filter((bullet) => !text.includes(`• ${bullet.slice(0, 40)}`))
+    expect(missing).toEqual([])
+  })
 })
+
+/** Every bulleted item on the resume. */
+function resumeBullets(): string[] {
+  return resume.sections.flatMap((section) => {
+    if (section.kind === 'bullets') return section.bullets
+    if (section.kind === 'entries') return section.entries.flatMap((entry) => entry.bullets ?? [])
+    if (section.kind === 'experience') return section.employers.flatMap((e) => e.roles.flatMap((r) => r.bullets ?? []))
+    return []
+  })
+}
 
 interface StructNode {
   role?: string

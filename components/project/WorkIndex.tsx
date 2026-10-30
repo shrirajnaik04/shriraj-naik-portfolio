@@ -4,23 +4,23 @@ import type { Project } from '@/content/types'
 /** The rest of the collection: ruled rows that expand to show what was built and how it is verified. */
 export function WorkIndex({ projects }: { projects: Project[] }) {
   return (
-    <div className="cv-auto mt-20 lg:mt-28">
+    <div className="mt-20 lg:mt-28">
       <h3 className="t-h3">More work</h3>
       <ul className="mt-6 border-t border-rule">
         {projects.map((project) => (
           <li key={project.slug} className="border-b border-rule">
             <details className="disclosure">
-              <summary className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 gap-y-1 py-5 md:grid-cols-[minmax(0,13rem)_minmax(0,1fr)_5.5rem_auto]">
+              <summary className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 gap-y-1 py-5 md:grid-cols-[minmax(0,13rem)_minmax(0,1fr)_7.5rem_auto]">
                 <span data-project-name className="col-start-1 row-start-1 font-display text-[1.375rem] leading-snug">
                   {project.name}
                 </span>
                 <span className="t-small col-span-2 col-start-1 row-start-2 text-ink-soft md:col-span-1 md:col-start-2 md:row-start-1">
                   {project.summary}
                 </span>
-                <span className="t-meta hidden md:col-start-3 md:row-start-1 md:block">{project.period}</span>
+                <span className="t-meta hidden whitespace-nowrap md:col-start-3 md:row-start-1 md:block">{project.period}</span>
                 <span
                   aria-hidden="true"
-                  className="disclosure-sign col-start-2 row-start-1 self-center md:col-start-4"
+                  className="disclosure-sign col-start-2 row-start-1 self-start md:col-start-4"
                 >
                   +
                 </span>
@@ -28,7 +28,7 @@ export function WorkIndex({ projects }: { projects: Project[] }) {
               <div className="grid grid-cols-1 gap-8 pb-8 md:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] md:gap-x-6">
                 <p className="t-meta flex flex-wrap gap-x-5 gap-y-1 md:flex-col">
                   <span>{project.role}</span>
-                  <span>{project.period}</span>
+                  <span className="md:hidden">{project.period}</span>
                   {project.context ? <span>{project.context}</span> : null}
                 </p>
                 <div>
@@ -80,7 +80,7 @@ export function WorkIndex({ projects }: { projects: Project[] }) {
         ))}
       </ul>
       <p className="t-small mt-8 max-w-[60ch] text-ink-soft">
-        A few more products are in development. They’ll appear here once they’re properly tested.
+        A few more products are in development and aren’t listed yet.
       </p>
     </div>
   )
