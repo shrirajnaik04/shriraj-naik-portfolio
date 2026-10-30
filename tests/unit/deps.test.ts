@@ -8,8 +8,6 @@ const pkg = JSON.parse(readFileSync('package.json', 'utf8')) as {
 }
 
 const ALLOWED_RUNTIME = ['next', 'react', 'react-dom', 'nodemailer', 'zod']
-/** Still imported by legacy sections until they are replaced; removed in Task 13. */
-const TEMPORARY = ['framer-motion', 'lucide-react']
 
 describe('dependency policy', () => {
   test('no floating "latest" or wildcard ranges', () => {
@@ -19,7 +17,7 @@ describe('dependency policy', () => {
   })
 
   test('runtime dependencies are only the approved set', () => {
-    expect(Object.keys(pkg.dependencies).sort()).toEqual([...ALLOWED_RUNTIME, ...TEMPORARY].sort())
+    expect(Object.keys(pkg.dependencies).sort()).toEqual([...ALLOWED_RUNTIME].sort())
   })
 
   test('platform versions are pinned', () => {
