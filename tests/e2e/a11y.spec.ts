@@ -15,6 +15,7 @@ for (const path of ROUTES) {
     test(`axe finds no WCAG 2.2 AA violations on ${path} in ${colorScheme}`, async ({ page }) => {
       // Reduced motion: contrast is measured on the settled page, not mid-animation.
       await page.emulateMedia({ colorScheme, reducedMotion: 'reduce' })
+      if (colorScheme === 'dark') await page.addInitScript(() => localStorage.setItem('theme', 'dark'))
       await page.goto(path)
       await revealAll(page)
       const { violations } = await new AxeBuilder({ page }).withTags(WCAG).analyze()
@@ -52,12 +53,12 @@ test('with reduced motion nothing animates: not on load, hover, disclosure or sc
   expect(await ledgerMarks(page)).toEqual(Array(5).fill('none'))
 })
 
-test('without reduced motion the hero report animates once, hover feedback transitions, nothing loops (control)', async ({ page }) => {
+test('without reduced motion the hero report animates once, hover feedback transitions, nothing loops on the opening screen (control)', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.goto('/')
   // The sequence (840 ms) can finish before the page's load event, so check what is applied, not what is running.
   expect(await ledgerMarks(page)).toEqual(Array(5).fill('mark-pass 1'))
-  const endless = await page.evaluate(() => document.getAnimations().filter((a) => a.effect?.getTiming().iterations === Infinity).length)
+  const endless = await page.evaluate(() => document.getAnimations().filter((a) => a.effect?.getTiming().iterations === Infinity && a.playState === 'running').length)
   expect(endless).toBe(0)
   // Each attempt moves away and hovers again, starting a fresh 150 ms transition to observe.
   const button = page.locator('#home .btn-secondary')

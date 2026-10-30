@@ -34,7 +34,7 @@ for (const slug of ['gym-daddy', 'printsaathi']) {
 }
 
 test('non-case-study and unknown slugs are 404s', async ({ page }) => {
-  for (const path of ['/work/travel-ota', '/work/nope']) {
+  for (const path of ['/work/travel-chat', '/work/nope']) {
     const response = await page.goto(path)
     expect(response?.status(), path).toBe(404)
   }

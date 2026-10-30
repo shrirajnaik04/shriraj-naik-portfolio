@@ -33,8 +33,11 @@ describe('copy style', () => {
     expect(hits).toEqual([])
   })
 
-  test('never "vibe coder" or "vibe coding", anywhere', () => {
-    expect(walkStrings(content).filter(({ value }) => /vibe cod/i.test(value))).toEqual([])
+  test('never "vibe coder"; "vibe coding" only once, as what the definition is the opposite of', () => {
+    expect(walkStrings(content).filter(({ value }) => /vibe coder/i.test(value))).toEqual([])
+    const coding = walkStrings(content).filter(({ value }) => /vibe coding/i.test(value))
+    expect(coding.map((m) => m.path)).toEqual(['profile.vibeDefinition'])
+    expect(content.profile.vibeDefinition).toMatch(/opposite of unguided .vibe coding/)
   })
 
   test('vibe engineer is defined once, in the profile', () => {

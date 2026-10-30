@@ -26,14 +26,20 @@ describe('the "shrirajnaik.com" project', () => {
     expect(project.publish).toBe(true)
   })
 
-  test('“Next.js 16 App Router with Server Components; only the menu and the contact form run in the browser”', () => {
+  test('“Next.js 16 App Router with Server Components; only the menu, the theme switch, the contact form, the testimonial carousel and the drawings’ motion gate run in the browser”', () => {
     expect(project.built[0]).toMatch(/^Next\.js 16 App Router/)
     expect(pkg.dependencies.next).toMatch(/^16\./)
     expect(existsSync('app/layout.tsx')).toBe(true)
     const client = ['app', 'components', 'lib']
       .flatMap((dir) => readdirSync(dir, { recursive: true, encoding: 'utf8' }).map((f) => join(dir, f).replaceAll('\\', '/')))
       .filter((f) => /\.tsx?$/.test(f) && /^\s*['"]use client['"]/.test(read(f)))
-    expect(client.sort()).toEqual(['components/contact/ContactForm.tsx', 'components/site/MobileNav.tsx'])
+    expect(client.sort()).toEqual([
+      'components/contact/ContactForm.tsx',
+      'components/sections/TestimonialCarousel.tsx',
+      'components/site/MobileNav.tsx',
+      'components/site/MotionGate.tsx',
+      'components/site/ThemeToggle.tsx',
+    ])
   })
 
   test('“Contact endpoint with origin checks, rate limiting, a honeypot and HTML escaping”', () => {
@@ -62,7 +68,7 @@ describe('the "shrirajnaik.com" project', () => {
     expect(a11y).toContain("['light', 'dark']")
   })
 
-  test('“Lighthouse and resource budgets: performance, accessibility, script size, idle CPU and no endless animations”, as measured', () => {
+  test('“Lighthouse and resource budgets: performance, accessibility, script size, idle CPU, and no motion running off-screen”, as measured', () => {
     const assertions = JSON.parse(read('lighthouserc.json')).ci.assert.assertions as Record<string, unknown>
     expect(Object.keys(assertions)).toEqual(expect.arrayContaining(['categories:performance', 'categories:accessibility']))
     const after = JSON.parse(read(AFTER)) as {

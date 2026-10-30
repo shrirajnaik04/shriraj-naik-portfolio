@@ -9,15 +9,16 @@ itself is backed by the code or a measurement.
 
 ## What's inside
 
-- **Pages:** the home page (work, approach, experience, about, skills, testimonials, contact) and two
-  case studies, `/work/gym-daddy` and `/work/printsaathi`. All of them are static HTML.
+- **Pages:** the home page (work, approach, how I build with AI agents, experience, about, skills,
+  testimonials, contact) and two case studies, `/work/gym-daddy` and `/work/printsaathi`. All of them are static HTML.
 - **Content:** typed data in `content/*.ts`. The pages, the resume PDF and the social image are all
   generated from it.
 - **One server endpoint:** `POST /api/contact`. It checks the content type, caps the body size,
   accepts same-origin requests only, rate-limits per IP, catches bots with a honeypot and a timing
   check, and HTML-escapes everything it emails.
-- **Two client components:** the mobile menu and the contact form. Everything else is a React Server
-  Component.
+- **Five small client components:** the mobile menu, the theme switch, the contact form, the testimonial
+  carousel and the gate that runs the drawings' motion only while they're on screen. Everything else is
+  a React Server Component.
 
 ## Stack
 

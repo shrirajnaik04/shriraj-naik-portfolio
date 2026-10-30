@@ -11,7 +11,7 @@ export function Footer() {
         <p>
           © {year} {profile.name}
         </p>
-        <p className="text-ink-soft">AI-assisted, human-owned, test-gated</p>
+        <p className="text-ink-soft">Vibe engineered with AI agents. Human-reviewed, test-gated.</p>
         <p>
           <a href={REPO_URL} rel="noopener noreferrer" className="link inline-flex items-center gap-1.5">
             Source on GitHub

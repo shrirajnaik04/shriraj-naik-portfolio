@@ -102,10 +102,8 @@
     background: var(--paper-deep);
   }
   /* In dark mode paper-deep is only 1.09:1 against the page: hairlines keep the band visible. */
-  @media (prefers-color-scheme: dark) {
-    .surface-deep {
-      border-block: 1px solid var(--rule);
-    }
+  :root[data-theme='dark'] .surface-deep {
+    border-block: 1px solid var(--rule);
   }
 
   /* The header stays put during route transitions; only page content moves. */
@@ -411,6 +409,66 @@
     font-size: 0.875rem;
     font-weight: 600;
   }
+  /* The report is its own bar (never over the portrait): title, the checks, then the summary. Wide
+     screens set the checks in one row, value above label, with the summary beside the title. */
+  .report {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'title' 'rows' 'summary';
+  }
+  .report-title {
+    grid-area: title;
+  }
+  .report-rows {
+    grid-area: rows;
+    margin-top: 0.5rem;
+  }
+  .report .ledger-summary {
+    grid-area: summary;
+  }
+  @media (min-width: 64rem) {
+    .report {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: 'title summary' 'rows rows';
+      align-items: center;
+      padding: 1.25rem 1.5rem;
+    }
+    .report .ledger-summary {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
+    }
+    .report-rows {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--rule);
+    }
+    .report .ledger-row {
+      align-content: flex-start;
+      padding: 0 1rem 0 2.75rem;
+      border-top: 0;
+      border-left: 1px solid var(--rule);
+    }
+    .report .ledger-row:first-child {
+      padding-left: 1.75rem;
+      border-left: 0;
+    }
+    .report .ledger-row dt,
+    .report .ledger-row dd {
+      flex-basis: 100%;
+    }
+    .report .ledger-row::before,
+    .report .ledger-row::after {
+      top: 0.2rem;
+      left: 1rem;
+    }
+    .report .ledger-row:first-child::before,
+    .report .ledger-row:first-child::after {
+      left: 0;
+    }
+  }
 
   /* ---------- featured spread: title, then schematic, then details on small screens ---------- */
   .spread {
@@ -527,6 +585,85 @@
     }
   }
 
+  /* ---------- testimonials carousel: native scroll-snap; buttons are an enhancement ---------- */
+  .carousel-track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 100%;
+    gap: 2rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    /* Moved by swipe, keys on the focused track, the buttons or the autoplay: no scrollbar needed. */
+    scrollbar-width: none;
+    padding-bottom: 0.25rem;
+  }
+  .carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+  @media (min-width: 48rem) {
+    .carousel-track {
+      grid-auto-columns: calc((100% - 4rem) / 2);
+      gap: 4rem;
+    }
+  }
+  .carousel-slide {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+  /* Inside a scrolling track a hanging mark would be clipped: set it inline. */
+  .carousel .quote::before {
+    position: static;
+    font-size: inherit;
+    line-height: inherit;
+  }
+  .carousel-button,
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1.5px solid var(--ink);
+    border-radius: 6px;
+    color: var(--ink);
+    font-size: 1.125rem;
+  }
+  .carousel-button:hover:not(:disabled) {
+    background: color-mix(in oklab, var(--ink) 8%, transparent);
+  }
+  .carousel-button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .carousel-track {
+      scroll-behavior: smooth;
+    }
+  }
+
+  .theme-toggle {
+    position: relative;
+  }
+  .theme-icon {
+    position: absolute;
+    transition:
+      transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      opacity 200ms ease;
+  }
+  .theme-icon--moon,
+  .theme-toggle[aria-pressed='true'] .theme-icon--sun {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+  }
+  .theme-toggle[aria-pressed='true'] .theme-icon--moon {
+    opacity: 1;
+    transform: none;
+  }
+  .theme-toggle:hover {
+    background: color-mix(in oklab, var(--ink) 8%, transparent);
+  }
+
   /* ---------- schematics: one drafting style for every figure ---------- */
   .sch {
     display: block;
@@ -592,6 +729,17 @@
     stroke-linecap: round;
     stroke-linejoin: round;
   }
+  /* A bead that slides along a connector; hidden unless the drawing's motion is running. */
+  .sch-bead {
+    fill: var(--ink);
+    opacity: 0;
+    pointer-events: none;
+  }
+  /* Carries a guard arrow's head on a one-unit stub; the marching shaft is drawn separately. */
+  .sch-head-carrier {
+    fill: none;
+    stroke: none;
+  }
   /* Pointing at a project strengthens its guardrail (instant, user-triggered). */
   .spread:is(:hover, :focus-within) .sch-guard {
     stroke-width: 3;
@@ -632,6 +780,32 @@
     animation: summary-in 240ms ease-out 600ms backwards;
   }
 
+  /* Drawings are always moving while they're on screen (owner's call, 2026-10-30): a bead loops
+   * along each connector in flow order and the guardrail dashes march. MotionGate marks on-screen
+   * drawings with data-inview and only those animate; background tabs don't render, and
+   * reduced motion (this block) turns it off. */
+  @media screen {
+    /* Transform only, so the GPU runs it: ~50 ms of main thread per 10 s with a drawing on screen,
+     * against ~950 ms for animated dash offsets (measured 2026-10-30). */
+    /* Created only while the drawing is on screen, so nothing exists (or costs) at load. */
+    .figure-plate[data-inview] .sch-bead {
+      animation: sch-bead 3.6s linear infinite;
+      animation-delay: calc(var(--seq, 0) * 0.5s);
+    }
+    .figure-plate[data-inview] .sch-march--right {
+      animation: sch-march-right 1.6s linear infinite;
+    }
+    .figure-plate[data-inview] .sch-march--left {
+      animation: sch-march-left 1.6s linear infinite;
+    }
+    .figure-plate[data-inview] .sch-march--down {
+      animation: sch-march-down 1.6s linear infinite;
+    }
+    .figure-plate[data-inview] .sch-march--up {
+      animation: sch-march-up 1.6s linear infinite;
+    }
+  }
+
   .disclosure-sign,
   .sch-guard {
     transition:
@@ -653,6 +827,171 @@
   from {
     opacity: 0.25;
     transform: translateY(2px);
+  }
+}
+
+/* ---------- scroll: purposeful reveals and drawings ----------
+ * CSS scroll-driven animations: no script, no scroll listener, off the main thread for
+ * opacity and transform. Screens only (print is static), only with motion allowed, only where the
+ * browser supports view timelines; everywhere else the page is simply complete. Sticky elements and
+ * section elements (anchor targets) are never moved. Home-page drawings draw themselves as they
+ * enter; a case study's drawing is complete on arrival. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* Section headings and a few blocks rise in; item-level reveals were dropped (2026-10-30): with
+     * the drawings, setting up their animations delayed the first paint on a throttled phone by
+     * ~300 ms (LCP 924 ms without them vs 1,232 ms with, median of 5). */
+    .reveal,
+    .carousel {
+      animation: reveal-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 220px;
+    }
+
+    /* Drawings. As a drawing enters, its lines draw and, after the flow (--seq, set by the drawing),
+     * its evidence resolves. The endless beads and marching guardrails are time-based (see the
+     * motion block above). */
+    :is(#projects, #agentic) .figure-plate {
+      view-timeline: --figure block;
+    }
+    .spread,
+    .agentic-flow {
+      view-timeline: --flow block;
+    }
+    :is(#projects, #agentic) .figure-plate .sch-draw {
+      stroke-dasharray: 1;
+      animation: sch-draw linear both;
+      animation-timeline: --figure;
+      animation-range: entry 10% cover 30%;
+    }
+    /* Boxes and labels stay solid: per-element fades cost ~70 ms of load-time main thread on a
+     * throttled phone (measured 2026-10-30) for little effect. */
+    :is(#projects, #agentic) .figure-plate .sch-ok-disc {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: sch-pop linear both;
+    }
+    :is(#projects, #agentic) .figure-plate .sch-ok-tick {
+      stroke-dasharray: 1;
+      animation: sch-draw linear both;
+    }
+    :is(#projects, #agentic) .figure-plate .sch-ok {
+      animation: sch-fade linear both;
+    }
+    /* One step of the flow per --seq, after the lines are drawn and while the drawing is in view. */
+    :is(#projects, #agentic) .figure-plate :is(.sch-ok-disc, .sch-ok-tick, .sch-ok) {
+      animation-timeline: --figure;
+      animation-range: cover calc(24% + var(--seq, 0) * 4%) cover calc(32% + var(--seq, 0) * 4%);
+    }
+    @media (min-width: 64rem) {
+      /* Wide screens: the drawing is sticky beside the text, which would hold its own timeline still,
+       * so the flow follows the reading of the whole project instead. */
+      :is(#projects, #agentic) .figure-plate :is(.sch-ok-disc, .sch-ok-tick, .sch-ok) {
+        animation-timeline: --flow;
+        animation-range: cover calc(26% + var(--seq, 0) * 5%) cover calc(34% + var(--seq, 0) * 5%);
+      }
+    }
+
+    /* The experience line fills in ink as the roles are read. */
+    .timeline {
+      position: relative;
+      view-timeline: --timeline block;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -1px;
+      width: 1px;
+      background: var(--ink);
+      transform-origin: top;
+      animation: timeline-fill linear both;
+      animation-timeline: --timeline;
+      animation-range: entry 40% cover 65%;
+    }
+  }
+}
+
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sch-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes sch-fade {
+  from {
+    opacity: 0.12;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* One dash period (7 + 6 = 13 units) per cycle, so the march loops seamlessly. */
+@keyframes sch-march-right {
+  to {
+    transform: translateX(13px);
+  }
+}
+@keyframes sch-march-left {
+  to {
+    transform: translateX(-13px);
+  }
+}
+@keyframes sch-march-down {
+  to {
+    transform: translateY(13px);
+  }
+}
+@keyframes sch-march-up {
+  to {
+    transform: translateY(-13px);
+  }
+}
+/* A bead crosses its connector (--bx, --by) in the first 40 % of the cycle, then waits. */
+@keyframes sch-bead {
+  0% {
+    opacity: 0;
+    transform: none;
+  }
+  6%,
+  34% {
+    opacity: 1;
+  }
+  40%,
+  100% {
+    opacity: 0;
+    transform: translate(var(--bx), var(--by));
+  }
+}
+@keyframes sch-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes timeline-fill {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
   }
 }
 

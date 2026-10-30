@@ -6,6 +6,17 @@ export const skillGroups: SkillGroup[] = [
     name: 'Test automation',
     items: ['Playwright (incl. Playwright MCP)', 'TestSigma', 'TestProject', 'Vitest', 'Jest', 'Detox', 'Maestro'],
   },
+  {
+    name: 'Agentic engineering',
+    items: [
+      'Parallel AI coding agents (Claude Code)',
+      'Harness engineering',
+      'Loop engineering',
+      'Human-in-the-loop review',
+      'AI agent guardrails',
+      'Context engineering and MCP',
+    ],
+  },
   { name: 'API and performance', items: ['Postman', 'Supertest', 'JMeter', 'REST API validation'] },
   { name: 'Languages', items: ['TypeScript', 'JavaScript', 'Python', 'Kotlin', 'SQL'] },
   {
@@ -27,7 +38,7 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     name: 'AI',
-    items: ['LLM integration (Gemini, Groq, Together AI)', 'RAG', 'MCP servers', 'AI-assisted development (Claude Code)'],
+    items: ['LLM integration (Gemini, Groq, Together AI)', 'RAG', 'Vector search', 'MCP servers'],
   },
   { name: 'Delivery', items: ['Git', 'GitHub Actions', 'Jenkins', 'Docker', 'Portainer', 'Vercel', 'Railway', 'Sentry'] },
   {

@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { RESUME_PATH, SITE_URL } from '../../lib/site'
+import { themeSwitch } from './theme'
 
 const ROUTES = ['/', '/work/gym-daddy', '/work/printsaathi']
 
@@ -99,14 +100,12 @@ test('JSON-LD parses on every route and never includes a telephone', async ({ pa
   }
 })
 
-test('theme colour follows the colour scheme', async ({ page }) => {
+test('theme colour is the light paper, and follows a chosen dark theme', async ({ page }) => {
+  const colours = () => page.locator('meta[name="theme-color"]').evaluateAll((all) => [...new Set(all.map((m) => m.getAttribute('content')))])
   await page.goto('/')
-  await expect(page.locator('meta[name="theme-color"][media="(prefers-color-scheme: light)"]')).toHaveAttribute(
-    'content',
-    '#f1efe9',
-  )
-  await expect(page.locator('meta[name="theme-color"][media="(prefers-color-scheme: dark)"]')).toHaveAttribute(
-    'content',
-    '#101827',
-  )
+  expect(await colours()).toEqual(['#f1efe9'])
+  await (await themeSwitch(page)).click()
+  expect(await colours()).toEqual(['#101827'])
+  await page.reload()
+  await expect.poll(colours).toEqual(['#101827'])
 })

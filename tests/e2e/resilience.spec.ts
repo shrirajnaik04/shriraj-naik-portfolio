@@ -15,14 +15,23 @@ test.describe('at 320px wide', () => {
         // The page must not scroll sideways, and no rendered box or line of text may cross the
         // viewport's edges (a box can fit while a long word spills out of it). Not rendered (a closed
         // disclosure), hidden from everyone (aria-hidden: decoration, the honeypot) and SVG internals
-        // (clipped by their <svg>) are excluded; the <svg> itself is checked.
+        // (clipped by their <svg>) are excluded; the <svg> itself is checked. Carousel slides sit
+        // side by side in a track that scrolls sideways, so a slide may be off-screen by design: what
+        // is inside a slide must fit the slide instead.
         const result = await page.evaluate(() => {
           const width = document.documentElement.clientWidth
           const shown = (el: Element) => el.checkVisibility() && !el.closest('[aria-hidden="true"]')
-          const beyond = (r: DOMRect) => r.width > 0 && (r.right > width + 1 || r.left < -1)
+          const outside = (r: DOMRect, left: number, right: number) => r.width > 0 && (r.right > right + 1 || r.left < left - 1)
+          const beyond = (el: Element, r: DOMRect) => {
+            const slide = el.closest('[aria-roledescription="slide"]')
+            if (!slide) return outside(r, 0, width)
+            if (slide === el) return false
+            const bounds = slide.getBoundingClientRect()
+            return outside(r, bounds.left, bounds.right)
+          }
           const name = (el: Element) => `${el.tagName.toLowerCase()}${el.id ? `#${el.id}` : ''}.${[...el.classList].slice(0, 2).join('.')}`
           const boxes = [...document.querySelectorAll('body *')]
-            .filter((el) => !el.parentElement?.closest('svg') && shown(el) && beyond(el.getBoundingClientRect()))
+            .filter((el) => !el.parentElement?.closest('svg') && shown(el) && beyond(el, el.getBoundingClientRect()))
             .map(name)
           const text: string[] = []
           const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
@@ -32,7 +41,8 @@ test.describe('at 320px wide', () => {
             if (!parent || !node.textContent?.trim() || !shown(parent)) continue
             const range = document.createRange()
             range.selectNodeContents(node)
-            if ([...range.getClientRects()].some(beyond)) text.push(`"${node.textContent.trim().slice(0, 32)}" in ${name(parent)}`)
+            if ([...range.getClientRects()].some((r) => beyond(parent, r)))
+              text.push(`"${node.textContent.trim().slice(0, 32)}" in ${name(parent)}`)
           }
           return { overflow: document.documentElement.scrollWidth - width, boxes: boxes.slice(0, 8), text: text.slice(0, 8) }
         })

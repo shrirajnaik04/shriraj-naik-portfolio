@@ -56,11 +56,19 @@ export function FeaturedProject({ project, flip }: { project: Project; flip: boo
           </div>
           <div data-evidence>
             <h4 className="font-sans text-[0.9375rem] font-semibold">How I know it works</h4>
-            <ul className="list-evidence t-small mt-3">
-              {project.verified.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+            {project.verified.length ? (
+              <ul className="list-evidence t-small mt-3">
+                {project.verified.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            ) : null}
+            {/* What isn't proven yet, said plainly and without a check mark. */}
+            {project.verificationGap ? (
+              <p data-gap className="t-small mt-3 text-ink-soft">
+                {project.verificationGap}
+              </p>
+            ) : null}
           </div>
         </div>
 

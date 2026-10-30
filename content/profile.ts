@@ -18,7 +18,7 @@ export const profile: Profile = {
   hero: {
     subtitle: 'QA Automation Engineer & AI Product Engineer in Goa, India',
     statement:
-      'I test FinTech software for a living and build AI products end to end, with one rule for both: it isn’t done until it’s tested.',
+      'I engineer quality into FinTech releases and into the AI products I build. If it isn’t tested, it doesn’t ship.',
     body: 'Four years of test automation, API testing and release quality on financial systems. Outside of it, I design, build and run full-stack products, including Gym Daddy, a multi-tenant SaaS for gyms that’s in production today.',
   },
   facts: [
@@ -35,7 +35,7 @@ export const profile: Profile = {
       'That’s how I work. I use AI tools such as Claude Code every day, and I don’t ship what I can’t test or explain.',
   },
   vibeDefinition:
-    'vibe engineer (n.) — an engineer who builds with AI assistants and stays accountable for everything they produce: architecture, security, tests, performance and running cost. The assistant drafts; the engineer decides, verifies and signs off.',
+    'vibe engineer (n.) — an engineer who builds production software with AI coding agents working in parallel, and stays accountable for everything they produce: architecture, security, tests, performance and running cost. Also called agentic engineering: the agents draft inside guardrails and a test harness, while the engineer stays in the loop to review, verify and sign off. The disciplined opposite of unguided ‘vibe coding’.',
 }
 
 export const award: Award = {

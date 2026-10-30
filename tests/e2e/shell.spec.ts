@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { NAV, REPO_URL, RESUME_PATH } from '../../lib/site'
+import { themeSwitch } from './theme'
 
 test('first Tab reaches the skip link, which moves focus to main', async ({ page, browserName }) => {
   await page.goto('/')
@@ -67,11 +68,79 @@ test('footer links the public source, without middle-dot separators', async ({ p
   await page.goto('/')
   const footer = page.getByRole('contentinfo')
   await expect(footer.getByRole('link', { name: 'Source on GitHub' })).toHaveAttribute('href', REPO_URL)
-  await expect(footer).toContainText('AI-assisted, human-owned, test-gated')
+  await expect(footer).toContainText('Vibe engineered with AI agents. Human-reviewed, test-gated.')
   expect(await footer.innerText()).not.toContain('·')
 })
+
+for (const width of [390, 768, 1280]) {
+  test(`one resume button on the page at ${width}px, in the header`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/')
+    const visible = await page
+      .locator('a[download]')
+      .evaluateAll((links) => links.filter((a) => (a as HTMLElement).checkVisibility()).map((a) => a.closest('header') !== null))
+    expect(visible).toEqual([true])
+  })
+}
 
 test('exactly one main landmark', async ({ page }) => {
   await page.goto('/')
   await expect(page.getByRole('main')).toHaveCount(1)
+})
+
+test('light by default even when the system prefers dark; dark is a remembered choice', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark' })
+  await page.goto('/')
+  const theme = () => page.evaluate(() => document.documentElement.dataset.theme ?? 'light')
+  const background = () => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--paper').trim())
+  expect(await theme()).toBe('light')
+  const light = await background()
+  let toggle = await themeSwitch(page)
+  await expect(toggle).toHaveAttribute('aria-pressed', 'false')
+  await toggle.click()
+  await expect(toggle).toHaveAttribute('aria-pressed', 'true')
+  expect(await theme()).toBe('dark')
+  expect(await background()).not.toBe(light)
+  // Remembered across loads, and already applied when the document has been parsed (no flash).
+  await page.addInitScript(() =>
+    document.addEventListener('DOMContentLoaded', () => {
+      ;(window as unknown as { themeAtParse?: string }).themeAtParse = document.documentElement.dataset.theme
+    }),
+  )
+  await page.reload()
+  expect(await page.evaluate(() => (window as unknown as { themeAtParse?: string }).themeAtParse)).toBe('dark')
+  toggle = await themeSwitch(page)
+  await expect(toggle).toHaveAttribute('aria-pressed', 'true')
+  await toggle.click()
+  expect(await theme()).toBe('light')
+})
+
+test('the name in the header returns to the very top of the home page', async ({ page }) => {
+  await page.goto('/')
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight / 2))
+  await page.getByRole('link', { name: 'Shriraj Naik, home' }).click()
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0)
+  await page.goto('/work/gym-daddy')
+  await page.getByRole('link', { name: 'Shriraj Naik, home' }).click()
+  await expect(page).toHaveURL(/\/#home$/)
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0)
+})
+
+test('the phone menu closes on any navigation: its links, the header name, a tap outside', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/')
+  const menu = page.locator('details[data-mobile-nav]')
+  const open = async () => {
+    await menu.locator('summary').click()
+    await expect(menu).toHaveAttribute('open', '')
+  }
+  await open()
+  await page.getByRole('navigation', { name: 'Menu' }).getByRole('link', { name: 'Skills' }).click()
+  await expect(menu).not.toHaveAttribute('open', '')
+  await open()
+  await page.getByRole('link', { name: 'Shriraj Naik, home' }).click()
+  await expect(menu).not.toHaveAttribute('open', '')
+  await open()
+  await page.mouse.click(200, 800)
+  await expect(menu).not.toHaveAttribute('open', '')
 })

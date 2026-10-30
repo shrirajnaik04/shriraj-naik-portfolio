@@ -3,7 +3,7 @@ import type { EarlierJob, Job } from './types'
 /** Wording from the resume (Desktop PDF, Sep 2026), with one tool removed by request. */
 export const jobs: Job[] = [
   {
-    company: 'CodeMax IT Solutions Pvt. Ltd.',
+    company: 'FinTech Company',
     location: 'Goa, India',
     period: 'Jun 2022 – Present',
     roles: [

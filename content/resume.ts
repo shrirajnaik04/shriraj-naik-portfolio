@@ -75,6 +75,10 @@ export const resume: Resume = {
           text: 'Generative AI, Agentic AI, MCP Context Engineering, AI vision-based QA prototyping, RAG/SaaS chatbot validation',
         },
         {
+          label: 'Agentic Engineering',
+          text: 'parallel AI coding agents, harness engineering, loop engineering, human-in-the-loop (HITL) review, AI agent guardrails',
+        },
+        {
           label: 'Product Engineering',
           text: 'Next.js, React, Node.js, Express, FastAPI, PostgreSQL row-level security, Prisma, Capacitor, Tauri',
         },
@@ -99,15 +103,23 @@ export const resume: Resume = {
       entries: [
         {
           name: 'Gym Daddy: Multi-Tenant Gym Management SaaS',
-          meta: ['Founder & Sole Engineer', '2025 – Present', linked(gymDaddySite)],
+          meta: ['Creator & Sole Engineer', '2025 – Present', linked(gymDaddySite)],
           bullets: [
             'Built with Next.js, TypeScript, Supabase PostgreSQL row-level security and Prisma, with Android (Capacitor) and desktop (Tauri) apps, ZKTeco biometric attendance and GST invoicing.',
             'Guarded by 1,200+ automated test files (unit, API, RLS/RBAC and Playwright end-to-end) and 7 GitHub Actions CI workflows.',
           ],
         },
         {
+          name: 'AI Travel Chat Assistant & Real-Time Messaging for a Travel Booking Platform',
+          meta: ['Client Project', '2026'],
+          bullets: [
+            'Streaming RAG chat widget (Shadow DOM embed, MongoDB Atlas Vector Search, Gemini 2.0 Flash with Groq and xAI fallback), covered by about 158 scripted checks; mobile QA gates with Detox and Maestro.',
+            'Real-time guest–host messaging service (Express, Socket.IO, MongoDB, Redis) that blocks phone numbers, emails and payment IDs; about 115 Jest tests on a real replica set, plus a 226-case corpus.',
+          ],
+        },
+        {
           name: 'FinTech QA Automation Suite',
-          meta: ['CodeMax IT Solutions'],
+          meta: ['FinTech Company'],
           bullets: [
             'Built and maintained automation coverage for financial applications using Playwright, JMeter, Postman, and automated API verification, with emphasis on repeatability, regression confidence, and maintainability.',
           ],
@@ -121,17 +133,10 @@ export const resume: Resume = {
           ],
         },
         {
-          name: 'AI Concierge & Messaging for a Travel Booking Platform',
-          meta: ['Client Engagement', '2026'],
-          bullets: [
-            'Streaming RAG chat widget (Shadow DOM embed, MongoDB Atlas Vector Search, Gemini 2.0 Flash with Groq and xAI fallback) and a real-time host–guest messaging SDK (Express, Socket.IO, MongoDB, Redis); mobile QA gates with Detox and Maestro.',
-          ],
-        },
-        {
-          name: 'VisionQA: Natural-Language Test Authoring',
+          name: 'VisionQA: Plain-English Test Authoring',
           meta: ['2026'],
           bullets: [
-            'Natural-language test steps mapped to Playwright actions by a rule-based executor (Next.js, FastAPI, Node agent, Redis, Docker Compose), with a vision-model element locator designed to reduce dependence on brittle DOM selectors.',
+            'Web app for writing browser tests as plain-English steps; a Node agent maps each step to a Playwright action through about 160 sentence patterns, with REST steps and if/else and loop blocks (Next.js, Prisma, PostgreSQL).',
           ],
         },
       ],

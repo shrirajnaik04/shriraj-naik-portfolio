@@ -4,10 +4,10 @@ import { LEGACY_RESUME_PATH, RESUME_PATH } from '../../lib/site'
 
 const PDF = readFileSync(`public${RESUME_PATH}`)
 
-test('the hero button downloads the current resume', async ({ page }) => {
+test('the header button downloads the current resume', async ({ page }) => {
   await page.goto('/')
   const downloading = page.waitForEvent('download')
-  await page.locator('#home').getByRole('link', { name: 'Download resume (PDF)' }).click()
+  await page.locator('header').getByRole('link', { name: 'Resume (PDF)', exact: true }).click()
   const download = await downloading
   expect(download.suggestedFilename()).toBe('Shriraj-Naik-QA-Automation-Engineer-Resume.pdf')
   expect(readFileSync((await download.path())!).equals(PDF)).toBe(true)

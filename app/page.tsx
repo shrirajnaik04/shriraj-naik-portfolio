@@ -1,4 +1,5 @@
 import { About } from '@/components/sections/About'
+import { Agentic } from '@/components/sections/Agentic'
 import { Approach } from '@/components/sections/Approach'
 import { Contact } from '@/components/sections/Contact'
 import { Experience } from '@/components/sections/Experience'
@@ -13,6 +14,7 @@ export default function Home() {
       <Hero />
       <Work />
       <Approach />
+      <Agentic />
       <Experience />
       <About />
       <Skills />

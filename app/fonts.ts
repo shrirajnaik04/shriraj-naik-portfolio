@@ -20,11 +20,14 @@ export const instrumentSans = Instrument_Sans({
   variable: '--font-instrument-sans',
 })
 
-/** Code-like tokens only (stack identifiers, schematic annotations): not preloaded. */
+/**
+ * Code-like tokens only (stack identifiers, schematic annotations): not preloaded, and display
+ * "optional", so a late arrival never reflows the page (it used to shift section links by up to 50 px).
+ */
 export const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400'],
-  display: 'swap',
+  display: 'optional',
   preload: false,
   adjustFontFallback: false,
   fallback: ['ui-monospace', 'Cascadia Mono', 'Consolas', 'monospace'],

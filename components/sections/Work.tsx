@@ -9,7 +9,7 @@ export function Work() {
     <Section
       id="projects"
       title="Selected work"
-      intro="Four I’d show first, then everything else. Each one says what I built and how I know it works."
+      intro="Six I’d show first, then everything else. Each one says what I built and how I know it works."
     >
       {featured.map((project, i) => (
         <FeaturedProject key={project.slug} project={project} flip={i % 2 === 1} />

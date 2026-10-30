@@ -3,11 +3,11 @@ import { describe, expect, test } from 'vitest'
 
 type Tokens = Record<string, string>
 
-/** Reads `--name: #hex` declarations from the light `:root` block and the dark media-query block. */
+/** Reads `--name: #hex` declarations from the light `:root` block and the dark `[data-theme='dark']` block. */
 function parseTokens(css: string): { light: Tokens; dark: Tokens } {
   const read = (block: string): Tokens =>
     Object.fromEntries([...block.matchAll(/--([a-z-]+):\s*(#[0-9a-fA-F]{6})\b/g)].map((m) => [m[1], m[2]]))
-  const darkStart = css.indexOf('@media (prefers-color-scheme: dark)')
+  const darkStart = css.indexOf(":root[data-theme='dark']")
   if (darkStart === -1) throw new Error('no dark block')
   return { light: read(css.slice(0, darkStart)), dark: read(css.slice(darkStart)) }
 }

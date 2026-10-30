@@ -7,12 +7,12 @@ import type { Resume, ResumeEntry, ResumeSection, ResumeText } from '../../conte
  * characters that are drawn.
  */
 export const RESUME_CSS = `
-@page { size: A4; margin: 12mm 15mm 10mm; }
+@page { size: A4; margin: 12mm 15mm 9mm; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html {
   font-family: "Instrument Sans";
   font-size: 10pt;
-  line-height: 1.33;
+  line-height: 1.3;
   color: #1d2432;
   font-kerning: normal;
   font-variant-ligatures: none;
@@ -24,7 +24,7 @@ a { color: inherit; text-decoration: none; }
 h1 { font-size: 21pt; font-weight: 600; line-height: 1.1; color: #18233a; letter-spacing: 0.01em; }
 .headline { margin-top: 3pt; font-size: 10.5pt; font-weight: 600; color: #18233a; }
 .contact { margin-top: 1.5pt; font-size: 9.5pt; color: #3d4656; }
-section { margin-top: 10pt; }
+section { margin-top: 9pt; }
 h2 {
   margin-bottom: 4pt;
   padding-bottom: 2pt;
@@ -43,7 +43,7 @@ h4 { margin-top: 4pt; }
 ul { list-style: none; padding-left: 11pt; }
 /* A real "•" in the text, hung in the indent: parsers that ignore layout split items on it. In
    normal flow, never positioned: positioned boxes are painted later, which reorders the PDF text. */
-li { margin-top: 1.5pt; text-indent: -9pt; break-inside: avoid; }
+li { margin-top: 1pt; text-indent: -9pt; break-inside: avoid; }
 .bullet { display: inline-block; width: 9pt; text-indent: 0; color: #18233a; }
 .labelled + .labelled { margin-top: 1.5pt; }
 .label { font-weight: 600; color: #18233a; }

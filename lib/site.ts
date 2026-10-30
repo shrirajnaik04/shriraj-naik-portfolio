@@ -3,13 +3,15 @@ export const RESUME_PATH = '/resume/Shriraj-Naik-QA-Automation-Engineer-Resume.p
 export const LEGACY_RESUME_PATH = '/SHRIRAJ NAIK - QA Analyst III.pdf'
 export const REPO_URL = 'https://github.com/shrirajnaik04/shriraj-naik-portfolio'
 /** Date content was last reviewed; drives sitemap lastModified so it is stable across builds. */
-export const CONTENT_UPDATED = '2026-10-29'
+export const CONTENT_UPDATED = '2026-10-30'
 
 export const NAV: { label: string; hash: string }[] = [
   { label: 'Work', hash: 'projects' },
   { label: 'Approach', hash: 'approach' },
+  { label: 'AI agents', hash: 'agentic' },
   { label: 'Experience', hash: 'experience' },
   { label: 'About', hash: 'about' },
+  { label: 'Skills', hash: 'tech' },
   { label: 'Contact', hash: 'contact' },
 ]
 

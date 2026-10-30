@@ -14,7 +14,7 @@ export function Experience() {
                 <span>{job.location}</span>
                 <span>{job.period}</span>
               </p>
-              <ol className="mt-10 border-l border-rule">
+              <ol className="timeline mt-10 border-l border-rule">
                 {job.roles.map((role) => (
                   <li
                     key={role.title}

@@ -1,11 +1,10 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { IconDownload } from '@/components/icons'
+import { ThemeToggle } from './ThemeToggle'
 
 interface MobileNavProps {
   items: { label: string; href: string }[]
-  resumeHref: string
 }
 
 /**
@@ -13,7 +12,7 @@ interface MobileNavProps {
  * With JavaScript it adds two niceties: Escape closes the menu and returns focus to the toggle,
  * and choosing a link closes it. The listener exists only while the menu is open.
  */
-export function MobileNav({ items, resumeHref }: MobileNavProps) {
+export function MobileNav({ items }: MobileNavProps) {
   const detailsRef = useRef<HTMLDetailsElement>(null)
 
   useEffect(() => {
@@ -25,14 +24,39 @@ export function MobileNav({ items, resumeHref }: MobileNavProps) {
         details.querySelector('summary')?.focus()
       }
     }
-    const onToggle = () => {
-      if (details.open) document.addEventListener('keydown', onKeyDown)
-      else document.removeEventListener('keydown', onKeyDown)
+    // Any navigation closes it: a tap or focus outside, a hash change (header links included), a page
+    // restored from the back/forward cache, or growing to the desktop header.
+    const shut = () => {
+      details.open = false
     }
+    const onOutside = (event: Event) => {
+      if (!details.contains(event.target as Node)) shut()
+    }
+    const desktop = window.matchMedia('(min-width: 64rem)')
+    const onToggle = () => {
+      if (details.open) {
+        document.addEventListener('keydown', onKeyDown)
+        document.addEventListener('pointerdown', onOutside)
+        document.addEventListener('focusin', onOutside)
+      } else {
+        document.removeEventListener('keydown', onKeyDown)
+        document.removeEventListener('pointerdown', onOutside)
+        document.removeEventListener('focusin', onOutside)
+      }
+    }
+    const onDesktop = () => desktop.matches && shut()
     details.addEventListener('toggle', onToggle)
+    window.addEventListener('hashchange', shut)
+    window.addEventListener('pageshow', shut)
+    desktop.addEventListener('change', onDesktop)
     return () => {
       details.removeEventListener('toggle', onToggle)
+      window.removeEventListener('hashchange', shut)
+      window.removeEventListener('pageshow', shut)
+      desktop.removeEventListener('change', onDesktop)
       document.removeEventListener('keydown', onKeyDown)
+      document.removeEventListener('pointerdown', onOutside)
+      document.removeEventListener('focusin', onOutside)
     }
   }, [])
 
@@ -41,8 +65,8 @@ export function MobileNav({ items, resumeHref }: MobileNavProps) {
   }
 
   return (
-    <details ref={detailsRef} data-mobile-nav className="group md:hidden">
-      <summary className="btn btn-secondary min-h-11 cursor-pointer list-none px-3.5 py-2 [&::-webkit-details-marker]:hidden">
+    <details ref={detailsRef} data-mobile-nav className="group">
+      <summary className="btn btn-secondary min-h-11 cursor-pointer list-none px-3 py-2 [&::-webkit-details-marker]:hidden">
         <span className="group-open:hidden">Menu</span>
         <span className="hidden group-open:inline">Close</span>
       </summary>
@@ -55,12 +79,13 @@ export function MobileNav({ items, resumeHref }: MobileNavProps) {
               </a>
             </li>
           ))}
-          <li className="mt-1 border-t border-rule">
-            <a href={resumeHref} download onClick={close} className="flex items-center gap-2 py-3 text-lg font-medium">
-              Resume (PDF) <IconDownload />
-            </a>
-          </li>
         </ul>
+        <div className="page flex items-center justify-between border-t border-rule py-3">
+          <span aria-hidden="true" className="text-lg font-medium">
+            Dark theme
+          </span>
+          <ThemeToggle />
+        </div>
       </nav>
     </details>
   )

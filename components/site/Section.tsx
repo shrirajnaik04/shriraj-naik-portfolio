@@ -28,7 +28,7 @@ export function Section({
   children: ReactNode
 }) {
   const heading = (
-    <div>
+    <div className="reveal">
       <h2 id={`${id}-title`} className="t-h2">
         {title}
       </h2>

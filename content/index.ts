@@ -1,6 +1,7 @@
 import { projects } from './projects'
 import type { Project } from './types'
 
+export { agenticIntro, practices } from './agentic'
 export { approachClosing, principles } from './approach'
 export { earlierJobs, jobs } from './experience'
 export { award, profile } from './profile'

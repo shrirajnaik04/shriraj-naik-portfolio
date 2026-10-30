@@ -14,9 +14,15 @@ function sourceFiles(): string[] {
 }
 
 describe('architecture', () => {
-  test('only two client components: the mobile navigation and the contact form', () => {
+  test('only five client components: the menu, the theme switch, the contact form, the testimonial carousel and the drawings’ motion gate', () => {
     const client = sourceFiles().filter((file) => /^\s*['"]use client['"]/.test(readFileSync(file, 'utf8')))
-    expect(client.sort()).toEqual(['components/contact/ContactForm.tsx', 'components/site/MobileNav.tsx'])
+    expect(client.sort()).toEqual([
+      'components/contact/ContactForm.tsx',
+      'components/sections/TestimonialCarousel.tsx',
+      'components/site/MobileNav.tsx',
+      'components/site/MotionGate.tsx',
+      'components/site/ThemeToggle.tsx',
+    ])
   })
 
   test('no legacy UI libraries or component folders', () => {

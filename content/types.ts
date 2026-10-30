@@ -22,13 +22,13 @@ export interface CaseStudy {
   next: string[]
 }
 
-export type SchematicKind = 'gym-daddy' | 'fintech-qa' | 'printsaathi' | 'travel-concierge'
+export type SchematicKind = 'gym-daddy' | 'fintech-qa' | 'printsaathi' | 'travel-chat' | 'travel-messaging' | 'rag-chatbot'
 
 export interface Project {
   slug: string
   name: string
   summary: string
-  /** What the work was, e.g. "Founder and sole engineer". */
+  /** What the work was, e.g. "Creator and sole engineer". */
   role: string
   /** "YYYY" or "YYYY – YYYY|present", backed by commit dates in the private claims evidence. */
   period: string
