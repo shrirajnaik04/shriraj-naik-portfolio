@@ -40,6 +40,8 @@
     line-height: 1.65;
     font-synthesis: none;
     font-kerning: normal;
+    /* A word wider than its line breaks instead of overflowing (narrow screens with enlarged text). */
+    overflow-wrap: break-word;
   }
 
   h1,
@@ -669,5 +671,12 @@
   ::view-transition-old(*),
   ::view-transition-new(*) {
     animation: none !important;
+  }
+  /* State feedback (hover, focus, press) still changes, instantly: nothing moves or fades without consent. */
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
   }
 }

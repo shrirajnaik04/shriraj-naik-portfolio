@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { CONTACT_LIMITS, FIELD_ERRORS, validateContactFields } from '@/lib/contact/schema'
+import { CONTACT_FIELDS, CONTACT_LIMITS, FIELD_ERRORS, validateContactFields, validateField } from '@/lib/contact/schema'
 
 const valid = { name: 'Ada Lovelace', email: 'ada@example.com', subject: 'Hello there', message: 'A message long enough.' }
 
@@ -37,6 +37,22 @@ describe('contact field validation', () => {
   test('email format and the 254-character limit', () => {
     expect(validateContactFields({ ...valid, email: 'not-an-email' }).ok).toBe(false)
     expect(validateContactFields({ ...valid, email: `${'a'.repeat(245)}@example.com` }).ok).toBe(false)
+    expect(validateContactFields({ ...valid, email: `${'a'.repeat(242)}@example.com` }).ok).toBe(true)
+  })
+
+  test('email shapes: dotted and tagged local parts pass; empty labels, no TLD and spaces fail', () => {
+    for (const email of ['A@EXAMPLE.COM', 'first.last@sub.example.co.in', 'a+tag@example.com', "o'neil@example.com"])
+      expect(validateField('email', email), email).toBeNull()
+    for (const email of ['a..b@example.com', '.a@example.com', 'a.@example.com', 'a@example', 'a@-example.com', 'a@.example.com', 'a b@example.com', 'a@@example.com', 'ünï@example.com'])
+      expect(validateField('email', email), email).toBe(FIELD_ERRORS.email)
+  })
+
+  test('whitespace-only values are empty, and on-blur checks agree with the full check', () => {
+    for (const field of CONTACT_FIELDS) {
+      expect(validateField(field, ' \n\t '), field).toBe(FIELD_ERRORS[field])
+      expect(validateField(field, valid[field]), field).toBeNull()
+      expect(validateField(field, 42), field).toBe(FIELD_ERRORS[field])
+    }
   })
 
   test('reports a message for every invalid field', () => {

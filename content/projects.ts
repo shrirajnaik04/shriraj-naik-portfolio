@@ -290,7 +290,7 @@ export const projects: Project[] = [
     stack: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS 4', 'Playwright', 'Vitest', 'Lighthouse CI'],
     links: [{ label: 'Source on GitHub', href: 'https://github.com/shrirajnaik04/shriraj-naik-portfolio', kind: 'repo' }],
     tier: 'more',
-    // Withheld until Task 14 proves every claim above (tests/unit/portfolio-claims.test.ts).
-    publish: false,
+    // Every sentence above is traced to code, tests or measurements in tests/unit/portfolio-claims.test.ts.
+    publish: true,
   },
 ]

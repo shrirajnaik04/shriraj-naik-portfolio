@@ -1,0 +1,145 @@
+{
+  "measuredOn": "The Task 14 tree (parent commit cea22cc), committed together with this file",
+  "date": "2026-10-30",
+  "note": "Local production build (next build && next start -p 3100). Lab numbers vary run to run on this machine: two full `pnpm perf` runs on 2026-10-30 gave simulated TBT 50/49 ms then 55/95 ms (/ and /work/gym-daddy) and applied LCP 1791/1771 ms then 1809/1802 ms; the second run is recorded below. Every gate passed in both runs. Compare with baseline.json local_2026_10_27 for like-for-like (local) numbers; production numbers differ (CDN, brotli).",
+  "environment": "Windows 11, Node 24.17. measure.ts: Playwright Chromium 1280x800, 2 s settle, 10 s idle; framework vs app-owned script split from .next/build-manifest.json rootMainFiles (nomodule polyfills excluded); hidden tab via raw CDP background tab. Lighthouse 12.6.1 mobile via @lhci/cli 0.15.1, median of 3: simulated throttling for the lighthouserc.json budgets, applied (devtools) throttling for the LCP gate (owner decision, 2026-10-29).",
+  "measure": {
+    "url": "http://localhost:3100/",
+    "requestCount": 13,
+    "totalBytes": 285178,
+    "scriptBytes": 152651,
+    "stylesheetBytes": 9549,
+    "fontBytes": 76047,
+    "preloadedFontBytes": 54026,
+    "scriptGzipBytes": 146237,
+    "scriptBrotliBytes": 125403,
+    "frameworkScriptGzipBytes": 132000,
+    "appScriptGzipBytes": 14237,
+    "infiniteAnimations": 0,
+    "idleTaskMs": 0.7,
+    "timersAfterLoad": 0,
+    "rafAfterLoad": 0,
+    "scrollTaskMs": 126,
+    "jsHeapUsedMB": 3.12,
+    "heapGrowthMB": 0.04,
+    "hidden": {
+      "visibility": "hidden",
+      "taskMs": 2.5
+    }
+  },
+  "lighthouse": {
+    "http://localhost:3100/": {
+      "lighthouseVersion": "12.6.1",
+      "formFactor": "mobile",
+      "throttlingMethod": "simulate",
+      "performance": 0.96,
+      "accessibility": 1,
+      "bestPractices": 1,
+      "seo": 1,
+      "fcpMs": 1063,
+      "lcpMs": 2722,
+      "cls": 0,
+      "tbtMs": 55,
+      "speedIndexMs": 1063,
+      "scriptTransferBytes": 152651,
+      "stylesheetTransferBytes": 9549,
+      "fontTransferBytes": 76047,
+      "totalTransferBytes": 304974
+    },
+    "http://localhost:3100/work/gym-daddy": {
+      "lighthouseVersion": "12.6.1",
+      "formFactor": "mobile",
+      "throttlingMethod": "simulate",
+      "performance": 0.96,
+      "accessibility": 1,
+      "bestPractices": 1,
+      "seo": 1,
+      "fcpMs": 1058,
+      "lcpMs": 2703,
+      "cls": 0,
+      "tbtMs": 95,
+      "speedIndexMs": 1058,
+      "scriptTransferBytes": 144599,
+      "stylesheetTransferBytes": 9549,
+      "fontTransferBytes": 76047,
+      "totalTransferBytes": 244007
+    }
+  },
+  "lighthouseApplied": {
+    "http://localhost:3100/": {
+      "lighthouseVersion": "12.6.1",
+      "formFactor": "mobile",
+      "throttlingMethod": "devtools",
+      "performance": 0.95,
+      "accessibility": 1,
+      "bestPractices": 1,
+      "seo": 1,
+      "fcpMs": 1809,
+      "lcpMs": 1809,
+      "cls": 0,
+      "tbtMs": 193,
+      "speedIndexMs": 1807,
+      "scriptTransferBytes": 152651,
+      "stylesheetTransferBytes": 9549,
+      "fontTransferBytes": 76047,
+      "totalTransferBytes": 304964
+    },
+    "http://localhost:3100/work/gym-daddy": {
+      "lighthouseVersion": "12.6.1",
+      "formFactor": "mobile",
+      "throttlingMethod": "devtools",
+      "performance": 0.96,
+      "accessibility": 1,
+      "bestPractices": 1,
+      "seo": 1,
+      "fcpMs": 1802,
+      "lcpMs": 1802,
+      "cls": 0.008,
+      "tbtMs": 163,
+      "speedIndexMs": 1855,
+      "scriptTransferBytes": 144599,
+      "stylesheetTransferBytes": 9549,
+      "fontTransferBytes": 76047,
+      "totalTransferBytes": 244007
+    }
+  },
+  "budgets": {
+    "measure": {
+      "appScriptGzipBytes": 20480,
+      "stylesheetBytes": 15360,
+      "fontBytes": 204800,
+      "preloadedFontBytes": 102400,
+      "idleTaskMs": 50,
+      "timersAfterLoad": 0,
+      "rafAfterLoad": 0,
+      "infiniteAnimations": 0,
+      "jsHeapUsedMB": 10,
+      "heapGrowthMB": 1,
+      "hiddenTaskMs": 10
+    },
+    "lighthouse": {
+      "categories:performance": "error {\"minScore\":0.95}",
+      "categories:accessibility": "error {\"minScore\":1}",
+      "categories:best-practices": "error {\"minScore\":0.95}",
+      "categories:seo": "error {\"minScore\":1}",
+      "cumulative-layout-shift": "error {\"maxNumericValue\":0.02}",
+      "total-blocking-time": "error {\"maxNumericValue\":100}",
+      "largest-contentful-paint": "warn {\"maxNumericValue\":2000}"
+    },
+    "lcpAppliedMs": 2000
+  },
+  "dependencies": {
+    "runtime": [
+      "next",
+      "nodemailer",
+      "react",
+      "react-dom"
+    ],
+    "runtimeDependencyCount": 4,
+    "pnpmAuditProd": "No known vulnerabilities (2026-10-30)",
+    "osvScanner": "16 advisories in development-only tooling, each traced and triaged in osv-scanner.toml (expire 2027-01-31); 0 untriaged (2026-10-30)",
+    "gitleaks": "no leaks in 37 commits (2026-10-30)"
+  },
+  "resumePdfBytes": 65064,
+  "screenshots": "docs/evidence/2026-10-29/raw/after/home-{390,768,1280,1920}-{light,dark}.png and work_{gym-daddy,printsaathi}-{390,1280}-{light,dark}.png"
+}

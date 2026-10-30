@@ -2,8 +2,10 @@
  * Runs Lighthouse CI (mobile preset, 3 runs) using Playwright's Chromium, then prints the
  * median run's scores and key metrics per URL.
  *
- * Usage: node scripts/perf/lighthouse.mjs [--assert] [--url <url> ...] [--out <file>] [--throttling devtools]
- * Without --url, the URLs in lighthouserc.json are used.
+ * Usage: node scripts/perf/lighthouse.mjs [--assert] [--url <url> ...] [--out <file>] [--throttling devtools] [--max-lcp <ms>]
+ * Without --url, the URLs in lighthouserc.json are used. --assert applies lighthouserc.json's
+ * assertions (simulated throttling). --max-lcp fails when any URL's median LCP is above <ms>; it is
+ * used with --throttling devtools, where Chromium is really throttled (see HARNESS.md).
  */
 import { chromium } from '@playwright/test'
 import { spawnSync } from 'node:child_process'
@@ -67,7 +69,18 @@ if (outFile) {
   writeFileSync(outFile, json + '\n')
 }
 
+let failed = false
+const maxLcpIndex = args.indexOf('--max-lcp')
+if (maxLcpIndex !== -1) {
+  const maxLcp = Number(args[maxLcpIndex + 1])
+  for (const [url, run] of Object.entries(summary)) {
+    const ok = run.lcpMs <= maxLcp
+    console.log(`${ok ? 'PASS' : 'FAIL'} LCP ${run.lcpMs} ms <= ${maxLcp} ms (${run.throttlingMethod}) ${url}`)
+    if (!ok) failed = true
+  }
+}
 if (args.includes('--assert')) {
   const result = lhci('assert')
-  process.exit(result.status ?? 1)
+  if (result.status !== 0) failed = true
 }
+process.exit(failed ? 1 : 0)

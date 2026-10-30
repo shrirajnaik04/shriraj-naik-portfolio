@@ -339,7 +339,11 @@ export async function measureHidden(
 }
 
 /** Returns the list of budget violations (empty when within budget). */
-export function budgetViolations(m: PageMetrics): string[] {
+/**
+ * Budget misses, as readable lines. The hidden-tab measurement needs a headed browser, so
+ * environments without a display (CI) pass `requireHidden: false`; `pnpm perf` always requires it.
+ */
+export function budgetViolations(m: PageMetrics, { requireHidden = true }: { requireHidden?: boolean } = {}): string[] {
   const out: string[] = []
   const check = (key: string, value: number | null, max: number) => {
     if (value !== null && value > max) out.push(`${key} ${value} > ${max}`)
@@ -357,7 +361,7 @@ export function budgetViolations(m: PageMetrics): string[] {
   if (m.hidden) {
     if (m.hidden.visibility !== 'hidden') out.push(`hidden tab reported visibility "${m.hidden.visibility}"`)
     check('hidden.taskMs', m.hidden.taskMs, BUDGETS.hiddenTaskMs)
-  } else {
+  } else if (requireHidden) {
     out.push('hidden-tab measurement missing')
   }
   return out
@@ -416,7 +420,8 @@ async function main(argv: string[]) {
     console.error(`no build-manifest.json in ${buildDir}`)
     process.exit(2)
   }
-  const metrics = await measure(url, { buildDir, hidden: !argv.includes('--no-hidden') })
+  const hidden = !argv.includes('--no-hidden')
+  const metrics = await measure(url, { buildDir, hidden })
   const json = JSON.stringify(metrics, null, 2)
   console.log(json)
   const out = flag('--out')
@@ -425,7 +430,7 @@ async function main(argv: string[]) {
     writeFileSync(out, json + '\n')
   }
   if (argv.includes('--assert')) {
-    const violations = budgetViolations(metrics)
+    const violations = budgetViolations(metrics, { requireHidden: hidden })
     if (violations.length) {
       console.error('Budget violations:\n  ' + violations.join('\n  '))
       process.exit(1)

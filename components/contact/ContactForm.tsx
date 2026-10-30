@@ -15,8 +15,8 @@ const ERROR_COPY: Record<string, string> = {
 const LABELS: Record<ContactField, string> = { name: 'Name', email: 'Email', subject: 'Subject', message: 'Message' }
 
 /**
- * The contact form. Validation is the same zod/mini schema the server uses, run on blur and on
- * submit. Errors are linked to their fields; on a failed submit, focus moves to the first invalid
+ * The contact form. Validation is the same set of rules the server uses (lib/contact/schema.ts),
+ * run on blur and on submit. Errors are linked to their fields; on a failed submit, focus moves to the first invalid
  * field. The status message stays until the next submit. `elapsedMs` (time the form was open,
  * measured here) and the hidden `company` field let the server answer bots without sending.
  */

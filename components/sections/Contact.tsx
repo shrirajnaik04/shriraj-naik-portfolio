@@ -24,10 +24,11 @@ export function Contact() {
                 <a
                   href={link.href}
                   rel={link.external ? 'noopener noreferrer' : undefined}
-                  className="link inline-flex items-center gap-2.5 font-medium"
+                  className="link inline-flex max-w-full items-center gap-2.5 font-medium"
                 >
                   {link.icon}
-                  {link.label}
+                  {/* The address is one unbreakable token: it may break anywhere rather than push the page sideways (320px, 200% text). */}
+                  <span className={link.href.startsWith('mailto:') ? 'min-w-0 wrap-anywhere' : undefined}>{link.label}</span>
                   {link.external ? <IconExternal className="text-ink-soft" /> : null}
                 </a>
               </li>

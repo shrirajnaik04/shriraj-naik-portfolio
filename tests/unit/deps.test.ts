@@ -7,7 +7,7 @@ const pkg = JSON.parse(readFileSync('package.json', 'utf8')) as {
   engines?: { node?: string }
 }
 
-const ALLOWED_RUNTIME = ['next', 'react', 'react-dom', 'nodemailer', 'zod']
+const ALLOWED_RUNTIME = ['next', 'react', 'react-dom', 'nodemailer']
 
 describe('dependency policy', () => {
   test('no floating "latest" or wildcard ranges', () => {

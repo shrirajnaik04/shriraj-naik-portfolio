@@ -1,0 +1,5 @@
+#!/bin/sh
+# The fast gate before every commit: lint, typecheck and the unit suites (content, copy style,
+# confidentiality, contact, resume). `pnpm install` enables it (the prepare script sets
+# core.hooksPath). Never bypass it with --no-verify: fix the failure instead.
+exec pnpm verify
