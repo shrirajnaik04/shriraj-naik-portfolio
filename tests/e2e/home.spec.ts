@@ -280,9 +280,9 @@ test.describe('experience, about, skills, testimonials', () => {
     for (const job of earlierJobs) await expect(section).toContainText(job.title)
   })
 
-  test('about defines "vibe engineer" once, as a definition', async ({ page }) => {
+  test('about defines "Vibe Engineer" once, as a definition', async ({ page }) => {
     await page.goto('/')
-    await expect(page.locator('#about dfn')).toHaveText('vibe engineer')
+    await expect(page.locator('#about dfn')).toHaveText('Vibe Engineer')
     const text = await page.locator('body').innerText()
     // A whole word: the footer's "Vibe engineered with AI agents" is not the term.
     expect(text.match(/\bvibe engineer\b/gi)?.length).toBe(1)

@@ -40,8 +40,8 @@ describe('copy style', () => {
     expect(content.profile.vibeDefinition).toMatch(/opposite of unguided .vibe coding/)
   })
 
-  test('vibe engineer is defined once, in the profile', () => {
-    expect(content.profile.vibeDefinition).toMatch(/^vibe engineer/i)
+  test('Vibe Engineer is defined once, in the profile, with V and E capitalised', () => {
+    expect(content.profile.vibeDefinition).toMatch(/^Vibe Engineer \(n\.\)/)
     const mentions = walkStrings(content).filter(({ value }) => /vibe engineer/i.test(value))
     expect(mentions.map((m) => m.path)).toEqual(['profile.vibeDefinition'])
   })

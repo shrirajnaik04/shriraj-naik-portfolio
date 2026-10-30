@@ -169,6 +169,13 @@
     letter-spacing: -0.025em;
     font-weight: 400;
   }
+  /* Beside the portrait (from 480 px) the name shares its row: 17vw keeps "Shriraj" on one line,
+   * and it still reaches the 136 px cap from ~800 px, so wide screens are unchanged. */
+  @media (min-width: 30rem) {
+    .t-name {
+      font-size: clamp(min(3.5rem, 18vw), 17vw, 136px);
+    }
+  }
 
   .t-h2 {
     font-family: var(--font-display);

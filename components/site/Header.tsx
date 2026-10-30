@@ -17,7 +17,7 @@ export function Header() {
         <Link
           href="/#home"
           prefetch={false}
-          className="font-display text-[1.375rem] leading-none tracking-[-0.01em]"
+          className="font-display text-[1.25rem] leading-none font-semibold tracking-[-0.01em] sm:text-[1.375rem]"
           aria-label="Shriraj Naik, home"
         >
           Shriraj Naik

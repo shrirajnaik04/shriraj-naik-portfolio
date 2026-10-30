@@ -4,15 +4,16 @@ import { profile } from '@/content'
 /**
  * QA is the entry point: the name, the standard ("if it isn't tested, it doesn't ship"), and a test
  * report whose marks resolve once on load (the page's single load-time motion). The report is its
- * own bar, never laid over the portrait. Phones: portrait first (visible on load), then the text,
- * then the report. From 768 px the portrait sits beside the text and the report runs below.
+ * own bar, never laid over the portrait. Narrow phones: the portrait first, full width (visible on
+ * load), then the text and the report. From 480 px the portrait sits beside the text and the report
+ * runs below, so no column is left empty.
  */
 export function Hero() {
   const [first, ...rest] = profile.name.split(' ')
   return (
     <section id="home" aria-labelledby="home-title" className="page pt-12 pb-[clamp(2.5rem,1.5rem+3vw,4.5rem)] lg:pt-16">
-      <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-x-10 md:gap-y-14 lg:gap-x-12">
-        <div className="md:col-span-7 md:row-start-1">
+      <div className="grid grid-cols-1 gap-10 min-[30rem]:grid-cols-12 min-[30rem]:gap-x-6 min-[30rem]:gap-y-12 md:gap-x-10 md:gap-y-14 lg:gap-x-12">
+        <div className="min-[30rem]:col-span-7 min-[30rem]:row-start-1">
           <h1 id="home-title" className="t-name">
             <span className="block">{first}</span> <span className="block">{rest.join(' ')}</span>
           </h1>
@@ -29,7 +30,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="report md:col-span-12 md:row-start-2">
+        <div className="report min-[30rem]:col-span-12 min-[30rem]:row-start-2">
           <p id="report-title" className="report-title font-semibold">
             Test report
           </p>
@@ -47,15 +48,15 @@ export function Hero() {
           </p>
         </div>
 
-        <div className="order-first md:order-none md:col-span-5 md:col-start-8 md:row-start-1">
-          <div className="plate w-[min(55%,12rem)] md:ml-auto md:w-[min(100%,20rem)] lg:w-[min(100%,24rem)]">
+        <div className="order-first min-[30rem]:order-none min-[30rem]:col-span-5 min-[30rem]:col-start-8 min-[30rem]:row-start-1">
+          <div className="plate w-full max-w-[24rem] min-[30rem]:ml-auto md:w-[min(100%,20rem)] lg:w-[min(100%,24rem)]">
             <Image
               src={profile.portrait.src}
               alt={profile.portrait.alt}
               width={480}
               height={600}
               preload
-              sizes="(min-width: 1024px) 24rem, (min-width: 768px) 20rem, 12rem"
+              sizes="(min-width: 1024px) 24rem, (min-width: 768px) 20rem, (min-width: 480px) 40vw, min(100vw, 24rem)"
               className="block h-auto w-full"
             />
           </div>

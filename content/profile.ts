@@ -35,7 +35,7 @@ export const profile: Profile = {
       'That’s how I work. I use AI tools such as Claude Code every day, and I don’t ship what I can’t test or explain.',
   },
   vibeDefinition:
-    'vibe engineer (n.) — an engineer who builds production software with AI coding agents working in parallel, and stays accountable for everything they produce: architecture, security, tests, performance and running cost. Also called agentic engineering: the agents draft inside guardrails and a test harness, while the engineer stays in the loop to review, verify and sign off. The disciplined opposite of unguided ‘vibe coding’.',
+    'Vibe Engineer (n.) — an engineer who builds production software with AI coding agents working in parallel, and stays accountable for everything they produce: architecture, security, tests, performance and running cost. Also called agentic engineering: the agents draft inside guardrails and a test harness, while the engineer stays in the loop to review, verify and sign off. The disciplined opposite of unguided ‘vibe coding’.',
 }
 
 export const award: Award = {

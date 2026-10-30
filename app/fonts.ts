@@ -2,13 +2,13 @@ import { Instrument_Sans, JetBrains_Mono, Newsreader } from 'next/font/google'
 
 /**
  * Self-hosted at build time (no runtime requests to Google).
- * Newsreader: one static weight (400), roman only. The opsz axis (+74 KB) and the italic (+65 KB) are
+ * Newsreader: two static weights (400, and 600 for the header name), roman only. The opsz axis (+74 KB) and the italic (+65 KB) are
  * deliberately not loaded; nothing on the site is set in italic (font-synthesis: none).
  */
 export const newsreader = Newsreader({
   subsets: ['latin'],
-  // Every serif use on the site is weight 400; a static instance is far smaller than the variable range.
-  weight: ['400'],
+  // Static instances: 400 for every serif use, 600 for the header wordmark only (+~22 KB).
+  weight: ['400', '600'],
   style: ['normal'],
   display: 'swap',
   variable: '--font-newsreader',
