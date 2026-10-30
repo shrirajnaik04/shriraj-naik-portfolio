@@ -42,6 +42,8 @@ export interface PageMetrics {
   /** Main-thread task time while scripted-scrolling the whole page. */
   scrollTaskMs: number
   jsHeapUsedMB: number
+  /** Heap growth (MB, after GC) from cycle 2 to cycle 10 of opening/closing every disclosure; null if none. */
+  heapGrowthMB: number | null
   /** Hidden background tab: visibility observed and task time over the idle window. */
   hidden: { visibility: string; taskMs: number } | null
 }
@@ -57,6 +59,7 @@ export const BUDGETS = {
   rafAfterLoad: 0,
   infiniteAnimations: 0,
   jsHeapUsedMB: 10,
+  heapGrowthMB: 1,
   hiddenTaskMs: 10,
 } as const
 
@@ -184,6 +187,8 @@ export async function measure(
     await page.waitForTimeout(500)
     const scrollEnd = await sample()
 
+    const heapGrowthMB = await interactionHeapGrowth(page)
+
     return {
       url,
       requestCount,
@@ -202,11 +207,42 @@ export async function measure(
       rafAfterLoad: counters.raf,
       scrollTaskMs: round1((scrollEnd.task - scrollStart.task) * 1000),
       jsHeapUsedMB: Math.round((idleEnd.heap / 2 ** 20) * 100) / 100,
+      heapGrowthMB,
       hidden: opts.hidden === false ? null : await measureHidden(url, { settleMs, idleMs }),
     }
   } finally {
     await browser.close()
   }
+}
+
+/**
+ * Leak check for in-page interaction: open and close every visible disclosure (<details>) for
+ * 10 cycles, force garbage collection, and compare the heap after cycle 2 with cycle 10.
+ * Page navigations are full loads (fresh documents), so in-page interaction is where a leak could
+ * accumulate. Returns null when the page has no visible disclosure.
+ */
+async function interactionHeapGrowth(page: Page): Promise<number | null> {
+  const summaries = page.locator('details > summary:visible')
+  const count = await summaries.count()
+  if (count === 0) return null
+  const cdp = await page.context().newCDPSession(page)
+  await cdp.send('HeapProfiler.enable')
+  const heapAfterGc = async () => {
+    await cdp.send('HeapProfiler.collectGarbage')
+    const { usedSize } = await cdp.send('Runtime.getHeapUsage')
+    return usedSize / 2 ** 20
+  }
+  let atCycle2 = 0
+  for (let cycle = 1; cycle <= 10; cycle++) {
+    for (let i = 0; i < count; i++) {
+      const summary = summaries.nth(i)
+      await summary.click()
+      await summary.click()
+    }
+    if (cycle === 2) atCycle2 = await heapAfterGc()
+  }
+  const atCycle10 = await heapAfterGc()
+  return Math.round((atCycle10 - atCycle2) * 100) / 100
 }
 
 /**
@@ -317,6 +353,7 @@ export function budgetViolations(m: PageMetrics): string[] {
   check('rafAfterLoad', m.rafAfterLoad, BUDGETS.rafAfterLoad)
   check('infiniteAnimations', m.infiniteAnimations, BUDGETS.infiniteAnimations)
   check('jsHeapUsedMB', m.jsHeapUsedMB, BUDGETS.jsHeapUsedMB)
+  check('heapGrowthMB', m.heapGrowthMB, BUDGETS.heapGrowthMB)
   if (m.hidden) {
     if (m.hidden.visibility !== 'hidden') out.push(`hidden tab reported visibility "${m.hidden.visibility}"`)
     check('hidden.taskMs', m.hidden.taskMs, BUDGETS.hiddenTaskMs)
@@ -329,12 +366,16 @@ export function budgetViolations(m: PageMetrics): string[] {
 /** Positive and negative controls: every detector must fire on the busy page and stay quiet on the quiet one. */
 async function selfTest() {
   const html = (body: string) => 'data:text/html,' + encodeURIComponent(body)
-  const quiet = html('<!doctype html><title>quiet</title><p>Nothing runs here.</p>')
+  const quiet = html(
+    '<!doctype html><title>quiet</title><p>Nothing runs here.</p><details><summary>More</summary><p>Static.</p></details>',
+  )
   const busy = html(
     '<!doctype html><title>busy</title><style>@keyframes s{to{transform:rotate(1turn)}}' +
       'div{width:20px;height:20px;background:#000;animation:s 1s linear infinite}</style><div></div>' +
       '<script>setInterval(()=>{const t=performance.now();while(performance.now()-t<5){}},100);' +
-      '(function f(){requestAnimationFrame(f)})()</script>',
+      '(function f(){requestAnimationFrame(f)})()</script>' +
+      '<details id="leaky"><summary>More</summary><p>Leaks on every toggle.</p></details>' +
+      '<script>window.leak=[];document.getElementById("leaky").addEventListener("toggle",()=>window.leak.push(new Array(200000).fill(1)))</script>',
   )
   const q = await measure(quiet, { settleMs: 500, idleMs: 3000 })
   const b = await measure(busy, { settleMs: 500, idleMs: 3000 })
@@ -345,12 +386,14 @@ async function selfTest() {
     ['quiet: idle < 15ms', q.idleTaskMs < 15],
     ['quiet: hidden tab really hidden', q.hidden?.visibility === 'hidden'],
     ['quiet: hidden < 5ms', (q.hidden?.taskMs ?? 99) < 5],
+    ['quiet: no heap growth over interaction cycles', (q.heapGrowthMB ?? 99) < 1],
     ['busy: timers counted', b.timersAfterLoad > 0],
     ['busy: rAF counted', b.rafAfterLoad > 0],
     ['busy: infinite animation found', b.infiniteAnimations >= 1],
     ['busy: idle work measured (> 100ms)', b.idleTaskMs > 100],
     ['busy: hidden tab really hidden', b.hidden?.visibility === 'hidden'],
     ['busy: hidden work measured (> 5ms)', (b.hidden?.taskMs ?? 0) > 5],
+    ['busy: leak found by interaction cycles (> 5 MB)', (b.heapGrowthMB ?? 0) > 5],
   ] as const
   for (const [name, ok] of results) console.log(`${ok ? 'PASS' : 'FAIL'}  ${name}`)
   console.log(JSON.stringify({ quiet: q, busy: b }, null, 2))

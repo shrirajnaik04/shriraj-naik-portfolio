@@ -606,13 +606,30 @@
   }
 }
 
-/* ---------- route transitions (React <ViewTransition>) ---------- */
+/* ---------- route transitions: cross-document view transitions (CSS only, no JS) ----------
+ * Opening a case study is a normal page load. Both documents opt in, and a project's title and
+ * drawing carry the same view-transition-name on the home spread and its case study, so the browser
+ * morphs them into place. The new document starts at the top, so the pair forms even when the link
+ * was clicked far down the page (an in-app router transition captures before the scroll resets).
+ * The rest of the page swaps without animation. Unsupported browsers simply navigate. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+.vt-morph {
+  view-transition-class: morph;
+}
 ::view-transition {
   pointer-events: none;
 }
 ::view-transition-group(.morph) {
-  animation-duration: 380ms;
+  animation-duration: 420ms;
   animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,18 +1,24 @@
-import Link from 'next/link'
 import { IconExternal } from '@/components/icons'
 import { SchematicFor } from '@/components/schematics'
 import type { Project } from '@/content/types'
+import { morphName } from '@/lib/view-transition'
 
 /** A featured project as an editorial spread built around its schematic. Sides alternate on wide screens. */
 export function FeaturedProject({ project, flip }: { project: Project; flip: boolean }) {
   const titleId = `project-${project.slug}`
+  // Only projects with a case study get shared-element names, so names stay unique per page.
+  const morph = Boolean(project.caseStudy)
   return (
     <article
       aria-labelledby={titleId}
       className={`spread ${flip ? 'spread--flip' : ''} border-t border-rule py-16 first:border-t-0 first:pt-0 lg:py-24`}
     >
       <header className="spread__head">
-        <h3 id={titleId} className="t-h3">
+        <h3
+          id={titleId}
+          className="t-h3 vt-morph"
+          style={morph ? { viewTransitionName: morphName('title', project.slug) } : undefined}
+        >
           {project.name}
         </h3>
         <p className="t-meta mt-3 flex flex-wrap gap-x-5 gap-y-1">
@@ -24,7 +30,10 @@ export function FeaturedProject({ project, flip }: { project: Project; flip: boo
 
       {project.schematic ? (
         <figure className="spread__figure">
-          <div className="figure-plate">
+          <div
+            className="figure-plate vt-morph"
+            style={morph ? { viewTransitionName: morphName('figure', project.slug) } : undefined}
+          >
             <SchematicFor kind={project.schematic.kind} />
           </div>
           <figcaption className="t-small mt-4 max-w-[56ch] text-ink-soft">{project.schematic.caption}</figcaption>
@@ -60,9 +69,10 @@ export function FeaturedProject({ project, flip }: { project: Project; flip: boo
         {project.caseStudy || project.links.length ? (
           <p className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
             {project.caseStudy ? (
-              <Link href={`/work/${project.slug}`} prefetch={false} className="btn btn-secondary">
+              // A full navigation, so the browser runs a cross-document view transition (see globals.css).
+              <a href={`/work/${project.slug}`} className="btn btn-secondary">
                 Read the {project.name} case study
-              </Link>
+              </a>
             ) : null}
             {project.links.map((link) => (
               <a
