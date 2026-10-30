@@ -10,10 +10,7 @@ export function Approach() {
           <li key={principle.title}>
             <h3 className="t-h4">{principle.title}</h3>
             <p className="mt-3 text-ink-soft">{principle.body}</p>
-            <p className="t-meta mt-4 flex items-center gap-2 text-evidence">
-              <span aria-hidden="true" className="mark-pass" />
-              {principle.evidence}
-            </p>
+            <p className="t-meta mt-4 text-ink-soft">{principle.practice}</p>
           </li>
         ))}
       </ul>

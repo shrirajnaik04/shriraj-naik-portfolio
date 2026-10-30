@@ -144,6 +144,11 @@
   .field:hover {
     border-color: color-mix(in oklab, var(--ink) 70%, transparent);
   }
+  /* Placeholders are hints, at body-copy contrast (ink-soft meets 4.5:1 on every surface). */
+  .field::placeholder {
+    color: var(--ink-soft);
+    opacity: 1;
+  }
   .field:focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 2px;
@@ -175,6 +180,12 @@
     .t-name {
       font-size: clamp(min(3.5rem, 18vw), 17vw, 136px);
     }
+  }
+  /* The name on one line: sized from its column (container units), so it fills the column at any
+   * width without wrapping; 4.7em wide in Newsreader, capped at 128 px. */
+  .t-name--line {
+    white-space: nowrap;
+    font-size: min(128px, 20.5cqi);
   }
 
   .t-h2 {

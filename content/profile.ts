@@ -30,12 +30,12 @@ export const profile: Profile = {
   ],
   about: {
     intro:
-      'I came to software through the support desk: hardware, software and network support for Indian Coast Guard operations at INS Hansa, then a year in finance at Muthoot Finance, before moving into QA in 2022. That path is why I test like an end user and read code like a developer.',
+      'I came to software through the support desk: hardware, software and network support for Indian Coast Guard operations at INS Hansa, then a year in finance at Muthoot Finance, before moving into QA in 2022. That path is why I test the way people actually use software.',
     outro:
-      'That’s how I work. I use AI tools such as Claude Code every day, and I don’t ship what I can’t test or explain.',
+      'That’s how I work: AI coding agents such as Claude Code write the code, and I design, test and sign off everything they produce. I don’t ship what I can’t test or explain.',
   },
   vibeDefinition:
-    'Vibe Engineer (n.) — an engineer who builds production software with AI coding agents working in parallel, and stays accountable for everything they produce: architecture, security, tests, performance and running cost. Also called agentic engineering: the agents draft inside guardrails and a test harness, while the engineer stays in the loop to review, verify and sign off. The disciplined opposite of unguided ‘vibe coding’.',
+    'Vibe Engineer (n.) — An engineer who builds production software with AI coding agents working in parallel, and stays accountable for everything they produce: architecture, security, tests, performance and running cost. Also called agentic engineering: the agents draft inside guardrails and a test harness, while the engineer stays in the loop to review, verify and sign off. The disciplined opposite of unguided ‘vibe coding’.',
 }
 
 export const award: Award = {

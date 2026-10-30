@@ -22,3 +22,13 @@ describe('generated images (pnpm assets:build)', () => {
     expect(statSync('app/apple-icon.png').size).toBeLessThanOrEqual(20 * 1024)
   })
 })
+
+describe('the mark', () => {
+  test('app/icon.svg draws the shared mark: paths only, no font, brand colours', async () => {
+    const { MARK } = await import('@/lib/brand-mark')
+    const svg = readFileSync('app/icon.svg', 'utf8')
+    for (const value of [MARK.viewBox, MARK.s, MARK.n, MARK.stem, MARK.ink, MARK.paper, MARK.tick, String(MARK.strokeWidth)])
+      expect(svg, value).toContain(value)
+    expect(svg).not.toMatch(/<text|font-family/)
+  })
+})

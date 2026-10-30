@@ -6,7 +6,7 @@ export { approachClosing, principles } from './approach'
 export { earlierJobs, jobs } from './experience'
 export { award, profile } from './profile'
 export { projects } from './projects'
-export { skillGroups } from './skills'
+export { skillGroups, skillsIntro } from './skills'
 export { testimonials } from './testimonials'
 
 export function filterPublished(list: Project[]): Project[] {

@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { IconDownload } from '@/components/icons'
 import { NAV, RESUME_PATH, sectionHref } from '@/lib/site'
 import { MobileNav } from './MobileNav'
@@ -13,15 +12,19 @@ export function Header() {
   return (
     <header className="site-header sticky top-0 z-40 border-b border-rule bg-paper">
       <div className="page relative flex min-h-16 flex-wrap items-center justify-between gap-x-3 gap-y-2 py-2 lg:gap-x-6">
-        {/* /#home: on the home page it scrolls to the very top; elsewhere it opens the home page there. */}
-        <Link
-          href="/#home"
-          prefetch={false}
+        {/*
+         * A plain link to "#top", which HTML defines as the very top of the document (whatever the header's
+         * height), and which a browser honours on every click, even when the address already ends in it;
+         * next/link treats a repeated hash as a no-op. Elsewhere it opens the home page at the top.
+         */}
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- see above */}
+        <a
+          href="/#top"
           className="font-display text-[1.25rem] leading-none font-semibold tracking-[-0.01em] sm:text-[1.375rem]"
           aria-label="Shriraj Naik, home"
         >
           Shriraj Naik
-        </Link>
+        </a>
         <div className="flex flex-wrap items-center justify-end gap-2 lg:gap-7">
           <nav aria-label="Primary" className="hidden lg:block">
             <ul className="flex items-center gap-7 text-[0.9375rem] font-medium">

@@ -9,13 +9,12 @@ import { profile } from '@/content'
  * runs below, so no column is left empty.
  */
 export function Hero() {
-  const [first, ...rest] = profile.name.split(' ')
   return (
     <section id="home" aria-labelledby="home-title" className="page pt-12 pb-[clamp(2.5rem,1.5rem+3vw,4.5rem)] lg:pt-16">
       <div className="grid grid-cols-1 gap-10 min-[30rem]:grid-cols-12 min-[30rem]:gap-x-6 min-[30rem]:gap-y-12 md:gap-x-10 md:gap-y-14 lg:gap-x-12">
-        <div className="min-[30rem]:col-span-7 min-[30rem]:row-start-1">
-          <h1 id="home-title" className="t-name">
-            <span className="block">{first}</span> <span className="block">{rest.join(' ')}</span>
+        <div className="@container min-[30rem]:col-span-7 min-[30rem]:row-start-1">
+          <h1 id="home-title" className="t-name t-name--line">
+            {profile.name}
           </h1>
           <p className="mt-6 text-[clamp(1.125rem,1rem+0.55vw,1.375rem)] leading-snug font-medium text-ink">{profile.hero.subtitle}</p>
           <p className="t-lede mt-8 max-w-[31ch]">{profile.hero.statement}</p>

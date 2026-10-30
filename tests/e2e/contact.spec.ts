@@ -165,3 +165,11 @@ test('the real endpoint accepts a message (stream transport)', async ({ page, br
   await page.locator('#contact form').getByRole('button', { name: 'Send message' }).click()
   await expect(page.locator('#contact [role="status"]')).toHaveText(SUCCESS)
 })
+
+test('every field has a visible label and a placeholder hint', async ({ page }) => {
+  await page.goto('/#contact')
+  for (const field of ['name', 'email', 'subject', 'message']) {
+    await expect(page.locator(`label[for="contact-${field}"]`)).toBeVisible()
+    expect((await page.locator(`#contact-${field}`).getAttribute('placeholder'))?.trim().length, field).toBeGreaterThan(0)
+  }
+})

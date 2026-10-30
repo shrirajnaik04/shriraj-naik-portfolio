@@ -1,10 +1,10 @@
 import { Section } from '@/components/site/Section'
-import { skillGroups } from '@/content'
+import { skillGroups, skillsIntro } from '@/content'
 
 /** A plain-text index: no logos, no ratings, QA groups first. */
 export function Skills() {
   return (
-    <Section id="tech" title="Skills">
+    <Section id="tech" title="Skills" intro={skillsIntro}>
       <div className="grid grid-cols-1 gap-x-10 gap-y-10 border-t border-rule pt-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {skillGroups.map((group) => (
           <div key={group.name}>

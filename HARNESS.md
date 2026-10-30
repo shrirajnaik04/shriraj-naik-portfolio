@@ -35,6 +35,9 @@ Chromium end-to-end projects, `pnpm audit --prod` and osv-scanner. Firefox, WebK
   `.confidential-terms` file (one per line) and in the `CONFIDENTIAL_TERMS` repository secret (same
   format). No tracked file contains them. Without them the scans are skipped locally with a warning,
   and fail in CI by design.
+  A line `resume-ok: <term>` bans the term everywhere except the resume PDF: the owner's employer is
+  named on the resume and nowhere on the site (owner's call, 2026-10-30). The term then appears in the
+  committed resume PDF and `content/resume.ts`, by design.
 
 ## Budgets
 

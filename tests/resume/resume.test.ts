@@ -5,7 +5,7 @@ import { beforeAll, describe, expect, test } from 'vitest'
 import { getProject, jobs, profile } from '@/content'
 import { resume, resumeTextLines } from '@/content/resume'
 import { RESUME_PATH } from '@/lib/site'
-import { findConfidentialTerms, loadConfidentialTerms } from '../helpers/confidential-terms'
+import { findConfidentialTerms, loadResumeBannedTerms } from '../helpers/confidential-terms'
 
 const PDF_FILE = `public${RESUME_PATH}`
 const HEADINGS = [
@@ -20,7 +20,8 @@ const HEADINGS = [
   'VOLUNTEER EXPERIENCE',
   'LANGUAGES',
 ]
-const terms = loadConfidentialTerms()
+// The resume may name the owner's employer (`resume-ok:` terms); every other banned term still applies.
+const terms = loadResumeBannedTerms()
 
 /** What a parser keeps of a line: list bullets dropped, whitespace collapsed. */
 const flat = (s: string) => s.replace(/•/g, ' ').replace(/\s+/g, ' ').trim()

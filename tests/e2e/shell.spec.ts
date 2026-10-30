@@ -115,16 +115,23 @@ test('light by default even when the system prefers dark; dark is a remembered c
   expect(await theme()).toBe('light')
 })
 
-test('the name in the header returns to the very top of the home page', async ({ page }) => {
-  await page.goto('/')
-  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight / 2))
-  await page.getByRole('link', { name: 'Shriraj Naik, home' }).click()
-  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0)
-  await page.goto('/work/gym-daddy')
-  await page.getByRole('link', { name: 'Shriraj Naik, home' }).click()
-  await expect(page).toHaveURL(/\/#home$/)
-  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0)
-})
+for (const width of [320, 390, 768, 1024, 1280, 1920]) {
+  test(`at ${width}px the name in the header returns to the very top, from anywhere`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 800 })
+    const name = page.getByRole('link', { name: 'Shriraj Naik, home' })
+    await page.goto('/')
+    for (const at of [0.5, 1]) {
+      await page.evaluate((f) => window.scrollTo(0, (document.documentElement.scrollHeight - innerHeight) * f), at)
+      await name.click()
+      await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0)
+    }
+    await page.goto('/work/gym-daddy')
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
+    await name.click()
+    await expect(page).toHaveURL(/\/#top$/)
+    await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0)
+  })
+}
 
 test('the phone menu closes on any navigation: its links, the header name, a tap outside', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })

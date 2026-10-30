@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { expect, test } from '@playwright/test'
 import { RESUME_PATH } from '../../lib/site'
-import { findConfidentialTerms, loadConfidentialTerms } from '../helpers/confidential-terms'
+import { findConfidentialTerms, loadConfidentialTerms, loadResumeBannedTerms } from '../helpers/confidential-terms'
 
 /**
  * Everything the site publishes, checked for confidential and banned terms (local file or the
@@ -54,7 +54,8 @@ test.describe('no confidential or banned term', () => {
     }
     await task.destroy()
     expect(text.length).toBeGreaterThan(1000)
-    expect(findConfidentialTerms(text, terms!), 'resume').toEqual([])
+    // The resume may name the owner's employer (`resume-ok:` terms); the pages never do.
+    expect(findConfidentialTerms(text, loadResumeBannedTerms() ?? []), 'resume').toEqual([])
   })
 })
 

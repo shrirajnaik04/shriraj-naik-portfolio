@@ -15,6 +15,14 @@ const ERROR_COPY: Record<string, string> = {
 
 const LABELS: Record<ContactField, string> = { name: 'Name', email: 'Email', subject: 'Subject', message: 'Message' }
 
+/** Hints only: every field keeps its visible label. */
+const PLACEHOLDERS: Record<ContactField, string> = {
+  name: 'Your name',
+  email: 'you@company.com',
+  subject: 'A role, a project or a question',
+  message: 'A few lines about what you need, and how I can help.',
+}
+
 const noSubscription = () => () => {}
 
 /**
@@ -110,6 +118,7 @@ export function ContactForm({ email }: { email: string }) {
       {input({
         id: `contact-${name}`,
         name,
+        placeholder: PLACEHOLDERS[name],
         required: true,
         'aria-invalid': errors[name] ? true : undefined,
         'aria-describedby': describedBy(name),

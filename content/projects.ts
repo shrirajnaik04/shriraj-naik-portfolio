@@ -130,7 +130,7 @@ export const projects: Project[] = [
     built: [
       '1,000+ automated test cases and 1,000+ API validations across FinTech releases',
       'UI, API, end-to-end and performance coverage, built with Playwright, Postman and Supertest, JMeter and TestSigma',
-      'Data checks across MySQL, PostgreSQL, MongoDB, Redis and Supabase',
+      'Data checks across PostgreSQL, Redis and OpenSearch',
       'Repeatable execution, monitoring and reporting with Jenkins, Docker, Portainer, Redis and OpenSearch',
       'AI-assisted and MCP-based testing approaches in the QA R&D division',
     ],

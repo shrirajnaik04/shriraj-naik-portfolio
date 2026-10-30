@@ -40,7 +40,7 @@ export const jobs: Job[] = [
         bullets: [
           'Delivered 1,000+ automated test cases and 1,000+ API validations across multiple releases, helping teams detect defects earlier and ship with higher confidence.',
           'Built scalable automated coverage using Playwright, TestSigma, JMeter, and Python/JavaScript-based tooling.',
-          'Performed API and integration validation with Postman/Supertest and data checks across MySQL, PostgreSQL, MongoDB, Redis, and Supabase environments.',
+          'Performed API and integration validation with Postman/Supertest and data checks across PostgreSQL, Redis, and OpenSearch environments.',
           'Used Jenkins, Docker, Git, Portainer, Redis, and OpenSearch to support repeatable QA execution, monitoring, and reporting.',
         ],
         highlights: [

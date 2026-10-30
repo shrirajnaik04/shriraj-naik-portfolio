@@ -2,6 +2,12 @@ import { earlierJobs, jobs } from './experience'
 import { profile } from './profile'
 import { projects } from './projects'
 
+/**
+ * The resume names the employer; the site says "FinTech Company" (owner's call, 2026-10-30). The term
+ * is `resume-ok:` in .confidential-terms, so every page scan still bans it.
+ */
+const RESUME_EMPLOYER_NAMES: Record<string, string> = { 'FinTech Company': 'CodeMax IT Solutions Pvt. Ltd.' }
+
 /** Text, optionally linked. */
 export type ResumeText = string | { text: string; href: string }
 
@@ -92,7 +98,7 @@ export const resume: Resume = {
       heading: 'PROFESSIONAL EXPERIENCE',
       kind: 'experience',
       employers: jobs.map((job) => ({
-        name: job.company,
+        name: RESUME_EMPLOYER_NAMES[job.company] ?? job.company,
         meta: [job.location, job.period],
         roles: job.roles.map((role) => ({ name: role.title, meta: [role.period], bullets: role.bullets })),
       })),
@@ -119,7 +125,7 @@ export const resume: Resume = {
         },
         {
           name: 'FinTech QA Automation Suite',
-          meta: ['FinTech Company'],
+          meta: [RESUME_EMPLOYER_NAMES['FinTech Company']],
           bullets: [
             'Built and maintained automation coverage for financial applications using Playwright, JMeter, Postman, and automated API verification, with emphasis on repeatability, regression confidence, and maintainability.',
           ],

@@ -1,6 +1,12 @@
 import type { SkillGroup } from './types'
 
-/** Plain-text groups, QA first. Every item is on the resume or verified in a project. */
+/**
+ * Plain-text groups, QA first. Every item is on the resume or verified in a project. No programming
+ * languages: AI coding agents write the code (see skillsIntro).
+ */
+export const skillsIntro =
+  'The tools and stacks I work with. AI coding agents write the code; I own what it does: the design, the tests and the sign-off.'
+
 export const skillGroups: SkillGroup[] = [
   {
     name: 'Test automation',
@@ -18,9 +24,8 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   { name: 'API and performance', items: ['Postman', 'Supertest', 'JMeter', 'REST API validation'] },
-  { name: 'Languages', items: ['TypeScript', 'JavaScript', 'Python', 'Kotlin', 'SQL'] },
   {
-    name: 'Product engineering',
+    name: 'Product stacks',
     items: ['Next.js', 'React', 'Node.js', 'Express', 'FastAPI', 'Flask', 'Socket.IO', 'Capacitor', 'Tauri'],
   },
   {

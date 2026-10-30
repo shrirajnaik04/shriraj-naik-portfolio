@@ -1,4 +1,5 @@
 import type { Profile } from '../../content/types'
+import { MARK } from '../../lib/brand-mark'
 
 const INK = '#18233a'
 const INK_SOFT = '#4a5568'
@@ -6,7 +7,6 @@ const PAPER = '#f1efe9'
 const CARD = '#faf9f5'
 const RULE = '#d3cfc4'
 const SIGNAL = '#a3462a'
-const SIGNAL_BRIGHT = '#c65f3c'
 const EVIDENCE = '#4a6352'
 
 /** The site's evidence mark (a passed check), as used by the hero test report. */
@@ -103,18 +103,14 @@ export function OgBody({ profile, site }: { profile: Profile; site: string }) {
 
 export const APPLE_ICON_CSS = '* { margin: 0; } html, body { width: 180px; height: 180px; overflow: hidden; } svg { display: block; }'
 
-/**
- * The 180×180 Apple touch icon: app/icon.svg drawn full-bleed (iOS rounds the corners itself),
- * with the brand serif embedded instead of the system serif the SVG favicon falls back to.
- */
+/** The 180×180 Apple touch icon: the mark in app/icon.svg, full-bleed (iOS rounds the corners itself). */
 export function AppleIconBody() {
   return (
-    <svg viewBox="0 0 64 64" width="180" height="180">
-      <rect width="64" height="64" fill={INK} />
-      <text x="32" y="44" textAnchor="middle" fontFamily="Newsreader" fontSize="38" fill={PAPER}>
-        S
-      </text>
-      <rect x="20" y="50" width="24" height="3" rx="1.5" fill={SIGNAL_BRIGHT} />
+    <svg viewBox={MARK.viewBox} width="180" height="180">
+      <rect width="64" height="64" fill={MARK.ink} />
+      <path d={MARK.s} fill="none" stroke={MARK.paper} strokeWidth={MARK.strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+      <path d={MARK.n} fill="none" stroke={MARK.paper} strokeWidth={MARK.strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+      <path d={MARK.stem} fill="none" stroke={MARK.tick} strokeWidth={MARK.strokeWidth} strokeLinecap="round" />
     </svg>
   )
 }

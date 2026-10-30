@@ -11,6 +11,7 @@ import {
   principles,
   profile,
   skillGroups,
+  skillsIntro,
   testimonials,
 } from '../../content'
 import { AUTOPLAY_MS } from '../../components/sections/TestimonialCarousel'
@@ -259,10 +260,13 @@ test.describe('how I build with AI agents', () => {
 })
 
 test.describe('approach', () => {
-  test('the four principles and the closing line', async ({ page }) => {
+  test('the principles and the closing line, general and not about any one project', async ({ page }) => {
     await page.goto('/')
     expect(await page.locator('#approach h3').allTextContents()).toEqual(principles.map((p) => p.title))
     await expect(page.locator('#approach')).toContainText(approachClosing)
+    const text = await page.locator('#approach').innerText()
+    for (const project of getPublishedProjects()) expect(text, project.name).not.toContain(project.name)
+    expect(text).not.toContain('this site')
   })
 })
 
@@ -286,6 +290,12 @@ test.describe('experience, about, skills, testimonials', () => {
     const text = await page.locator('body').innerText()
     // A whole word: the footer's "Vibe engineered with AI agents" is not the term.
     expect(text.match(/\bvibe engineer\b/gi)?.length).toBe(1)
+  })
+
+  test('skills say plainly that AI agents write the code, and list no programming languages', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.locator('#tech')).toContainText(skillsIntro)
+    expect(await page.locator('#tech h3').allTextContents()).not.toContain('Languages')
   })
 
   test('skills are plain-text groups with no emoji', async ({ page }) => {
