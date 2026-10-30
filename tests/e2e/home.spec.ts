@@ -1,6 +1,19 @@
 import { expect, test } from '@playwright/test'
-import { approachClosing, getFeaturedProjects, getMoreProjects, getPublishedProjects, principles, profile } from '../../content'
+import {
+  approachClosing,
+  award,
+  earlierJobs,
+  getFeaturedProjects,
+  getMoreProjects,
+  getPublishedProjects,
+  jobs,
+  principles,
+  profile,
+  skillGroups,
+  testimonials,
+} from '../../content'
 import { RESUME_PATH } from '../../lib/site'
+import { renderAll } from './helpers'
 
 const STATUS_WORDS = ['live', 'in development', 'prototype', 'client work']
 
@@ -134,4 +147,49 @@ test.describe('approach', () => {
 test('no phone number anywhere in the page', async ({ page }) => {
   await page.goto('/')
   expect((await page.content()).replace(/\D/g, '')).not.toContain('9764904641')
+})
+
+test.describe('experience, about, skills, testimonials', () => {
+  test('experience shows the three CodeMax roles in order, the award and the earlier roles', async ({ page }) => {
+    await page.goto('/')
+    const section = page.locator('#experience')
+    expect(await section.locator('h4').allTextContents()).toEqual(jobs[0].roles.map((r) => r.title))
+    await expect(section).toContainText(award.title)
+    for (const job of earlierJobs) await expect(section).toContainText(job.title)
+  })
+
+  test('about defines "vibe engineer" once, as a definition', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.locator('#about dfn')).toHaveText('vibe engineer')
+    await renderAll(page)
+    const text = await page.locator('body').innerText()
+    expect(text.match(/vibe engineer/gi)?.length).toBe(1)
+  })
+
+  test('skills are eight plain-text groups with no emoji', async ({ page }) => {
+    await page.goto('/')
+    expect(await page.locator('#tech h3').allTextContents()).toEqual(skillGroups.map((g) => g.name))
+    await renderAll(page)
+    const skillsText = await page.locator('#tech').innerText()
+    expect(skillsText.length).toBeGreaterThan(100) // guards against a vacuous pass on unrendered text
+    expect(skillsText).not.toMatch(/\p{Extended_Pictographic}/u)
+  })
+
+  test('testimonials are static and verbatim', async ({ page }) => {
+    await page.goto('/')
+    const quotes = page.locator('#testimonials blockquote')
+    const before = await quotes.allTextContents()
+    expect(before.map((q) => q.trim())).toEqual(testimonials.map((t) => t.quote))
+    for (const t of testimonials) await expect(page.locator('#testimonials figcaption', { hasText: t.name })).toHaveCount(1)
+    await expect(page.locator('#testimonials [role="tablist"]')).toHaveCount(0)
+    await page.waitForTimeout(3000)
+    expect(await quotes.allTextContents()).toEqual(before)
+  })
+
+  test('legacy anchors still resolve', async ({ page }) => {
+    await page.goto('/')
+    for (const id of ['home', 'projects', 'approach', 'experience', 'about', 'tech', 'testimonials', 'contact']) {
+      await expect(page.locator(`#${id}`)).toHaveCount(1)
+    }
+  })
 })
